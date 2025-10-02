@@ -137,10 +137,29 @@
         @apply text-[#EED1AC]
     }
 
-
     .root-container {
         @apply flex flex-col flex-1 min-h-screen   ;
     }
+
+    /*auth*/
+    .auth-container {
+        @apply grid grid-cols-2    text-amber-100 sm:flex-row  ;
+
+    }
+
+    .auth-form {
+        @apply col-span-1 max-lg:p-3  my-auto  flex  flex-1  justify-center max-md:col-span-2 ;
+
+    }
+
+    .auth-box {
+        @apply flex flex-col  bg-bgDarker rounded-3xl p-10 ;
+    }
+
+    .auth-illustration {
+        @apply  max-md:col-span-2 max-md:hidden sticky h-40 w-full sm:top-0 sm:h-screen sm:flex-1;
+    }
+
 }
 
 @layer components {

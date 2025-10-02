@@ -33,7 +33,7 @@ const PopularProductCard = ({
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
         </CardContent>
-        <CardHeader className="px-2    ">
+        <CardHeader className="px-2">
           <CardTitle className="text-amber-50">{title}</CardTitle>
           <CardDescription className="text-amber-100 mt-0.5 flex gap-1">
             {price} <FaTurkishLiraSign />
