@@ -8,3 +8,9 @@ interface Product {
   imageUrl: string;
   stock: number;
 }
+interface AuthCredentials {
+  email: string;
+  password: string;
+  fullName: string;
+  profileImage?: string;
+}

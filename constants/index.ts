@@ -34,6 +34,7 @@ export const FIELD_NAMES = {
   fullName: "Full Name",
   email: "Email",
   password: "Password",
+  profileImage: "Profile Picture",
 };
 export const FIELD_TYPES = {
   fullName: "text",

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
+import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +31,16 @@ export const metadata: Metadata = {
   description: "",
 };
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${inter.variable} antialiased`}>
-        {children}
-      </body>
+      <SessionProvider session={session}>
+        <body className={`${inter.variable} ${inter.variable} antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </SessionProvider>
     </html>
   );
 };

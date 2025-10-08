@@ -23,6 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
+import ImageUpload from "@/components/ImageUpload";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
@@ -37,7 +40,7 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
-  // const router = useRouter();
+  const router = useRouter();
 
   const isSignIn = type === "SIGN_IN";
 
@@ -45,7 +48,21 @@ const AuthForm = <T extends FieldValues>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
   });
-  const handleSubmit: SubmitHandler<T> = async (data: T) => {};
+  const handleSubmit: SubmitHandler<T> = async (data: T) => {
+    const result = await onSubmit(data);
+    if (result.success) {
+      toast.success(
+        isSignIn ? "Signed in successfully!" : "Account created successfully!",
+        {},
+      );
+      router.push("/");
+    } else {
+      toast.error(
+        `Error ${isSignIn ? "signing in" : "signing up"}:  ${result.error}`,
+        { description: "An error occurred. Please try again." },
+      );
+    }
+  };
   return (
     <div className="flex flex-col gap-4 ">
       <h1 className="text-2xl font-semibold text-white">
@@ -72,14 +89,21 @@ const AuthForm = <T extends FieldValues>({
                     {FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      required
-                      type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]}
-                      className="text-white"
-                      placeholder=""
-                      {...field}
-                    />
+                    {field.name === "profileImage" ? (
+                      <ImageUpload onFileChange={field.onChange} />
+                    ) : (
+                      <Input
+                        required
+                        type={
+                          FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]
+                        }
+                        className="text-white  border-borderColor border-3 h-12 bg-bgDark"
+                        placeholder=" "
+                        {...field}
+                      />
+                    )}
                   </FormControl>
+
                   <FormDescription className="text-white"></FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -87,10 +111,7 @@ const AuthForm = <T extends FieldValues>({
             />
           ))}
 
-          <Button
-            className="max-sm:w-full bg-amber-100 text-black font-bold cursor-pointer hover:bg-neutral-500 hover:text-white"
-            type="submit"
-          >
+          <Button className="max-sm:w-full btn-gold" type="submit">
             {isSignIn ? "Sign In" : "Sign Up"}
           </Button>
         </form>
@@ -101,6 +122,11 @@ const AuthForm = <T extends FieldValues>({
           <Link href={isSignIn ? `/sign-up` : `/sign-in`}>
             {isSignIn ? "Create an account." : "Sign in"}
           </Link>
+        </span>
+      </p>
+      <p className="text-sm max-sm:text-center flex-1 flex flex-row justify-center text-white  font-light ">
+        <span className="mx-1  text-text-gold font-semibold hover:text-neutral-400 ">
+          <Link href="/">Continue as a Visitor</Link>
         </span>
       </p>
     </div>

@@ -21,7 +21,7 @@ const PopularProductCard = ({
   imageUrl,
   stock,
 }: Product) => (
-  <li className="col-span-3 lg:col-span-2 sm:col-span-2">
+  <li className="col-span-3 lg:col-span-1  sm:col-span-2">
     <Link href={`/product/${id}`}>
       <Card className="bg-bgDarker border   border-borderColor w-full overflow-hidden ">
         <CardContent className="relative aspect-square overflow-hidden ">

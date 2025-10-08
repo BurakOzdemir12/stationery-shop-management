@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import ProductOverview from "@/components/ProductOverview";
 import ProductList from "@/components/ProductList";
 import { sampleProducts } from "@/constants";
+import { db } from "@/database/drizzle";
+import { users } from "@/database/schema";
 
-const Home = () => {
+const Home = async () => {
   return (
     <div className="">
       <ProductOverview {...sampleProducts[0]} />
