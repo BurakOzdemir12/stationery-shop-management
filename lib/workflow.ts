@@ -27,7 +27,7 @@ export const sendEmail = async ({
     },
     body: {
       from: "Gunes Kirtasiye <hello.guneskirtasiye.com>",
-      to: ["email"],
+      to: [email],
       subject,
       html: message,
     },
