@@ -1,3 +1,5 @@
+import { FaHouse, FaCubes, FaMessage, FaUsers } from "react-icons/fa6";
+import { FiSettings } from "react-icons/fi";
 export const sampleProducts = [
   {
     id: 1,
@@ -41,4 +43,32 @@ export const FIELD_TYPES = {
   email: "email",
   password: "password",
 };
+
+export const adminSideBarLinks = [
+  {
+    text: "Dashboard",
+    href: "/admin",
+    icon: FaHouse,
+  },
+  {
+    text: "Products",
+    href: "/admin/products",
+    icon: FaCubes,
+  },
+  {
+    text: "Requests",
+    href: "/admin/requests",
+    icon: FaMessage,
+  },
+  {
+    text: "Users",
+    href: "/admin/users",
+    icon: FaUsers,
+  },
+  {
+    text: "Settings",
+    href: "/admin/settings",
+    icon: FiSettings,
+  },
+];
 export const mediaQueries = [];

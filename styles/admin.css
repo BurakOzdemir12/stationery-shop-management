@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+
+@theme {
+    --font-inter: "Inter", sans-serif;
+    --font-roboto: "Roboto", sans-serif;
+    --font-bebas: "Bebas Neue", sans-serif;
+
+    --color-background: #ffffff;
+    --color-foreground: #000000;
+    --color-sidebar: #f0f0f0;
+    --color-sidebar-text: #4a4a4a;
+    --color-border: #d4d4d4;
+    --color-input: #d6d6d6;
+    --color-primary: #00b09f;
+    --color-secondary: #ccefeb;
+    --color-muted-text: #949494;
+    --color-success: #00c417;
+    --color-success-text: #ffffff;
+    --color-destructive: #ff0000;
+    --color-warning: #ff7308;
+    --color-card: #fbfaf9;
+}
+
+:root.dark {
+    --color-background-h: #0b0b0b;
+    --color-foreground: #ffffff;
+    --color-sidebar: #111111;
+    --color-sidebar-text: #d1d1d1;
+    --color-border: #2a2a2a;
+    --color-card: #0f0f0f;
+}
+@layer utilities {
+
+    .admin-container { @apply bg-background flex flex-col min-h-screen; }
+}
+@layer components {
+    .admin-sidebar {
+        @apply sticky left-0 top-0 flex h-dvh flex-col justify-between items-center bg-sidebar px-5 pb-5 pt-10;
+    }
+    .logo {
+        @apply flex flex-row items-center gap-2  border-b  border-primary pb-10 max-md:justify-center max-md:hidden;
+    }
+    .admin-sidebar .link{
+        @apply flex flex-row items-center w-full gap-4 rounded-lg px-5 py-3.5 max-md:justify-center;
+    }
+
+}
