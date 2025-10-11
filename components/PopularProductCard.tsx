@@ -13,12 +13,12 @@ import { IoIosPricetag } from "react-icons/io";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 const PopularProductCard = ({
   id,
-  title,
+  name,
   category,
   brand,
   description,
   price,
-  imageUrl,
+  image,
   stock,
 }: Product) => (
   <li className="col-span-3 lg:col-span-1  sm:col-span-2">
@@ -26,15 +26,15 @@ const PopularProductCard = ({
       <Card className="bg-bgDarker border   border-borderColor w-full overflow-hidden ">
         <CardContent className="relative aspect-square overflow-hidden ">
           <Image
-            src={imageUrl}
-            alt="Product Image"
+            src={image}
+            alt="ProductForm Image"
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
         </CardContent>
         <CardHeader className="px-2">
-          <CardTitle className="text-amber-50">{title}</CardTitle>
+          <CardTitle className="text-amber-50">{name}</CardTitle>
           <CardDescription className="text-amber-100 mt-0.5 flex gap-1">
             {price} <FaTurkishLiraSign />
           </CardDescription>

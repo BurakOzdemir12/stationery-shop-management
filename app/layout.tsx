@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Bebas_Neue } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  Bebas_Neue,
+  SUSE,
+  Pacifico,
+} from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
@@ -26,6 +33,12 @@ const bebas = Bebas_Neue({
   variable: "--font-bebas",
   display: "swap",
 });
+const pacifico = Pacifico({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pacifico",
+  display: "swap",
+});
 export const metadata: Metadata = {
   title: "Gunes Kırtasiye",
   description: "",
@@ -36,7 +49,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <SessionProvider session={session}>
-        <body className={`${inter.variable} ${inter.variable} antialiased`}>
+        <body className={`${inter.variable} ${inter.variable}   antialiased`}>
           {children}
           <Toaster />
         </body>

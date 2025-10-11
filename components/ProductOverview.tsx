@@ -5,18 +5,18 @@ import { FaTurkishLiraSign } from "react-icons/fa6";
 import Link from "next/link";
 
 const ProductOverview = ({
-  title,
+  name,
   category,
   brand,
   description,
   price,
-  imageUrl,
+  image,
   stock,
 }: Product) => {
   return (
     <section id="overview" className="product-overview">
       <div className="flex flex-1 sm:col-span-1  col-span-2 flex-col">
-        <h1>{title}</h1>
+        <h1>{name}</h1>
         <div className="product-info">
           <p className="text-amber-50">{description}</p>
 
@@ -40,7 +40,7 @@ const ProductOverview = ({
 
       {/*Carousel*/}
       <div className="flex flex-1  sm:col-span-1  col-span-2  justify-center">
-        <ProductCarousel imageUrl={imageUrl} />
+        <ProductCarousel imageUrl={image} />
       </div>
     </section>
   );

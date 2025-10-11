@@ -9,6 +9,7 @@
     --font-inter: "Inter", sans-serif;
     --font-roboto: "Roboto", sans-serif;
     --font-bebas: "Bebas Neue", sans-serif;
+    --font-pacifico: "Pacifico", cursive;
     --color-bgDarker: #0f1724;
     --color-bgDark: #1e293b;
     --color-muted: #111827;
@@ -63,7 +64,7 @@
     }
 
     /* Hero Section---
-     Product overview*/
+     ProductForm overview*/
     .product-overview {
         @apply grid  grid-cols-2 gap-10 bg-bgDarker rounded-2xl p-5 border-borderColor border;
     }

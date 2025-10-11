@@ -33,7 +33,7 @@ const ProductCarousel = ({ imageUrl }: Props) => {
                       />
                       {/*<img*/}
                       {/*  src=""*/}
-                      {/*  alt="Product image"*/}
+                      {/*  alt="ProductForm image"*/}
                       {/*  className="w-full h-full object-cover"*/}
                       {/*/>*/}
                     </span>

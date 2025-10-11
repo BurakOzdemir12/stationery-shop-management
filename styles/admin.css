@@ -33,19 +33,39 @@
     --color-border: #2a2a2a;
     --color-card: #0f0f0f;
 }
+
 @layer utilities {
 
-    .admin-container { @apply bg-background flex flex-col min-h-screen; }
+    .admin-container {
+        @apply bg-sidebar flex flex-col min-h-screen flex-1 overflow-auto;
+    }
 }
+
 @layer components {
     .admin-sidebar {
-        @apply sticky left-0 top-0 flex h-dvh flex-col justify-between items-center bg-sidebar px-5 pb-5 pt-10;
+        @apply sticky left-0 top-0 flex h-dvh flex-col justify-between items-center bg-background px-5 pb-5 pt-2;
     }
+
     .logo {
-        @apply flex flex-row items-center gap-2  border-b  border-primary pb-10 max-md:justify-center max-md:hidden;
+        @apply flex flex-col items-center gap-2  border-b  border-primary pb-5 max-md:justify-center max-md:hidden;
     }
-    .admin-sidebar .link{
+
+    .admin-sidebar .link {
         @apply flex flex-row items-center w-full gap-4 rounded-lg px-5 py-3.5 max-md:justify-center;
     }
 
+    .admin-header {
+        @apply w-full;
+    }
+    .search-bar {
+        @apply h-fit max-w-90 w-full;
+    }
+
+    .info {
+        @apply flex flex-row gap-5  ;
+    }
+    .btn-pri
+    {
+        @apply bg-primary cursor-pointer text-white  rounded-xl;
+    }
 }

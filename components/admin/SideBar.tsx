@@ -18,7 +18,7 @@ const SideBar = ({ session }: { session: Session }) => {
     <div className="admin-sidebar ">
       <div>
         <div className="logo ">
-          <Image src="/brand3.png" alt="brand Logo" width={55} height={55} />
+          <Image src="/brand3.png" alt="brand Logo" width={95} height={95} />
           <h1 className="text-xl font-semibold text-sidebar-text   ">
             Güneş Kırtasiye
           </h1>
