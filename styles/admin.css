@@ -23,6 +23,8 @@
     --color-destructive: #ff0000;
     --color-warning: #ff7308;
     --color-card: #fbfaf9;
+    --color-form-field: #e7e5e5;
+    --color-input-field: #d0cece;
 }
 
 :root.dark {
@@ -38,6 +40,29 @@
 
     .admin-container {
         @apply bg-sidebar flex flex-col min-h-screen flex-1 overflow-auto;
+    }
+
+    /* Product Form =>
+     Basic Details */
+    .basic-details {
+        @apply grid flex-col grid-cols-4 xl:grid-cols-6 rounded-xl  bg-form-field  p-5 max-sm:p-2 gap-5 border-1 border-neutral-300;
+    }
+
+    .form-field {
+        @apply  max-md:col-span-4 md:col-span-2 xl:col-span-2 max-md:items-center justify-items-center  ;
+    }
+
+    .product-form-item {
+        @apply flex flex-col gap-2 w-full   ;
+    }
+
+    .prod-input {
+        @apply bg-input-field rounded-xl  focus:placeholder:opacity-0 border-neutral-400 ;
+    }
+
+    /*    Barcode Details*/
+    .barcode-details {
+        @apply grid grid-cols-4 mt-15 rounded-xl bg-form-field  p-5 max-sm:p-0 gap-5 border-1 border-neutral-300;
     }
 }
 
@@ -57,6 +82,7 @@
     .admin-header {
         @apply w-full;
     }
+
     .search-bar {
         @apply h-fit max-w-90 w-full;
     }
@@ -64,8 +90,9 @@
     .info {
         @apply flex flex-row gap-5  ;
     }
-    .btn-pri
-    {
+
+    .btn-pri {
         @apply bg-primary cursor-pointer text-white  rounded-xl;
     }
+
 }

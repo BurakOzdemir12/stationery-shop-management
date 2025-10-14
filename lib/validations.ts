@@ -12,13 +12,14 @@ export const signInSchema = z.object({
 });
 
 export const productSchema = z.object({
-  name: z.string().nonempty().trim().min(1).max(155),
-  description: z.string().nonempty().trim().min(1).max(255),
-  category: z.string().trim().min(1).max(155),
-  brand: z.string().trim().min(1).max(155),
-  price: z.coerce.number().min(0),
+  name: z.string().trim().nonempty().min(1).max(155),
+  description: z.string().trim().nonempty().min(1).max(255),
+  category: z.string().trim().min(1).max(155).optional(),
+  brand: z.string().trim().min(1).max(155).optional(),
+  purchase_price: z.coerce.number().min(0),
+  sale_price: z.coerce.number().min(0),
   stock: z.coerce.number().min(0),
-  barcode: z.string().trim().min(1).max(255),
-  code: z.string().trim().min(1).max(255),
-  image: z.url(),
+  barcode: z.string().nonempty().trim().min(1).max(255),
+  code: z.string().nonempty().trim().min(1).max(255),
+  image: z.string().nonempty(),
 });

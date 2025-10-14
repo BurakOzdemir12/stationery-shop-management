@@ -5,7 +5,7 @@ import ProductForm from "@/components/admin/forms/ProductForm";
 const Page = () => {
   return (
     <div>
-      <Button className="btn-pri">Go Back</Button>
+      <Button className="btn-pri">Back to Products</Button>
       <section className="w-full max-2-2xl">
         <ProductForm />
       </section>

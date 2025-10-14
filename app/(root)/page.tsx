@@ -14,7 +14,7 @@ const Home = async () => {
       <ProductList
         title="Latest Products"
         products={sampleProducts}
-        containerClassName="product-list bg-bgDarker"
+        containerClassName="product-list bg-bgDarker "
       />
     </div>
   );

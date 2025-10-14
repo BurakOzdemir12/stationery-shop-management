@@ -16,3 +16,15 @@ interface AuthCredentials {
   fullName: string;
   profileImage?: string;
 }
+interface ProductParams {
+  name: string;
+  description: string;
+  category: string;
+  brand: string;
+  purchase_price: number;
+  sale_price: number;
+  stock: number;
+  barcode: string;
+  code: string;
+  image: string;
+}

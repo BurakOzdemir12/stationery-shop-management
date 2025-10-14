@@ -8,7 +8,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   if (session) redirect("/");
 
   return (
-    <main className="auth-container">
+    <main className="auth-container bg-bgDark">
       <section className="auth-form ">
         <div className="auth-box">
           <div className="flex flex-row items-center gap-3 mb-1  ">

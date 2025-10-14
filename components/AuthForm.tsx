@@ -23,8 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
-import ImageUpload from "@/components/ImageUpload";
-import { toast } from "sonner";
+import FileUpload from "@/components/FileUpload";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 interface Props<T extends FieldValues> {
@@ -52,19 +52,24 @@ const AuthForm = <T extends FieldValues>({
     const result = await onSubmit(data);
     if (result.success) {
       toast.success(
-        isSignIn ? "Signed in successfully!" : "Account created successfully!",
-        {},
+        isSignIn ? "Signed in successfully" : "Signed up successfully",
       );
       router.push("/");
     } else {
       toast.error(
-        `Error ${isSignIn ? "signing in" : "signing up"}:  ${result.error}`,
-        { description: "An error occurred. Please try again." },
+        isSignIn
+          ? "Failed to sign in. Please check your credentials."
+          : result.error || "Failed to sign up. Please try again.",
+        {
+          style: {
+            fontSize: "18px",
+          },
+        },
       );
     }
   };
   return (
-    <div className="flex flex-col gap-4 ">
+    <div className="flex flex-col  gap-4 ">
       <h1 className="text-2xl font-semibold text-white">
         {isSignIn ? "Welcome back" : "Create an account"}
       </h1>
@@ -90,7 +95,14 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === "profileImage" ? (
-                      <ImageUpload onFileChange={field.onChange} />
+                      <FileUpload
+                        type="image"
+                        accept="image/*"
+                        placeholder="Upload Your Image"
+                        folder="ids"
+                        onFileChange={field.onChange}
+                        variant="dark"
+                      />
                     ) : (
                       <Input
                         required

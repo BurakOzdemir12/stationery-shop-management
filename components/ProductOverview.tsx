@@ -12,6 +12,8 @@ const ProductOverview = ({
   price,
   image,
   stock,
+  barcode,
+  code,
 }: Product) => {
   return (
     <section id="overview" className="product-overview">
@@ -40,7 +42,7 @@ const ProductOverview = ({
 
       {/*Carousel*/}
       <div className="flex flex-1  sm:col-span-1  col-span-2  justify-center">
-        <ProductCarousel imageUrl={image} />
+        <ProductCarousel image={image} />
       </div>
     </section>
   );

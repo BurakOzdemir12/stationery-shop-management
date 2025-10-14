@@ -8,8 +8,10 @@ export const sampleProducts = [
     brand: "Brand A",
     description: "This is a description for ProductForm 1.",
     price: 29.99,
-    imageUrl: "https://picsum.photos/800/800",
+    image: "https://picsum.photos/800/800",
     stock: 100,
+    barcode: 0,
+    code: 0,
   },
   {
     id: 2,
@@ -18,8 +20,10 @@ export const sampleProducts = [
     brand: "Brand B",
     description: "This is a description for ProductForm 2.",
     price: 49.99,
-    imageUrl: "https://picsum.photos/800/800",
+    image: "https://picsum.photos/800/800",
     stock: 50,
+    barcode: 0,
+    code: 0,
   },
   {
     id: 3,
@@ -28,8 +32,10 @@ export const sampleProducts = [
     brand: "Brand C",
     description: "This is a description for ProductForm 3.",
     price: 19.99,
-    imageUrl: "https://picsum.photos/800/800",
+    image: "https://picsum.photos/800/800",
     stock: 75,
+    barcode: 0,
+    code: 0,
   },
 ];
 export const FIELD_NAMES = {

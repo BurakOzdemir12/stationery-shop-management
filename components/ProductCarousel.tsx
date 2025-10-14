@@ -11,9 +11,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 
 interface Props {
-  imageUrl: string;
+  image: string;
 }
-const ProductCarousel = ({ imageUrl }: Props) => {
+const ProductCarousel = ({ image }: Props) => {
   return (
     <section className="product-carousel ">
       <Carousel className="w-full max-lg:w-65 max-xl:w-70 xl:w-100 ">
@@ -26,7 +26,7 @@ const ProductCarousel = ({ imageUrl }: Props) => {
                     <span className=" ">
                       {/*{index + 1}*/}
                       <Image
-                        src={imageUrl}
+                        src={image}
                         alt="product image"
                         fill
                         className="object-cover rounded-md w-full"
