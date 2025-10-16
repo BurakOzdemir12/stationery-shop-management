@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "imagekit": "^6.0.0",
     "imagekitio-react": "^4.3.0",

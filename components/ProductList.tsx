@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import Image from "next/image";
-import PopularProductCard from "@/components/PopularProductCard";
+import LatestProductCard from "@/components/LatestProductCard";
 
 interface Props {
   title: string;
@@ -15,7 +16,7 @@ const ProductList = ({ title, products, containerClassName }: Props) => {
 
       <ul className="   grid grid-cols-6 xl:grid-cols-8 gap-3">
         {products.map((product) => (
-          <PopularProductCard key={product.id} {...product} />
+          <LatestProductCard key={product.id} {...product} />
         ))}
       </ul>
     </section>

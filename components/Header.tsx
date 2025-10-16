@@ -18,10 +18,10 @@ const Header = ({ session }: { session: Session | null }) => {
   ];
   const pathName = usePathname();
   return (
-    <header className="flex justify-between my-10 gap-20 ">
-      <Link href="/" className="justify-items-start">
+    <header className="flex flex-1 justify-between my-10 gap-20  ">
+      <Link href="/" className="justify-items-start ">
         <span className="flex items-center gap-1 navLink">
-          <img src="/brand3.png" alt="brand" className="md:w-25 " />
+          <img src="/brand3.png" alt="brand" className="md:w-25 max-sm:w-15 " />
           Güneş Kırtasiye
         </span>
       </Link>

@@ -14,16 +14,17 @@ import config from "@/lib/config";
 
 interface Props {
   image: string;
+  containerClassName?: string;
 }
-const ProductCarousel = ({ image }: Props) => {
+const ProductCarousel = ({ image, containerClassName }: Props) => {
   return (
     <section className="product-carousel ">
       <Carousel className="w-full   ">
         <CarouselContent>
           {Array.from({ length: 1 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div className="p-1">
-                <Card className="overflow-hidden border-0">
+              <div className="p-0 ">
+                <Card className="overflow-hidden p-0 border-0">
                   <CardContent className="flex aspect-square items-center justify-center p-0">
                     <span className=" ">
                       {/*{index + 1}*/}
@@ -31,8 +32,7 @@ const ProductCarousel = ({ image }: Props) => {
                         path={image}
                         urlEndpoint={config.env.imagekit.urlEndpoint}
                         alt="product image"
-                        fill
-                        className="object-cover rounded-md w-85  "
+                        className={containerClassName}
                       />
                     </span>
                   </CardContent>

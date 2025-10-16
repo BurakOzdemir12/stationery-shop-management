@@ -12,7 +12,7 @@
     --font-pacifico: "Pacifico", cursive;
     --color-bgDarker: #0f1724;
     --color-bgDark: #1e293b;
-    --color-muted: #111827;
+    --color-mutedd: #111827;
     --color-blue-500: #263244;
     --color-borderColor: #263244;
     --color-text-sun:#EAD6BEFF;
@@ -86,7 +86,7 @@
     }
 
     .product-info-blocks {
-        @apply flex-1 grid grid-cols-4 gap-3;
+        @apply flex-1 grid grid-cols-4 gap-5;
     }
 
     .info-block {

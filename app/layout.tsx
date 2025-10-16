@@ -49,7 +49,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <SessionProvider session={session}>
-        <body className={`${inter.variable} ${inter.variable}   antialiased`}>
+        <body className={`${inter.className} ${inter.variable}   antialiased`}>
           {children}
           <Toaster position="bottom-right" reverseOrder={false} />
         </body>

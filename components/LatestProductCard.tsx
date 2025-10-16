@@ -14,7 +14,7 @@ import { IoIosPricetag } from "react-icons/io";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 import { IKImage } from "imagekitio-react";
 import config from "@/lib/config";
-const PopularProductCard = ({
+const LatestProductCard = ({
   id,
   name,
   category,
@@ -25,15 +25,15 @@ const PopularProductCard = ({
   stock,
 }: Product) => (
   <li className="col-span-3 lg:col-span-1  sm:col-span-2 max-sm:col-span-6">
-    <Link href={`/product/${id}`}>
-      <Card className="bg-bgDarker pt-0 border-t-0  border-borderColor  w-full overflow-hidden ">
-        <CardContent className=" p-0">
+    <Link href={`/products/${id}`}>
+      <Card className="bg-bgDarker pt-0 border-t-0 h-full  border-borderColor  w-full overflow-hidden ">
+        <CardContent className=" h-full w-full p-0">
           <IKImage
             path={image}
             urlEndpoint={config.env.imagekit.urlEndpoint}
             alt="Product Image"
             fill
-            className="object-cover w-full h-full rounded-md "
+            className="object-cover h-full w-full rounded-md "
             loading="lazy"
             lqip={{ active: true }}
           />
@@ -48,4 +48,4 @@ const PopularProductCard = ({
     </Link>
   </li>
 );
-export default PopularProductCard;
+export default LatestProductCard;
