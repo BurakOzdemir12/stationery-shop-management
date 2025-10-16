@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { users } from "@/database/schema";
 import { db } from "@/database/drizzle";
 import * as bcrypt from "bcryptjs";
+import { redirect } from "next/navigation";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -53,6 +54,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.name = token.name as string;
       }
       return session;
+    },
+    authorized: async ({ request, auth }) => {
+      const { pathname } = request.nextUrl;
+
+      if (pathname.startsWith("/admin")) return !!auth;
+
+      return true;
     },
   },
 });

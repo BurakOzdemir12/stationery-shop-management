@@ -38,6 +38,18 @@ export const sampleProducts = [
     code: 0,
   },
 ];
+export const sampleServices = [
+  {
+    id: 1,
+    name: "Service 1",
+    price: 25,
+  },
+  {
+    id: 2,
+    name: "Service 2",
+    price: 36,
+  },
+];
 export const FIELD_NAMES = {
   fullName: "Full Name",
   email: "Email",

@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import Header from "@/components/Header";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { after } from "next/server";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";

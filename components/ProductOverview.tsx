@@ -9,7 +9,7 @@ const ProductOverview = ({
   category,
   brand,
   description,
-  price,
+  sale_price,
   image,
   stock,
   barcode,
@@ -17,23 +17,30 @@ const ProductOverview = ({
 }: Product) => {
   return (
     <section id="overview" className="product-overview">
-      <div className="flex flex-1 sm:col-span-1  col-span-2 flex-col">
+      <div className="flex flex-1 sm:col-span-1  col-span-2 flex-col ">
         <h1>{name}</h1>
         <div className="product-info">
           <p className="text-amber-50">{description}</p>
 
-          <div className="price flex flex-row gap-1 ">
-            <IoIosPricetag size={25} /> {price}{" "}
+          <div className="price flex flex-row items-center gap-1 ">
+            <IoIosPricetag size={25} /> {sale_price}{" "}
             <FaTurkishLiraSign size={14} className="align-middle" />
           </div>
           <div className="product-info-blocks">
-            <div className="info-block">{category}</div>
-            <div className="info-block">{brand}</div>
-            <div className="info-block">{stock}</div>
-            <div className="info-block"></div>
+            <div className="info-block">
+              Category:<span className="text-amber-100"> {category}</span>
+            </div>
+            <div className="info-block">
+              Brand:{" "}
+              <span className="text-amber-100">
+                {" "}
+                {brand.charAt(0).toLocaleUpperCase("tr-TR") + brand.slice(1)}
+              </span>{" "}
+            </div>{" "}
+            <div className="info-block">Stock: {stock}</div>
           </div>
           <Link href={`/product/1`} className="w-fit">
-            <div className="rounded-md  p-4 w-fit  bg-blue-800">
+            <div className="rounded-md  text-black font-medium  p-2 w-fit  bg-text-sun">
               View Details
             </div>
           </Link>
@@ -41,7 +48,7 @@ const ProductOverview = ({
       </div>
 
       {/*Carousel*/}
-      <div className="flex flex-1  sm:col-span-1  col-span-2  justify-center">
+      <div className="flex flex-1  sm:col-span-1  col-span-2 justify-center">
         <ProductCarousel image={image} />
       </div>
     </section>

@@ -15,7 +15,7 @@
     --color-muted: #111827;
     --color-blue-500: #263244;
     --color-borderColor: #263244;
-
+    --color-text-sun:#EAD6BEFF;
     --color-text-gold: #EED1AC;
 }
 
@@ -34,7 +34,7 @@
     }
 
     .root-container {
-        @apply flex flex-col flex-1 min-h-screen bg-bgDark   ;
+        @apply flex flex-col flex-1   min-h-screen bg-bgDark   ;
     }
 
     /*auth*/
@@ -78,7 +78,7 @@
     }
 
     .product-list {
-        @apply flex flex-col gap-5 mt-5 p-3 bg-bgDarker rounded-2xl border-borderColor border;
+        @apply flex flex-col gap-5 mt-5 p-5 bg-bgDarker rounded-2xl border-borderColor border;
     }
 
     .product-list h1 {
@@ -90,7 +90,7 @@
     }
 
     .info-block {
-        @apply col-span-2 bg-blue-500 rounded-md p-2;
+        @apply col-span-2  text-text-sun rounded-md p-2;
     }
 
 }

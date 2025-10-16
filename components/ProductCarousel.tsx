@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import { IKImage } from "imagekitio-react";
+import config from "@/lib/config";
 
 interface Props {
   image: string;
@@ -16,26 +18,22 @@ interface Props {
 const ProductCarousel = ({ image }: Props) => {
   return (
     <section className="product-carousel ">
-      <Carousel className="w-full max-lg:w-65 max-xl:w-70 xl:w-100 ">
+      <Carousel className="w-full   ">
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: 1 }).map((_, index) => (
             <CarouselItem key={index}>
               <div className="p-1">
-                <Card className="overflow-hidden ">
+                <Card className="overflow-hidden border-0">
                   <CardContent className="flex aspect-square items-center justify-center p-0">
                     <span className=" ">
                       {/*{index + 1}*/}
-                      <Image
-                        src={image}
+                      <IKImage
+                        path={image}
+                        urlEndpoint={config.env.imagekit.urlEndpoint}
                         alt="product image"
                         fill
-                        className="object-cover rounded-md w-full"
+                        className="object-cover rounded-md w-85  "
                       />
-                      {/*<img*/}
-                      {/*  src=""*/}
-                      {/*  alt="ProductForm image"*/}
-                      {/*  className="w-full h-full object-cover"*/}
-                      {/*/>*/}
                     </span>
                   </CardContent>
                 </Card>
@@ -43,8 +41,8 @@ const ProductCarousel = ({ image }: Props) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        {/*<CarouselPrevious />*/}
+        {/*<CarouselNext />*/}
       </Carousel>
     </section>
   );

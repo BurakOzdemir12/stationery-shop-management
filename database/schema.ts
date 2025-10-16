@@ -33,7 +33,7 @@ export const users = pgTable("users", {
 export const products = pgTable("products", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   name: varchar("name", { length: 255 }).notNull(),
-  description: text("description", { length: 255 }).notNull(),
+  description: text("description").notNull(),
   category: varchar("category", { length: 155 }),
   brand: varchar("brand", { length: 155 }),
   purchase_price: numeric("purchase_price").notNull(),

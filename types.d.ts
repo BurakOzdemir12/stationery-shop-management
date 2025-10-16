@@ -1,14 +1,16 @@
 interface Product {
-  id: number;
+  id: string;
   name: string;
   description: string;
   category: string;
   brand: string;
-  price: number;
+  purchase_price: string;
+  sale_price: string;
   stock: number;
   barcode: string;
   code: string;
   image: string;
+  createdAt: Date | null;
 }
 interface AuthCredentials {
   email: string;
@@ -19,8 +21,8 @@ interface AuthCredentials {
 interface ProductParams {
   name: string;
   description: string;
-  category: string;
-  brand: string;
+  category?: string | null;
+  brand?: string | null;
   purchase_price: number;
   sale_price: number;
   stock: number;
