@@ -9,7 +9,7 @@ interface Props {
   containerClassName?: string;
 }
 
-const ProductList = ({ title, products, containerClassName }: Props) => {
+const LatestProductList = ({ title, products, containerClassName }: Props) => {
   return (
     <section className={containerClassName}>
       <h1 className="mt-3">{title}</h1>
@@ -22,4 +22,4 @@ const ProductList = ({ title, products, containerClassName }: Props) => {
     </section>
   );
 };
-export default ProductList;
+export default LatestProductList;

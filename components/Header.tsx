@@ -14,7 +14,7 @@ const Header = ({ session }: { session: Session | null }) => {
       name: "Home",
       href: "/",
     },
-    { name: "Products", href: "" },
+    { name: "Products", href: "#all-products" },
   ];
   const pathName = usePathname();
   return (
@@ -25,9 +25,9 @@ const Header = ({ session }: { session: Session | null }) => {
           Güneş Kırtasiye
         </span>
       </Link>
-      <ul className=" flex  justify-between items-center  gap-10">
+      <ul className=" flex max-md:hidden  justify-between items-center  gap-10">
         {Links.map((item, index) => (
-          <li key={index} className="navLink">
+          <li key={index} className="navLink  ">
             <Link
               className={cn(" ", pathName === item.href && "text-[#EED1AC]")}
               href={item.href}

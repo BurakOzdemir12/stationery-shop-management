@@ -14,6 +14,7 @@ import { IoIosPricetag } from "react-icons/io";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 import { IKImage } from "imagekitio-react";
 import config from "@/lib/config";
+import { textUpperCase } from "@/lib/utils";
 const LatestProductCard = ({
   id,
   name,
@@ -32,14 +33,13 @@ const LatestProductCard = ({
             path={image}
             urlEndpoint={config.env.imagekit.urlEndpoint}
             alt="Product Image"
-            fill
             className="object-cover h-full w-full rounded-md "
             loading="lazy"
             lqip={{ active: true }}
           />
         </CardContent>
         <CardHeader className="px-2">
-          <CardTitle className="text-amber-50">{name}</CardTitle>
+          <CardTitle className="text-amber-50">{textUpperCase(name)}</CardTitle>
           <CardDescription className="text-amber-100 mt-0.5 flex gap-1">
             {sale_price} <FaTurkishLiraSign />
           </CardDescription>

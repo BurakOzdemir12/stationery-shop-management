@@ -1,19 +1,35 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import ProductOverview from "@/components/ProductOverview";
-import ProductList from "@/components/ProductList";
-import { sampleProducts } from "@/constants";
+import LatestProductList from "@/components/LatestProductList";
 import { db } from "@/database/drizzle";
 import { products, users } from "@/database/schema";
-import { desc } from "drizzle-orm";
+import { count, desc } from "drizzle-orm";
 import ServicesCard from "@/components/ServicesCard";
-
-const Home = async () => {
+import { ProductCard } from "@/components/ProductCard";
+import ProductFilter from "@/components/ProductFilter";
+import PaginationView from "@/components/PaginationView";
+import { getPaginatedProducts } from "@/lib/queries/products";
+const Home = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
   const latestProducts = (await db
     .select()
     .from(products)
     .limit(8)
     .orderBy(desc(products.createdAt))) as Product[];
+  const resolvedSearchParams = await searchParams;
+
+  const currentPage = Number(resolvedSearchParams.page) || 1;
+  const searchQuery = resolvedSearchParams.query as string | undefined;
+  const inStock = resolvedSearchParams.inStock === "true";
+  const { pagedProducts, totalPages } = await getPaginatedProducts({
+    currentPage,
+    searchQuery,
+    inStock,
+  });
+
   return (
     <div className="">
       <div className="grid grid-cols-3 gap-10">
@@ -26,11 +42,30 @@ const Home = async () => {
           <ServicesCard />
         </div>
       </div>
-      <ProductList
+      <LatestProductList
         title="Latest Products"
         products={latestProducts.slice(1)}
         containerClassName="product-list bg-bgDarker "
       />
+      <section
+        id="all-products"
+        className="p-1 products-area mt-5 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-4 gap-5"
+      >
+        <div className="lg:col-span-1 md:col-span-1">
+          <ProductFilter />
+        </div>
+        <div className="lg:col-span-4 md:col-span-3   ">
+          <ProductCard products={pagedProducts} />
+        </div>
+      </section>
+      <div className="mt-15 items-center justify-items-center">
+        <PaginationView
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/"
+          searchParams={searchParams}
+        />
+      </div>
     </div>
   );
 };

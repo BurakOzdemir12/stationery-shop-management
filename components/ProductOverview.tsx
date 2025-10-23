@@ -3,6 +3,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 import Link from "next/link";
+import { textUpperCase } from "@/lib/utils";
 
 const ProductOverview = ({
   id,
@@ -16,14 +17,12 @@ const ProductOverview = ({
   barcode,
   code,
 }: Product) => {
-  const textStyle = (text: string) =>
-    text.charAt(0).toUpperCase() + text.slice(1);
   return (
     <section id="overview" className="product-overview">
       <div className="flex flex-1 sm:col-span-1  col-span-2 flex-col ">
-        <h1 className="text-text-gold">{name}</h1>
+        <h1 className="text-text-gold">{textUpperCase(name)}</h1>
         <div className="product-info">
-          <p className="text-amber-100">{description}</p>
+          <p className="text-amber-100 opacity-85">{description}</p>
 
           <div className="product-info-blocks">
             <div className="info-block ">
@@ -40,14 +39,14 @@ const ProductOverview = ({
               Category:
               <span className="text-amber-100 text-lg ">
                 {" "}
-                {textStyle(category)}
+                {textUpperCase(category)}
               </span>
             </div>
             <div className="info-block">
               Brand:{" "}
               <span className="text-amber-100 text-lg">
                 {" "}
-                {textStyle(brand)}
+                {textUpperCase(brand)}
               </span>{" "}
             </div>{" "}
             <div className="info-block">

@@ -28,7 +28,7 @@ const ServicesCard = () => {
     Autoplay({ delay: 3500, stopOnInteraction: false }),
   );
   return (
-    <section className="services-card bg-bgDarker">
+    <section className="services-card rounded-2xl  bg-bgDarker">
       <Carousel
         className="shadow-xl shadow-borderColor"
         plugins={[autoplay.current]}

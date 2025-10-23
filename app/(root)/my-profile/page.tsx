@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "@/auth";
-import ProductList from "@/components/ProductList";
+import LatestProductList from "@/components/LatestProductList";
 import { sampleProducts } from "@/constants";
 import { redirect } from "next/navigation";
 
@@ -18,7 +18,7 @@ const Page = async () => {
       >
         <Button className="btn-gold">Logout</Button>
       </form>
-      <ProductList
+      <LatestProductList
         containerClassName="product-list bg-bgDarker"
         title="Your Requests "
         products={sampleProducts}
