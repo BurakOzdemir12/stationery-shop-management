@@ -22,8 +22,8 @@ type ProductListProps = {
 
 export const ProductCard = ({ products }: ProductListProps) => {
   return (
-    <section id="all-products" className="all-products  ">
-      <div className=" grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <section id="all-products" className="all-products   ">
+      <div className=" grid grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2  gap-5 max-sm:gap-2  ">
         {products.map(
           ({
             id,
@@ -45,7 +45,7 @@ export const ProductCard = ({ products }: ProductListProps) => {
                   path={image}
                   urlEndpoint={config.env.imagekit.urlEndpoint}
                   alt="Product Image"
-                  className="object-fill h-65 w-full rounded-xs  "
+                  className="object-fill  w-full rounded-xs max-md:h-50 h-60  "
                   loading="lazy"
                   lqip={{ active: true }}
                 />

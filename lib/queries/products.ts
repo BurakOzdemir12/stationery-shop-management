@@ -1,4 +1,15 @@
-import { and, count, desc, gt, ilike, or } from "drizzle-orm";
+import {
+  and,
+  between,
+  count,
+  desc,
+  eq,
+  gt,
+  ilike,
+  inArray,
+  isNotNull,
+  or,
+} from "drizzle-orm";
 import { products } from "@/database/schema";
 import { db } from "@/database/drizzle";
 
@@ -7,12 +18,19 @@ interface GetProductsParams {
   currentPage?: number;
   searchQuery?: string;
   inStock?: boolean;
+  brands?: string[];
+  price?: {
+    min?: number;
+    max?: number;
+  };
 }
 
 export async function getPaginatedProducts({
   currentPage = 1,
   searchQuery,
   inStock,
+  brands,
+  price,
 }: GetProductsParams) {
   const conditions = [];
 
@@ -22,7 +40,14 @@ export async function getPaginatedProducts({
   if (inStock) {
     conditions.push(gt(products.stock, 0));
   }
-  // ilike(products.brand, `%${searchQuery}%`),
+  if (brands && brands.length > 0) {
+    conditions.push(inArray(products.brand, brands));
+  }
+  if (price && (price.min != null || price.max != null)) {
+    const min = price.min ?? 1;
+    const max = price.max ?? Number.MAX_SAFE_INTEGER;
+    conditions.push(between(products.sale_price, min, max));
+  }
   // ilike(products.category, `%${searchQuery}%`),
   // ilike(products.sale_price, `%${searchQuery}%`),
   // ilike(products.barcode, `%${searchQuery}%`),
@@ -51,3 +76,11 @@ export async function getPaginatedProducts({
 
   return { pagedProducts, totalPages };
 }
+export const getBrands = async () => {
+  const rows = (await db
+    .selectDistinct({ brand: products.brand })
+    .from(products)
+    .where(isNotNull(products.brand))) as Product[];
+
+  return rows.map((r) => r.brand).filter(Boolean);
+};

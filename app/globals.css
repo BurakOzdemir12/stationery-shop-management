@@ -55,7 +55,9 @@
     .auth-illustration {
         @apply  max-md:col-span-2 max-md:hidden sticky h-40 w-full sm:top-0 sm:h-screen sm:flex-1;
     }
-
+    .filter-checkbox{
+        @apply data-[state=checked]:border-sky-400 data-[state=checked]:bg-white data-[state=checked]:text-sky-900;
+    }
 }
 
 @layer components {

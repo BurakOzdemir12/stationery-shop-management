@@ -6,29 +6,49 @@ import { products, users } from "@/database/schema";
 import { count, desc } from "drizzle-orm";
 import ServicesCard from "@/components/ServicesCard";
 import { ProductCard } from "@/components/ProductCard";
-import ProductFilter from "@/components/ProductFilter";
+import ProductFilterForm from "@/components/ProductFilterForm";
 import PaginationView from "@/components/PaginationView";
-import { getPaginatedProducts } from "@/lib/queries/products";
+import { getBrands, getPaginatedProducts } from "@/lib/queries/products";
 const Home = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
-  const latestProducts = (await db
+  const latestProducts = await db
     .select()
     .from(products)
     .limit(8)
-    .orderBy(desc(products.createdAt))) as Product[];
+    .orderBy(desc(products.createdAt));
   const resolvedSearchParams = await searchParams;
 
   const currentPage = Number(resolvedSearchParams.page) || 1;
   const searchQuery = resolvedSearchParams.query as string | undefined;
   const inStock = resolvedSearchParams.inStock === "true";
+
+  const brandParam = resolvedSearchParams.brand;
+  const brands = Array.isArray(brandParam)
+    ? brandParam
+    : brandParam
+      ? [brandParam]
+      : undefined;
+
+  const priceMinStr = resolvedSearchParams.priceMin;
+  const priceMaxStr = resolvedSearchParams.priceMax;
+  const price =
+    priceMinStr || priceMaxStr
+      ? {
+          min: priceMinStr ? Number(priceMinStr) : undefined,
+          max: priceMaxStr ? Number(priceMaxStr) : undefined,
+        }
+      : undefined;
   const { pagedProducts, totalPages } = await getPaginatedProducts({
     currentPage,
     searchQuery,
     inStock,
+    brands,
+    price,
   });
+  const availableBrands = await getBrands();
 
   return (
     <div className="">
@@ -49,22 +69,17 @@ const Home = async ({
       />
       <section
         id="all-products"
-        className="p-1 products-area mt-5 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-4 gap-5"
+        className="p-1 products-area mt-5 grid grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3  gap-5"
       >
-        <div className="lg:col-span-1 md:col-span-1">
-          <ProductFilter />
+        <div className="xl:col-span-1 lg:col-span-1 md:col-span-1 col-span-2 ">
+          <ProductFilterForm availableBrands={availableBrands} />
         </div>
-        <div className="lg:col-span-4 md:col-span-3   ">
+        <div className="xl:col-span-4 lg:col-span-3 md:col-span-2 col-span-2    ">
           <ProductCard products={pagedProducts} />
         </div>
       </section>
-      <div className="mt-15 items-center justify-items-center">
-        <PaginationView
-          currentPage={currentPage}
-          totalPages={totalPages}
-          basePath="/"
-          searchParams={searchParams}
-        />
+      <div className="mt-15 items-center justify-items-center ">
+        <PaginationView currentPage={currentPage} totalPages={totalPages} />
       </div>
     </div>
   );
