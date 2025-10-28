@@ -9,52 +9,28 @@ import { ProductCard } from "@/components/ProductCard";
 import ProductFilterForm from "@/components/ProductFilterForm";
 import PaginationView from "@/components/PaginationView";
 import { getBrands, getPaginatedProducts } from "@/lib/queries/products";
+import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 const Home = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
-  const latestProducts = await db
-    .select()
-    .from(products)
-    .limit(8)
-    .orderBy(desc(products.createdAt));
   const resolvedSearchParams = await searchParams;
 
-  const currentPage = Number(resolvedSearchParams.page) || 1;
-  const searchQuery = resolvedSearchParams.query as string | undefined;
-  const inStock = resolvedSearchParams.inStock === "true";
-
-  const brandParam = resolvedSearchParams.brand;
-  const brands = Array.isArray(brandParam)
-    ? brandParam
-    : brandParam
-      ? [brandParam]
-      : undefined;
-
-  const priceMinStr = resolvedSearchParams.priceMin;
-  const priceMaxStr = resolvedSearchParams.priceMax;
-  const price =
-    priceMinStr || priceMaxStr
-      ? {
-          min: priceMinStr ? Number(priceMinStr) : undefined,
-          max: priceMaxStr ? Number(priceMaxStr) : undefined,
-        }
-      : undefined;
-  const { pagedProducts, totalPages } = await getPaginatedProducts({
-    currentPage,
-    searchQuery,
-    inStock,
-    brands,
-    price,
-  });
-  const availableBrands = await getBrands();
-
+  const parsed = parseProductSearchParams(searchParams);
+  const [latestProducts, { pagedProducts, totalPages }, availableBrands] =
+    await Promise.all([
+      db.select().from(products).limit(8).orderBy(desc(products.createdAt)),
+      getPaginatedProducts(parsed),
+      getBrands(),
+    ]);
   return (
     <div className="">
       <div className="grid grid-cols-3 gap-10">
         <div className="col-span-3 lg:col-span-2">
-          <ProductOverview {...latestProducts[0]} />
+          {latestProducts[0] && <ProductOverview {...latestProducts[0]} />}
+
+          {/*<ProductOverview {...latestProducts[0]} />*/}
         </div>
         <div className="col-span-3 lg:col-span-1">
           <h1 className="text-3xl font-bebas text-white ">Services</h1>
@@ -65,6 +41,7 @@ const Home = async ({
       <LatestProductList
         title="Latest Products"
         products={latestProducts.slice(1)}
+        // products={latestProducts.slice(1)}
         containerClassName="product-list bg-bgDarker "
       />
       <section
@@ -79,7 +56,10 @@ const Home = async ({
         </div>
       </section>
       <div className="mt-15 items-center justify-items-center ">
-        <PaginationView currentPage={currentPage} totalPages={totalPages} />
+        <PaginationView
+          currentPage={parsed.currentPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

@@ -203,10 +203,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
                 )}
               />
             </div>
-            <Button
-              className="bg-text-sun text-black font-semibold mt-10"
-              type="submit"
-            >
+            <Button className=" btn-gold  font-semibold mt-10" type="submit">
               Filter
             </Button>
           </form>
