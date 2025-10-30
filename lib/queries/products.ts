@@ -129,41 +129,6 @@ export type AdminProductRow = {
   code: string;
   createdAt: Date | null;
 };
-export const adminProductColumns: ColumnDef<AdminProductRow>[] = [
-  {
-    header: "Name",
-    accessorKey: "name",
-  },
-  { header: "Category", accessorKey: "category" },
-  {
-    header: "Brand",
-    accessorKey: "brand",
-  },
-  {
-    header: "Stock",
-    accessorKey: "stock",
-  },
-  {
-    header: "Sale Price",
-    accessorKey: "sale_price",
-  },
-  {
-    header: "Purchase Price",
-    accessorKey: "purchase_price",
-  },
-  {
-    header: "Barcode",
-    accessorKey: "barcode",
-  },
-  {
-    header: "Code",
-    accessorKey: "code",
-  },
-  {
-    header: "Created At",
-    accessorKey: "createdAt",
-  },
-];
 export async function getPaginatedAdminProducts({
   currentPage = 1,
   ...rest

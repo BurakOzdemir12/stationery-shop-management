@@ -16,6 +16,7 @@
     --color-border: #d4d4d4;
     --color-input: #d6d6d6;
     --color-primary: #00b09f;
+    --color-primary-opac: rgba(0, 176, 159, 0.5);
     --color-secondary: #ccefeb;
     --color-muted-text: #949494;
     --color-success: #00c417;
@@ -60,7 +61,7 @@
         @apply bg-input-field rounded-xl  focus:placeholder:opacity-0 border-neutral-400 ;
     }
 
-    /*    Barcode Details*/
+    /*    BarcodeCell Details*/
     .barcode-details {
         @apply grid grid-cols-4 mt-15 rounded-xl bg-form-field  p-5 max-sm:p-0 gap-5 border-1 border-neutral-300;
     }

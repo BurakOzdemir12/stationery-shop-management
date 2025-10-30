@@ -17,7 +17,7 @@ const Home = async ({
 }) => {
   const resolvedSearchParams = await searchParams;
 
-  const parsed = parseProductSearchParams(searchParams);
+  const parsed = parseProductSearchParams(await searchParams);
   const [latestProducts, { pagedProducts, totalPages }, availableBrands] =
     await Promise.all([
       db.select().from(products).limit(8).orderBy(desc(products.createdAt)),

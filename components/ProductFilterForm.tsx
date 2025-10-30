@@ -11,17 +11,11 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import {
-  ProductSearchFilters,
-  ProductSearchFiltersType,
-} from "@/lib/validations";
-import { z } from "zod";
+import { ProductSearchFilters } from "@/lib/validations";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { getBrands } from "@/lib/queries/products";
-import { Slider } from "@/components/ui/slider";
 
 type ProductFilterFormProps = {
   availableBrands: string[];
@@ -31,7 +25,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  const form = useForm<ProductSearchFiltersType>({
+  const form = useForm<z.input<typeof ProductSearchFilters>>({
     resolver: zodResolver(ProductSearchFilters),
     defaultValues: {
       query: searchParams.get("query") || "",
@@ -47,7 +41,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
       },
     },
   });
-  function onSubmit(values: ProductSearchFiltersType) {
+  function onSubmit(values: z.input<typeof ProductSearchFilters>) {
     const params = new URLSearchParams();
     if (values.query) {
       params.set("query", values.query);

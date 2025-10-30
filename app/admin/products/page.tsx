@@ -2,11 +2,9 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ProductsTable from "@/components/admin/ProductsTable";
-import {
-  adminProductColumns,
-  getPaginatedAdminProducts,
-} from "@/lib/queries/products";
+import { getPaginatedAdminProducts } from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
+import { adminProductColumns } from "@/components/admin/product/AdminProductColumns";
 
 const Page = async ({
   searchParams,
@@ -17,16 +15,7 @@ const Page = async ({
   const { rows } = await getPaginatedAdminProducts({
     ...parsed,
   });
-  const columns = [
-    {
-      header: "Product Name",
-      accessorKey: "name",
-    },
-    {
-      header: "Category",
-      accessorKey: "category",
-    },
-  ];
+
   return (
     <section className="bg-white p-5 rounded-2xl w-full">
       <div className="flex flex-wrap items-center justify-between gap-5 ">

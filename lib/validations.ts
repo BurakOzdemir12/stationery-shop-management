@@ -27,7 +27,7 @@ export const productSchema = z.object({
 export const ProductSearchFilters = z.object({
   query: z.string().optional(),
   inStock: z.boolean().optional(),
-  brands: z.array(z.string()).default([]),
+  brands: z.array(z.string()).default([]).optional(),
   price: z
     .object({
       min: z.number().min(0).optional(),

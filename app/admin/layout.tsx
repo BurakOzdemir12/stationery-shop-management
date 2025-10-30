@@ -7,6 +7,7 @@ import Header from "@/components/admin/Header";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import BreadCrumb from "@/components/BreadCrumb";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
@@ -25,8 +26,9 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   return (
     <main className="flex flex-row min-h-screen   w-full">
       <SideBar session={session} />
-      <div className="admin-container  ">
+      <div className="admin-container   ">
         <Header session={session} />
+        <BreadCrumb />
         <div className="p-5">{children}</div>
       </div>
     </main>
