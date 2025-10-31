@@ -3,7 +3,6 @@
 import React from "react";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -12,16 +11,46 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { deleteProduct } from "@/lib/admin/actions/product";
+import { toast } from "react-hot-toast";
+import ProductDetailSheet from "@/components/admin/ProductDetailSheet";
+import { useRouter, useSearchParams } from "next/navigation";
 type ActionsCellProps = {
   id: string;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onViewDetails?: (id: string) => void; // eklendi
 };
 export default function ActionsCell({
   id,
   onEdit,
   onDelete,
+  onViewDetails,
 }: ActionsCellProps) {
+  const handleDelete = async (id: string) => {
+    const ok = confirm("Delete this row?");
+    if (!ok) return;
+    try {
+      const res = await deleteProduct(id);
+
+      if (!res?.success) {
+        throw new Error("Failed to delete product");
+      }
+      onDelete?.(id);
+      toast.success("Product deleted successfully");
+    } catch (e) {
+      toast.error("Failed to delete product");
+    }
+  };
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const openDetails = (pid: string) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("view", pid);
+    router.push(`/admin/products?${params.toString()}`, { scroll: false });
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,26 +62,26 @@ export default function ActionsCell({
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(id)}>
+        <DropdownMenuItem onClick={() => openDetails(id)}>
           View Details
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={() => (onEdit ? onEdit(id) : console.log("edit", id))}
+          className="cursor-pointer"
+          // onClick={() => (onEdit ? onEdit(id) : console.log("edit", id))}
         >
-          Edit
+          <Link
+            onClick={() => onEdit?.(id)}
+            prefetch={false}
+            className="w-full h-full"
+            href={`/admin/products/edit/${id}`}
+          >
+            Edit
+          </Link>
         </DropdownMenuItem>
-
-        <DropdownMenuItem
-          onClick={() => {
-            const ok = confirm("Delete this row?");
-            if (ok) {
-              onDelete ? onDelete(id) : console.log("delete", id);
-            }
-          }}
-        >
+        <DropdownMenuItem onClick={() => handleDelete(id)}>
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>

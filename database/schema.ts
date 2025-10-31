@@ -44,3 +44,9 @@ export const products = pgTable("products", {
   image: text("image").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+export const services = pgTable("services", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  name: varchar("name", { length: 255 }).notNull(),
+  price: numeric("price", { mode: "number" }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});

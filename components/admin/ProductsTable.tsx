@@ -61,7 +61,7 @@ const ProductsTable = <TData, TValue>({
       <div className="flex flex-row gap-6  ">
         <Input
           className="w-fit min-w-[350px] m-3 mx-0 bg-input text-xl font-semibold"
-          placeholder="Filter Products..."
+          placeholder="Enter product name..."
           value={(table.getColumn("name")?.getFilterValue() as string) || ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

@@ -2,9 +2,13 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ProductsTable from "@/components/admin/ProductsTable";
-import { getPaginatedAdminProducts } from "@/lib/queries/products";
+import {
+  getPaginatedAdminProducts,
+  getProductById,
+} from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import { adminProductColumns } from "@/components/admin/product/AdminProductColumns";
+import ProductDetailSheet from "@/components/admin/ProductDetailSheet";
 
 const Page = async ({
   searchParams,
@@ -12,9 +16,20 @@ const Page = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const parsed = parseProductSearchParams(searchParams);
-  const { rows } = await getPaginatedAdminProducts({
-    ...parsed,
-  });
+  const viewIdParam = searchParams.view;
+  const viewId =
+    typeof viewIdParam === "string"
+      ? viewIdParam
+      : Array.isArray(viewIdParam)
+        ? viewIdParam[0]
+        : undefined;
+
+  const [{ rows }, product] = await Promise.all([
+    getPaginatedAdminProducts({
+      ...parsed,
+    }),
+    viewId ? getProductById(viewId) : Promise.resolve(null),
+  ]);
 
   return (
     <section className="bg-white p-5 rounded-2xl w-full">
@@ -29,6 +44,7 @@ const Page = async ({
       <div className="">
         <ProductsTable columns={adminProductColumns} data={rows} />
       </div>
+      <ProductDetailSheet id={viewId} product={product} />
     </section>
   );
 };

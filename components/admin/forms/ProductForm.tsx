@@ -19,38 +19,62 @@ import { productSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { FaImages, FaBarcode, FaCheck } from "react-icons/fa";
 import FileUpload from "@/components/FileUpload";
-import { createProduct } from "@/lib/admin/actions/product";
+import { createProduct, updateProduct } from "@/lib/admin/actions/product";
 import { toast } from "react-hot-toast";
+import { TestPartial } from "zod/src/v3/tests/language-server.source";
 
-interface Props extends Partial<Product> {
+type ProductFormValues = z.infer<typeof productSchema>;
+type Props = {
   type?: "create" | "edit";
-}
+  id?: string;
+} & Partial<ProductFormValues>;
 
-const ProductForm = ({ type, ...product }: Props) => {
+const ProductForm = ({ type = "create", id, ...initial }: Props) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof productSchema>>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      category: "",
-      brand: "",
-      purchase_price: 1,
-      sale_price: 1,
-      stock: 1,
-      barcode: "",
-      code: "",
-      image: "",
+      name: type === "edit" && initial.name ? initial.name : "",
+      description:
+        type === "edit" && initial.description ? initial.description : "",
+      category: type === "edit" && initial.category ? initial.category : "",
+      brand: type === "edit" && initial.brand ? initial.brand : "",
+      purchase_price:
+        type === "edit" && initial.purchase_price ? initial.purchase_price : 1,
+      sale_price:
+        type === "edit" && initial.sale_price ? initial.sale_price : 1,
+      stock: type === "edit" && initial.stock ? initial.stock : 0,
+      barcode: type === "edit" && initial.barcode ? initial.barcode : "",
+      code: type === "edit" && initial.code ? initial.code : "",
+      image: type === "edit" && initial.image ? initial.image : "",
+      ...initial,
     },
   });
-  const onSubmit = async (values: z.infer<typeof productSchema>) => {
-    const result = await createProduct(values);
-    if (result.success) {
-      toast.success("Product created successfully");
-      router.push(`/admin/products/${result.data.id}`);
-    } else {
-      toast.error(`An  ${result.success} `);
+  const onSubmit: SubmitHandler<ProductFormValues> = async (
+    values: z.infer<typeof productSchema>,
+  ) => {
+    try {
+      if (type === "edit" && id) {
+        const result = await updateProduct(id, values);
+        if (result.success) {
+          toast.success("Product updated successfully");
+          router.push(`/admin/products`);
+        } else {
+          toast.error(`An  ${result.success} `);
+        }
+      } else {
+        const result = await createProduct(values);
+        if (result.success) {
+          toast.success("Product created successfully");
+          // router.push(`/admin/products/${result.data.id}`);
+          router.push(`/admin/products`);
+        } else {
+          toast.error(`An  ${result.success} `);
+        }
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
     }
   };
   return (
