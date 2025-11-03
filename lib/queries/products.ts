@@ -26,7 +26,7 @@ interface BaseProductParams {
     max?: number;
   };
 }
-const PRODUCTS_PER_PAGE_ADMIN = 20;
+const PRODUCTS_PER_PAGE_ADMIN = 2;
 
 export type AdminProductParams = BaseProductParams & {
   barcode?: string;

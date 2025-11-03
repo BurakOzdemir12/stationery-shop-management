@@ -1,29 +1,44 @@
 import React from "react";
-import ProductOverview from "@/components/ProductOverview";
-import LatestProductList from "@/components/LatestProductList";
+import ProductOverview from "@/components/client/ProductOverview";
+import LatestProductList from "@/components/client/LatestProductList";
 import { db } from "@/database/drizzle";
-import { products, users } from "@/database/schema";
+import { products, services, users } from "@/database/schema";
 import { count, desc } from "drizzle-orm";
-import ServicesCard from "@/components/ServicesCard";
-import { ProductCard } from "@/components/ProductCard";
-import ProductFilterForm from "@/components/ProductFilterForm";
-import PaginationView from "@/components/PaginationView";
+import ServicesCarousel from "@/components/client/service/ServicesCarousel";
+import { ProductCard } from "@/components/client/ProductCard";
+import ProductFilterForm from "@/components/client/ProductFilterForm";
+import PaginationView from "@/components/client/PaginationView";
 import { getBrands, getPaginatedProducts } from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
+import ServiceList from "@/components/admin/service/ServiceList";
+import { getServices } from "@/lib/queries/service";
+
+type ServiceListProps = {
+  services: Array<{
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date | null;
+  }>;
+};
+
 const Home = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
-  const resolvedSearchParams = await searchParams;
-
   const parsed = parseProductSearchParams(await searchParams);
-  const [latestProducts, { pagedProducts, totalPages }, availableBrands] =
-    await Promise.all([
-      db.select().from(products).limit(8).orderBy(desc(products.createdAt)),
-      getPaginatedProducts(parsed),
-      getBrands(),
-    ]);
+  const [
+    latestProducts,
+    { pagedProducts, totalPages },
+    availableBrands,
+    services,
+  ] = await Promise.all([
+    db.select().from(products).limit(8).orderBy(desc(products.createdAt)),
+    getPaginatedProducts(parsed),
+    getBrands(),
+    getServices(),
+  ]);
   return (
     <div className="">
       <div className="grid grid-cols-3 gap-10">
@@ -34,8 +49,7 @@ const Home = async ({
         </div>
         <div className="col-span-3 lg:col-span-1">
           <h1 className="text-3xl font-bebas text-white ">Services</h1>
-
-          <ServicesCard />
+          <ServicesCarousel services={services} />
         </div>
       </div>
       <LatestProductList

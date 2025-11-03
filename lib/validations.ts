@@ -23,7 +23,10 @@ export const productSchema = z.object({
   code: z.string().nonempty().trim().min(1).max(255),
   image: z.string().nonempty(),
 });
-
+export const serviceSchema = z.object({
+  name: z.string().trim().nonempty().min(1).max(155),
+  price: z.coerce.number().min(0),
+});
 export const ProductSearchFilters = z.object({
   query: z.string().optional(),
   inStock: z.boolean().optional(),

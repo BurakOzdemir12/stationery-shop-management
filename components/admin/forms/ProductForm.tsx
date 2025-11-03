@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { productSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { FaImages, FaBarcode, FaCheck } from "react-icons/fa";
-import FileUpload from "@/components/FileUpload";
+import FileUpload from "@/components/client/FileUpload";
 import { createProduct, updateProduct } from "@/lib/admin/actions/product";
 import { toast } from "react-hot-toast";
 import { TestPartial } from "zod/src/v3/tests/language-server.source";

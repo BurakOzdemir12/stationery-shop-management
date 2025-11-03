@@ -1,4 +1,10 @@
-import { FaHouse, FaCubes, FaMessage, FaUsers } from "react-icons/fa6";
+import {
+  FaHouse,
+  FaCubes,
+  FaMessage,
+  FaUsers,
+  FaServicestack,
+} from "react-icons/fa6";
 import { FiSettings } from "react-icons/fi";
 export const sampleProducts = [
   {
@@ -91,6 +97,11 @@ export const adminSideBarLinks = [
     text: "Products",
     href: "/admin/products",
     icon: FaCubes,
+  },
+  {
+    text: "Services",
+    href: "/admin/services",
+    icon: FaServicestack,
   },
   {
     text: "Requests",

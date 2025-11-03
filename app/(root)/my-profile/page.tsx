@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "@/auth";
-import LatestProductList from "@/components/LatestProductList";
+import LatestProductList from "@/components/client/LatestProductList";
 import { sampleProducts } from "@/constants";
 import { redirect } from "next/navigation";
 

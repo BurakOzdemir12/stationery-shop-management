@@ -64,9 +64,9 @@ const ProductDetailSheet = ({
   return (
     <div>
       <Sheet open={open} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>
-          <Button variant="outline">Open</Button>
-        </SheetTrigger>
+        {/*<SheetTrigger >*/}
+        {/*  <Button variant="outline">Open</Button>*/}
+        {/*</SheetTrigger>*/}
         <SheetContent
           className="w-[500px] overflow-auto overflow-x-hidden bg-stone-200 "
           side="right"

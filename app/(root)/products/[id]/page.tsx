@@ -4,7 +4,7 @@ import { products } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { IKImage } from "imagekitio-react";
-import ProductDetail from "@/components/ProductDetail";
+import ProductDetail from "@/components/client/ProductDetail";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;

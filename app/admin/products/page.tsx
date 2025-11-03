@@ -1,14 +1,14 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import ProductsTable from "@/components/admin/ProductsTable";
+import ProductsTable from "@/components/admin/product/ProductsTable";
 import {
   getPaginatedAdminProducts,
   getProductById,
 } from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import { adminProductColumns } from "@/components/admin/product/AdminProductColumns";
-import ProductDetailSheet from "@/components/admin/ProductDetailSheet";
+import ProductDetailSheet from "@/components/admin/product/ProductDetailSheet";
 
 const Page = async ({
   searchParams,
@@ -24,7 +24,7 @@ const Page = async ({
         ? viewIdParam[0]
         : undefined;
 
-  const [{ rows }, product] = await Promise.all([
+  const [{ rows, totalPages }, product] = await Promise.all([
     getPaginatedAdminProducts({
       ...parsed,
     }),
@@ -42,7 +42,12 @@ const Page = async ({
         </Button>
       </div>
       <div className="">
-        <ProductsTable columns={adminProductColumns} data={rows} />
+        <ProductsTable
+          columns={adminProductColumns}
+          data={rows}
+          totalPages={totalPages}
+          currentPage={parsed.currentPage}
+        />
       </div>
       <ProductDetailSheet id={viewId} product={product} />
     </section>

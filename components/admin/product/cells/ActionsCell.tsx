@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { deleteProduct } from "@/lib/admin/actions/product";
 import { toast } from "react-hot-toast";
-import ProductDetailSheet from "@/components/admin/ProductDetailSheet";
+import ProductDetailSheet from "@/components/admin/product/ProductDetailSheet";
 import { useRouter, useSearchParams } from "next/navigation";
 type ActionsCellProps = {
   id: string;
@@ -40,6 +40,7 @@ export default function ActionsCell({
       onDelete?.(id);
       toast.success("Product deleted successfully");
     } catch (e) {
+      console.log(e);
       toast.error("Failed to delete product");
     }
   };
@@ -61,15 +62,17 @@ export default function ActionsCell({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-        <DropdownMenuItem onClick={() => openDetails(id)}>
-          View Details
-        </DropdownMenuItem>
-
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="cursor-pointer"
+          className="cursor-pointer hover:bg-neutral-100"
+          onClick={() => openDetails(id)}
+        >
+          View Details
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className="cursor-pointer hover:bg-neutral-100"
           // onClick={() => (onEdit ? onEdit(id) : console.log("edit", id))}
         >
           <Link
@@ -81,7 +84,10 @@ export default function ActionsCell({
             Edit
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleDelete(id)}>
+        <DropdownMenuItem
+          className="cursor-pointer hover:bg-neutral-100"
+          onClick={() => handleDelete(id)}
+        >
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>

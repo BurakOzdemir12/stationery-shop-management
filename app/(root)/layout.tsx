@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Header from "@/components/Header";
+import Header from "@/components/client/Header";
 import { auth } from "@/auth";
 import { after } from "next/server";
 import { db } from "@/database/drizzle";
