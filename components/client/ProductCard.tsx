@@ -59,7 +59,7 @@ export const ProductCard = ({ products }: ProductListProps) => {
                 <CardContent className="px-2 mt-0  ">
                   <h3 className="font-semibold opacity-85 text-sm text-text-sun">
                     {" "}
-                    {textUpperCase(brand)}
+                    {textUpperCase(brand || "No Brand")}
                   </h3>
                   <CardDescription className="font-semibold opacity-65 text-sm text-white">
                     {textUpperCase(description)}

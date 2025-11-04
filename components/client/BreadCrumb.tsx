@@ -11,6 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 
 const BreadCrumb = () => {
   const pathname = usePathname();
@@ -52,6 +53,7 @@ const BreadCrumb = () => {
           ))}
         </BreadcrumbList>
       </Breadcrumb>
+      <Separator className="  my-2" />
     </div>
   );
 };

@@ -13,17 +13,18 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const SideBar = ({ session }: { session: Session }) => {
   const pathname = usePathname();
+  const isPosRoute = pathname.startsWith("/admin/pos");
 
   return (
-    <div className="admin-sidebar ">
+    <div className={`admin-sidebar ${isPosRoute && "w-min"}`}>
       <div>
-        <div className="logo ">
+        <div className={`logo ${isPosRoute && "hidden"} `}>
           <Image src="/brand3.png" alt="brand Logo" width={95} height={95} />
           <h1 className="text-xl font-semibold text-sidebar-text   ">
             Güneş Kırtasiye
           </h1>
         </div>
-        <div className="mt-12 flex flex-col gap-7 ">
+        <div className="mt-12 flex flex-col gap-7  w-min">
           {adminSideBarLinks.map(({ text, href: route, icon }) => {
             const isSelected =
               (route !== "/admin" &&
@@ -31,7 +32,11 @@ const SideBar = ({ session }: { session: Session }) => {
                 route.length > 1) ||
               pathname === route;
             return (
-              <Link href={route} key={route}>
+              <Link
+                href={route}
+                key={route}
+                className={cn(" ", isPosRoute && "w-fit")}
+              >
                 <div
                   className={cn("link ", isSelected && "bg-primary shadow-md")}
                 >
@@ -43,7 +48,8 @@ const SideBar = ({ session }: { session: Session }) => {
 
                   <p
                     className={cn(
-                      " text-lg text-sidebar-text font-medium max-md:hidden",
+                      "text-lg text-sidebar-text font-medium max-md:hidden",
+                      isPosRoute && "hidden",
                       isSelected && "text-white",
                     )}
                   >
@@ -55,7 +61,12 @@ const SideBar = ({ session }: { session: Session }) => {
           })}
         </div>
       </div>
-      <div className="lg:p-0.5 lg:flex lg:items-center lg:justify-between lg:rounded-2xl lg:shadow-md shadow-neutral-500 flex-row gap-1">
+      <div
+        className={cn(
+          "lg:p-0.5   lg:items-center lg:justify-between lg:rounded-2xl lg:shadow-md shadow-neutral-500  gap-1 flex flex-row",
+          isPosRoute && "hidden",
+        )}
+      >
         <Link href={session ? "/my-profile" : "/sign-in"}>
           <Avatar className="w-13 h-13 ">
             <AvatarFallback className="text-black font-semibold text-3xl bg-text-gold ">

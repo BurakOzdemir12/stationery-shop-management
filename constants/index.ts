@@ -4,6 +4,8 @@ import {
   FaMessage,
   FaUsers,
   FaServicestack,
+  FaScreenpal,
+  FaMobileScreen,
 } from "react-icons/fa6";
 import { FiSettings } from "react-icons/fi";
 export const sampleProducts = [
@@ -44,37 +46,6 @@ export const sampleProducts = [
     code: 0,
   },
 ];
-export const sampleServices = [
-  {
-    id: 1,
-    name: "Service 1",
-    price: 25,
-  },
-  {
-    id: 2,
-    name: "Service 2",
-    price: 36,
-  },
-  {
-    id: 3,
-    name: "Service 3",
-    price: 45,
-  },
-  {
-    id: 4,
-    name: "Service 4",
-    price: 12,
-  },
-  {
-    id: 5,
-    name: "Service 5",
-    price: 78,
-  },
-  { id: 6, name: "Service 6", price: 32 },
-  { id: 7, name: "Service 7", price: 54 },
-  { id: 8, name: "Service 8", price: 23 },
-  { id: 9, name: "Service 9", price: 67 },
-];
 export const FIELD_NAMES = {
   fullName: "Full Name",
   email: "Email",
@@ -112,6 +83,11 @@ export const adminSideBarLinks = [
     text: "Users",
     href: "/admin/users",
     icon: FaUsers,
+  },
+  {
+    text: "POS Screen",
+    href: "/admin/pos",
+    icon: FaMobileScreen,
   },
   {
     text: "Settings",

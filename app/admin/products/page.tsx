@@ -9,14 +9,16 @@ import {
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import { adminProductColumns } from "@/components/admin/product/AdminProductColumns";
 import ProductDetailSheet from "@/components/admin/product/ProductDetailSheet";
+import TypographyH2 from "@/components/ui/TypographyH2";
 
 const Page = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const parsed = parseProductSearchParams(searchParams);
-  const viewIdParam = searchParams.view;
+  const params = await searchParams;
+  const parsed = parseProductSearchParams(params);
+  const viewIdParam = await params.view;
   const viewId =
     typeof viewIdParam === "string"
       ? viewIdParam
@@ -32,9 +34,9 @@ const Page = async ({
   ]);
 
   return (
-    <section className="bg-white p-5 rounded-2xl w-full">
+    <div className="bg-white p-5 rounded-2xl w-full">
       <div className="flex flex-wrap items-center justify-between gap-5 ">
-        <h2 className="font-inter font-bold text-xl ">Products</h2>
+        <TypographyH2 title="Products" />
         <Button className="btn-pri" asChild>
           <Link href="/admin/products/new" className="text-white text-[19px]">
             + New Product
@@ -50,7 +52,7 @@ const Page = async ({
         />
       </div>
       <ProductDetailSheet id={viewId} product={product} />
-    </section>
+    </div>
   );
 };
 export default Page;

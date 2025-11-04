@@ -19,6 +19,7 @@
     --color-primary-opac: rgba(0, 176, 159, 0.5);
     --color-secondary: #ccefeb;
     --color-muted-text: #949494;
+
     --color-success: #00c417;
     --color-success-text: #ffffff;
     --color-destructive: #ff0000;
@@ -90,7 +91,7 @@
     }
 
     .search-bar {
-        @apply h-fit max-w-90 w-full;
+        @apply h-fit max-w-120 w-full;
     }
 
     .info {

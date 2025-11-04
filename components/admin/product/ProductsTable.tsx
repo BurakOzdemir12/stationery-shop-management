@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,30 +17,21 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BarcodeScanner, useScanning } from "react-barcode-scanner";
-import dynamic from "next/dynamic";
 
 import "react-barcode-scanner/polyfill";
-import { getPaginatedAdminProducts } from "@/lib/queries/products";
 import { usePathname, useSearchParams } from "next/navigation";
-import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useBarcode } from "@/app/context/BarcodeContext";
+import GlobalBarcodeScanner from "@/components/admin/barcode/GlobalBarcodeScanner";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   totalPages: number;
   currentPage: number;
 }
-// function getScannedText(payload: unknown): string | null {
-//   if (!payload) return null;
-//   if (typeof payload === "string") return payload;
-//   if (Array.isArray(payload)) {
-//     const first: any = payload[0];
-//     return first?.rawValue ?? first?.text ?? null;
-//   }
-//   const anyPayload = payload as any;
-//   return anyPayload?.rawValue ?? anyPayload?.text ?? null;
-// }
+
 //------------------------------------------------------------------------------
 const ProductsTable = <TData, TValue>({
   columns,
@@ -67,32 +58,67 @@ const ProductsTable = <TData, TValue>({
     params.set("page", String(page));
     return `${pathname}?${params.toString()}`;
   };
-  // const BarcodeScanner = dynamic(
-  //   () => {
-  //     import("react-barcode-scanner/polyfill");
-  //     return import("react-barcode-scanner").then((mod) => mod.BarcodeScanner);
-  //   },
-  //   { ssr: false },
-  // );
-  // const [scannedCode, setScannedCode] = useState<string | null>(null);
+  const { setScannedCode, scannedCode, isScannerActive, setIsScannerActive } =
+    useBarcode();
+  // const [scannedCode, setScannedCode] = useState("");
+  // const [isScannerActive, setIsScannerActive] = useState(false);
+
+  useEffect(() => {
+    table.getColumn("barcode")?.setFilterValue(scannedCode || "");
+  }, [scannedCode, table]);
+  const [openScan, setOpenScan] = useState(false);
+
   return (
     <div className="flex flex-col w-full   ">
-      <div className="flex flex-row gap-6  ">
-        <span>
-          <h1>Filter with Product Name</h1>
+      <div className="flex lg:justify-start justify-center lg:flex-row lg flex-col gap-6  ">
+        <div className="">
+          <h1 className="mt-2">Filter with Product Name</h1>
           <Input
-            className="w-fit min-w-[350px] m-3 mx-0 bg-input text-xl font-semibold"
+            className="  m-4 mx-0 bg-input text-xl font-semibold"
             placeholder="Enter product name..."
             value={(table.getColumn("name")?.getFilterValue() as string) || ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
           />
-        </span>
-        <span>
-          <h1>Filter with Barcode</h1>
+        </div>
+        <div className="">
+          <span className="flex flex-row gap-5 items-center">
+            <h1>Filter with Barcode</h1>
+            <GlobalBarcodeScanner
+              className="btn-pri text-sm "
+              title="Scan"
+              open={openScan}
+              onOpenChange={setOpenScan}
+              onDetected={(code) => {
+                table.getColumn("barcode")?.setFilterValue(code);
+                setOpenScan(false);
+              }}
+            />
+
+            {isScannerActive ? (
+              <Button
+                onClick={() => setIsScannerActive(false)}
+                className="btn-del"
+              >
+                Cancel Scan
+              </Button>
+            ) : (
+              <Button
+                hidden={!table.getColumn("barcode")?.getFilterValue()}
+                className="btn-del"
+                onClick={() => {
+                  setScannedCode("");
+                  table.getColumn("barcode")?.setFilterValue("");
+                }}
+              >
+                Reset
+              </Button>
+            )}
+          </span>
+
           <Input
-            className="w-fit min-w-[350px] m-3 mx-0 bg-input text-xl font-semibold"
+            className="   m-3 mx-0 bg-input text-xl font-semibold"
             placeholder="Enter Barcode..."
             value={
               (table.getColumn("barcode")?.getFilterValue() as string) || ""
@@ -101,40 +127,7 @@ const ProductsTable = <TData, TValue>({
               table.getColumn("barcode")?.setFilterValue(event.target.value)
             }
           />
-        </span>
-        {/*<div className="w-100 h-100 hidden">*/}
-        {/*  <BarcodeScanner*/}
-        {/*    className="w-fit h-min hidden"*/}
-        {/*    options={{*/}
-        {/*      delay: 1500,*/}
-        {/*      formats: [*/}
-        {/*        "code_128",*/}
-        {/*        "code_39",*/}
-        {/*        "code_93",*/}
-        {/*        "codabar",*/}
-        {/*        "ean_13",*/}
-        {/*        "ean_8",*/}
-        {/*        "itf",*/}
-        {/*        "qr_code",*/}
-        {/*        "upc_a",*/}
-        {/*        "upc_e",*/}
-        {/*      ],*/}
-        {/*    }}*/}
-        {/*    onCapture={(payload) => {*/}
-        {/*      const text = getScannedText(payload);*/}
-        {/*      if (text) {*/}
-        {/*        setScannedCode(text);*/}
-        {/*        console.log("Scanned:", text);*/}
-        {/*      } else {*/}
-        {/*        console.log("Scan payload:", payload);*/}
-        {/*      }*/}
-        {/*    }}*/}
-        {/*  />*/}
-        {/*</div>*/}
-        {/*<div className="min-w-48 p-3 rounded-md bg-white border hidden">*/}
-        {/*  <div className="text-xs text-muted-foreground">Son taranan</div>*/}
-        {/*  <div className="text-lg font-mono">{scannedCode ?? "-"}</div>*/}
-        {/*</div>*/}
+        </div>
       </div>
       <div className="overflow-hidden    ">
         <Table className="">
@@ -199,8 +192,13 @@ const ProductsTable = <TData, TValue>({
               href={hrefFor(currentPage - 1)}
               prefetch={false}
             >
-              <Button variant="outline" size="sm" disabled={currentPage <= 1}>
-                Previous
+              <Button
+                className="btn-pri"
+                size="sm"
+                disabled={!hasPrevPage}
+                hidden={!hasPrevPage}
+              >
+                Previous page
               </Button>
             </Link>
             <Link
@@ -210,11 +208,11 @@ const ProductsTable = <TData, TValue>({
               prefetch={false}
             >
               <Button
-                variant="outline"
+                className="btn-pri"
                 size="sm"
                 disabled={currentPage >= totalPages}
               >
-                Next
+                Next page
               </Button>
             </Link>
           </div>

@@ -7,9 +7,6 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { sampleServices } from "@/constants";
-import { FaTurkishLiraSign } from "react-icons/fa6";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { deleteService, updateService } from "@/lib/admin/actions/service";
 import { toast } from "react-hot-toast";
@@ -68,7 +65,7 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
     <section className=" 2xl:col-span-1 lg:col-span-2 sm:grid-cols-2 p-5 max-md:p-1 rounded-2xl gap-5 justify-items-center ">
       <Card
         key={id}
-        className="w-full h-full  bg-text-sun min-h-48 max-w-64 max-h-96 border-0 shadow-xl shadow-neutral-400 "
+        className={`w-full h-full ${onEdit ? "bg-amber-50" : "  bg-text-sun"} min-h-48 max-w-64 max-h-96 border-0 shadow-xl shadow-neutral-400`}
       >
         <CardHeader className=" max-h-88 h-full">
           {onEdit ? (

@@ -282,7 +282,10 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                         min={0}
                       />
                     </FormControl>
-                    <Button className="cursor-pointer text-lg h-max shadow-md shadow-primary ">
+                    <Button
+                      type="button"
+                      className="cursor-pointer text-lg h-max shadow-md shadow-primary "
+                    >
                       <FaBarcode /> Barcode Scan
                     </Button>
                     <FormMessage />
@@ -306,7 +309,10 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                         min={0}
                       />
                     </FormControl>
-                    <Button className="cursor-pointer text-lg h-max shadow-md  shadow-primary  ">
+                    <Button
+                      type="button"
+                      className="cursor-pointer text-lg h-max shadow-md  shadow-primary  "
+                    >
                       <FaBarcode /> Code Scan
                     </Button>
                     <FormMessage />

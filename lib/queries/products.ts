@@ -167,3 +167,8 @@ export const getProductById = async (id: string) => {
     .limit(1);
   return rows[0] ?? null;
 };
+
+export const getProducts = async () => {
+  const rows = await db.select().from(products).limit(8);
+  return rows;
+};
