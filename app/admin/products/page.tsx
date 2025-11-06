@@ -14,11 +14,12 @@ import TypographyH2 from "@/components/ui/TypographyH2";
 const Page = async ({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  const params = await searchParams;
-  const parsed = parseProductSearchParams(params);
-  const viewIdParam = await params.view;
+  const sp = await searchParams;
+  const parsed = parseProductSearchParams(sp);
+
+  const viewIdParam = sp.view;
   const viewId =
     typeof viewIdParam === "string"
       ? viewIdParam
@@ -26,9 +27,17 @@ const Page = async ({
         ? viewIdParam[0]
         : undefined;
 
+  const barcodeParam = sp.barcode;
+  const barcode =
+    typeof barcodeParam === "string"
+      ? barcodeParam
+      : Array.isArray(barcodeParam)
+        ? barcodeParam[0]
+        : undefined;
   const [{ rows, totalPages }, product] = await Promise.all([
     getPaginatedAdminProducts({
       ...parsed,
+      barcode,
     }),
     viewId ? getProductById(viewId) : Promise.resolve(null),
   ]);

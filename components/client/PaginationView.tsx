@@ -14,9 +14,14 @@ import { usePathname, useSearchParams } from "next/navigation";
 type PaginationViewProps = {
   currentPage: number;
   totalPages: number;
+  type: "products" | "pos";
 };
 
-const PaginationView = ({ currentPage, totalPages }: PaginationViewProps) => {
+const PaginationView = ({
+  currentPage,
+  totalPages,
+  type,
+}: PaginationViewProps) => {
   const pathname = usePathname();
   const search = useSearchParams();
   const hasPrevPage = currentPage > 1;
@@ -30,7 +35,9 @@ const PaginationView = ({ currentPage, totalPages }: PaginationViewProps) => {
   };
   return (
     <div>
-      <Pagination className="text-white ">
+      <Pagination
+        className={`${type === "products" ? "text-white" : "text-black"}`}
+      >
         <PaginationContent>
           {hasPrevPage && (
             <PaginationItem>
@@ -40,7 +47,7 @@ const PaginationView = ({ currentPage, totalPages }: PaginationViewProps) => {
           {hasPrevPage && <PaginationEllipsis />}
           <PaginationItem>
             <PaginationLink
-              className="text-white p-3"
+              className=" p-2 font-extrabold text-xl"
               isActive
               size={4}
               href={hrefFor(currentPage)}

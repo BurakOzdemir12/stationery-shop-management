@@ -24,6 +24,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
+  const anchor = "#all-products";
 
   const form = useForm<z.input<typeof ProductSearchFilters>>({
     resolver: zodResolver(ProductSearchFilters),
@@ -60,7 +61,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
       params.set("priceMax", String(values.price.max));
     else params.delete("priceMax");
     params.delete("page");
-    router.push(`${pathName}?${params.toString()}`);
+    router.push(`${pathName}?${params.toString()}${anchor}`);
   }
   const brandCheckHandle = (
     current: string[] | undefined,
@@ -72,7 +73,6 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
     else set.delete(brand);
     return Array.from(set);
   };
-
   const [comobox, setOpen] = useState(false);
   return (
     <section className="side-filter p-4  text-white   sticky h-full  bg-bgDarker  border-borderColor border-1 rounded-2xl ">
@@ -197,6 +197,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
                 )}
               />
             </div>
+
             <Button className=" btn-gold  font-semibold mt-10" type="submit">
               Filter
             </Button>

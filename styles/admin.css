@@ -38,40 +38,48 @@
     --color-card: #0f0f0f;
 }
 
-@layer utilities {
-
-    .admin-container {
-        @apply bg-sidebar flex flex-col min-h-screen flex-1 overflow-auto;
-    }
-
-    /* Product Form =>
-     Basic Details */
-    .basic-details {
-        @apply grid flex-col grid-cols-4 xl:grid-cols-6 rounded-xl  bg-form-field  p-5 max-sm:p-2 gap-5 border-1 border-neutral-300;
-    }
-
-    .form-field {
-        @apply  max-md:col-span-4 md:col-span-2 xl:col-span-2 max-md:items-center justify-items-center  ;
-    }
-
-    .product-form-item {
-        @apply flex flex-col gap-2 w-full   ;
-    }
-
-    .prod-input {
-        @apply bg-input-field rounded-xl  focus:placeholder:opacity-0 border-neutral-400 ;
-    }
-    .btn-del{
-        @apply bg-destructive hover:bg-red-700 cursor-pointer text-white;
-    }
-    .btn-edit{
-        @apply bg-yellow-500 hover:bg-yellow-700 cursor-pointer text-white;
-    }
-    /*    BarcodeCell Details*/
-    .barcode-details {
-        @apply grid grid-cols-4 mt-15 rounded-xl bg-form-field  p-5 max-sm:p-0 gap-5 border-1 border-neutral-300;
-    }
+/*@layer utilities {*/
+@utility no-spinner {
+    @apply [&::-webkit-inner-spin-button]:appearance-none;
 }
+.admin-container {
+    @apply bg-sidebar flex flex-col min-h-screen flex-1 overflow-auto;
+}
+
+/* Product Form =>
+ Basic Details */
+.basic-details {
+    @apply grid flex-col grid-cols-4 xl:grid-cols-6 rounded-xl  bg-form-field  p-5 max-sm:p-2 gap-5 border-1 border-neutral-300;
+}
+
+.form-field {
+    @apply max-md:col-span-4 md:col-span-2 xl:col-span-2 max-md:items-center justify-items-center  ;
+}
+
+.product-form-item {
+    @apply flex flex-col gap-2 w-full   ;
+}
+
+.prod-input {
+    @apply bg-input-field rounded-xl  focus:placeholder:opacity-0 border-neutral-400 ;
+}
+
+.btn-del {
+    @apply bg-red-500 hover:bg-red-700 cursor-pointer text-white;
+}
+
+.btn-edit {
+    @apply bg-yellow-500 hover:bg-yellow-700 cursor-pointer text-white;
+}
+.btn-incDec{
+    @apply text-primary  border-0 bg-form-field   cursor-pointer hover:bg-primary hover:text-secondary;
+}
+/*    BarcodeCell Details*/
+.barcode-details {
+    @apply grid grid-cols-4 mt-15 rounded-xl bg-form-field  p-5 max-sm:p-0 gap-5 border-1 border-neutral-300;
+}
+
+/*}*/
 
 @layer components {
     .admin-sidebar {

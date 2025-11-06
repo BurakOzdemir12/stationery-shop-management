@@ -2,18 +2,26 @@ import React from "react";
 import TypographyH2 from "@/components/ui/TypographyH2";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { getPaginatedAdminProducts, getProducts } from "@/lib/queries/products";
-import { db } from "@/database/drizzle";
-import { products } from "@/database/schema";
-import { desc } from "drizzle-orm";
-import CartList from "@/components/admin/pos/CartList";
+import {
+  getProductById,
+  getProducts,
+  getProductsForPos,
+} from "@/lib/queries/products";
+import PosCardList from "@/components/admin/pos/PosCardList";
+import PosCartList from "@/components/admin/pos/PosCartList";
+import { parseProductSearchParams } from "@/lib/search/parseProductParams";
+import PaginationView from "@/components/client/PaginationView";
+import PosFilterForm from "@/components/admin/forms/PosFilterForm";
 
-const Page = async () => {
-  const prd = (await getProducts()).map((p) => ({
-    ...p,
-    purchase_price: String(p.purchase_price),
-    sale_price: String(p.sale_price),
-  }));
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const parsed = parseProductSearchParams(await searchParams);
+
+  const [{ res, totalPages }] = await Promise.all([getProductsForPos(parsed)]);
+
   return (
     <div className="bg-white p-5 rounded-2xl w-full ">
       <TypographyH2 title="Retail Pos " />
@@ -23,16 +31,23 @@ const Page = async () => {
           id="products-section"
           className="col-span-2 border-border border rounded-md p-3 bg-card"
         >
-          <Input
-            className="  w-md bg-input-field text-xl "
-            placeholder="Search Product"
-          />
-          <CartList prd={prd} />
+          <PosFilterForm />
+
+          <PosCardList products={res} />
+          <div className="p-5 mt-15">
+            <PaginationView
+              type="pos"
+              currentPage={parsed.currentPage}
+              totalPages={totalPages}
+            />
+          </div>
         </div>
         <div
           id="cart-section"
           className="col-span-1 border-border border rounded-md p-3 bg-card"
-        ></div>
+        >
+          <PosCartList />
+        </div>
       </div>
     </div>
   );

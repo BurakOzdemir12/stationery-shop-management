@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Card, CardAction, CardContent } from "@/components/ui/card";
 import { IKImage } from "imagekitio-react";
@@ -6,10 +7,14 @@ import { textUpperCase } from "@/lib/utils";
 import MoneyCell from "@/components/admin/product/cells/MoneyCell";
 import StockCell from "@/components/admin/product/cells/StockCell";
 import { Button } from "@/components/ui/button";
+import { FaCircle } from "react-icons/fa6";
+import { usePosCartContext } from "@/app/context/PosCartContext";
 
 const PosCard = ({ id, name, image, sale_price, stock, brand }: Product) => {
+  const { onAdd } = usePosCartContext();
+
   return (
-    <Card className=" m-0 p-0 border-1 border-border rounded-xl col-span-1 shadow-md bg-sidebar ">
+    <Card className=" m-0 p-0 border-1 border-border rounded-xl col-span-1 shadow-md bg-sidebar  ">
       <IKImage
         path={image}
         urlEndpoint={config.env.imagekit.urlEndpoint}
@@ -27,10 +32,20 @@ const PosCard = ({ id, name, image, sale_price, stock, brand }: Product) => {
         <p className=" ">
           Stock: <StockCell value={stock} />
         </p>
-        <p className="">{textUpperCase(brand || " ")}</p>
+        <p className="flex gap-1 items-center">
+          <FaCircle className="size-2" /> {textUpperCase(brand || " ")}
+        </p>
       </CardContent>
-      <CardAction className="w-full p-3">
-        <Button className="btn-pri w-full text-xl">+ Add</Button>
+      <CardAction className="w-full p-3 mt-auto ">
+        <Button
+          className="btn-pri w-full text-xl "
+          type="button"
+          onClick={() =>
+            onAdd({ id, name, image, sale_price, stock, brand }, 1)
+          }
+        >
+          + Add
+        </Button>
       </CardAction>
     </Card>
   );

@@ -58,20 +58,46 @@ async function buildWhereCondition(params: BaseProductParams) {
   return conditions.length > 0 ? and(...conditions) : undefined;
 }
 
+// async function buildAdminWhereCondition(params: AdminProductParams) {
+//   const base = await buildWhereCondition(params);
+//
+//   const conditions = [];
+//
+//   if (params.barcode) {
+//     conditions.push(eq(products.barcode, params.barcode));
+//   }
+//
+//   if (params.code) {
+//     conditions.push(eq(products.code, params.code));
+//   }
+//   if (params.category) {
+//     conditions.push(eq(products.category, params.category));
+//   }
+//   if (
+//     params.purchase_price &&
+//     (params.purchase_price.min != null || params.purchase_price.max != null)
+//   ) {
+//     const min = params.purchase_price.min ?? 1;
+//     const max = params.purchase_price.max ?? Number.MAX_SAFE_INTEGER;
+//     conditions.push(between(products.purchase_price, min, max));
+//   }
+//   if (conditions.length > 0) {
+//     return base;
+//   }
+// }
+
 async function buildAdminWhereCondition(params: AdminProductParams) {
   const base = await buildWhereCondition(params);
 
-  const conditions = [];
-
+  const adminConds = [];
   if (params.barcode) {
-    conditions.push(eq(products.barcode, params.barcode));
+    adminConds.push(ilike(products.barcode, `${params.barcode}%`));
   }
-
   if (params.code) {
-    conditions.push(eq(products.code, params.code));
+    adminConds.push(eq(products.code, params.code));
   }
   if (params.category) {
-    conditions.push(eq(products.category, params.category));
+    adminConds.push(eq(products.category, params.category));
   }
   if (
     params.purchase_price &&
@@ -79,13 +105,25 @@ async function buildAdminWhereCondition(params: AdminProductParams) {
   ) {
     const min = params.purchase_price.min ?? 1;
     const max = params.purchase_price.max ?? Number.MAX_SAFE_INTEGER;
-    conditions.push(between(products.purchase_price, min, max));
+    adminConds.push(between(products.purchase_price, min, max));
   }
+
+  const allConds = [];
+  if (base) allConds.push(base);
+  if (adminConds.length) allConds.push(and(...adminConds));
+
+  return allConds.length ? and(...allConds) : undefined;
+}
+
+async function buildPosWhereCondition(params: AdminProductParams) {
+  const base = await buildAdminWhereCondition(params);
+
+  const conditions = [];
+
   if (conditions.length > 0) {
     return base;
   }
 }
-
 export async function getPaginatedProducts({
   currentPage = 1,
   ...rest
@@ -168,7 +206,26 @@ export const getProductById = async (id: string) => {
   return rows[0] ?? null;
 };
 
-export const getProducts = async () => {
-  const rows = await db.select().from(products).limit(8);
-  return rows;
-};
+const PRODUCTS_PER_PAGE_POS = 2;
+export async function getProductsForPos({
+  currentPage = 1,
+  ...rest
+}: AdminProductParams) {
+  const whereCondition = await buildAdminWhereCondition(rest);
+  const offset = (currentPage - 1) * PRODUCTS_PER_PAGE_POS;
+  const [res, totalCounts] = await Promise.all([
+    db
+      .select()
+      .from(products)
+      .where(whereCondition)
+      .limit(PRODUCTS_PER_PAGE_POS)
+      .offset(offset),
+    db.select({ count: count() }).from(products).where(whereCondition),
+  ]);
+  const totalPages = Math.ceil(totalCounts[0].count / PRODUCTS_PER_PAGE_POS);
+  return { res, totalPages };
+}
+// export const getProducts = async () => {
+//   const rows = await db.select().from(products).limit(8);
+//   return rows;
+// };

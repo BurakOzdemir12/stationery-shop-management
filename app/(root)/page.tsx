@@ -13,15 +13,6 @@ import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import ServiceList from "@/components/admin/service/ServiceList";
 import { getServices } from "@/lib/queries/service";
 
-type ServiceListProps = {
-  services: Array<{
-    id: string;
-    name: string;
-    price: number;
-    createdAt: Date | null;
-  }>;
-};
-
 const Home = async ({
   searchParams,
 }: {
@@ -71,6 +62,7 @@ const Home = async ({
       </section>
       <div className="mt-15 items-center justify-items-center ">
         <PaginationView
+          type="products"
           currentPage={parsed.currentPage}
           totalPages={totalPages}
         />

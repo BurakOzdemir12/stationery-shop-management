@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
   getCoreRowModel,
   getFilteredRowModel,
 } from "@tanstack/table-core";
@@ -17,11 +16,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import "react-barcode-scanner/polyfill";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { useBarcode } from "@/app/context/BarcodeContext";
 import GlobalBarcodeScanner from "@/components/admin/barcode/GlobalBarcodeScanner";
 
@@ -32,66 +29,96 @@ interface DataTableProps<TData, TValue> {
   currentPage: number;
 }
 
-//------------------------------------------------------------------------------
 const ProductsTable = <TData, TValue>({
   columns,
   data,
   totalPages,
   currentPage,
 }: DataTableProps<TData, TValue>) => {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    state: { columnFilters },
     pageCount: totalPages,
   });
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const hasPrevPage = currentPage > 1;
   const hasNextPage = currentPage < totalPages;
+
   const hrefFor = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", String(page));
     return `${pathname}?${params.toString()}`;
   };
-  const { setScannedCode, scannedCode, isScannerActive, setIsScannerActive } =
-    useBarcode();
-  // const [scannedCode, setScannedCode] = useState("");
-  // const [isScannerActive, setIsScannerActive] = useState(false);
+
+  const initialName = useMemo(
+    () => searchParams.get("query") || "",
+    [searchParams],
+  );
+  const initialBarcode = useMemo(
+    () => searchParams.get("barcode") || "",
+    [searchParams],
+  );
+
+  const [name, setName] = useState(initialName);
+  const [barcode, setBarcode] = useState(initialBarcode);
+  const prevFiltersRef = useRef({ name: initialName, barcode: initialBarcode });
 
   useEffect(() => {
-    table.getColumn("barcode")?.setFilterValue(scannedCode || "");
-  }, [scannedCode, table]);
+    const t = setTimeout(() => {
+      const prev = prevFiltersRef.current;
+      const changed = prev.name !== name || prev.barcode !== barcode;
+
+      if (!changed) return;
+
+      const params = new URLSearchParams(searchParams.toString());
+      if (name) params.set("query", name);
+      else params.delete("query");
+
+      if (barcode) params.set("barcode", barcode);
+      else params.delete("barcode");
+
+      params.delete("page");
+
+      prevFiltersRef.current = { name, barcode };
+      router.push(`${pathname}?${params.toString()}`);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [name, barcode, pathname, router, searchParams]);
+
+  const { setScannedCode, isScannerActive, setIsScannerActive } = useBarcode();
   const [openScan, setOpenScan] = useState(false);
 
   return (
-    <div className="flex flex-col w-full   ">
-      <div className="flex lg:justify-start justify-center lg:flex-row lg flex-col gap-6  ">
-        <div className="">
+    <div className="flex flex-col w-full">
+      <div className="flex lg:justify-start justify-center lg:flex-row flex-col gap-6">
+        <div>
           <h1 className="mt-2">Filter with Product Name</h1>
           <Input
-            className="  m-4 mx-0 bg-input text-xl font-semibold"
+            className="m-4 mx-0 bg-input text-xl font-semibold"
             placeholder="Enter product name..."
-            value={(table.getColumn("name")?.getFilterValue() as string) || ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="">
+
+        <div>
           <span className="flex flex-row gap-5 items-center">
             <h1>Filter with Barcode</h1>
+
             <GlobalBarcodeScanner
-              className="btn-pri text-sm "
+              className="btn-pri text-sm"
               title="Scan"
               open={openScan}
               onOpenChange={setOpenScan}
               onDetected={(code) => {
-                table.getColumn("barcode")?.setFilterValue(code);
+                setBarcode(code);
+                setScannedCode(code);
                 setOpenScan(false);
               }}
             />
@@ -105,11 +132,11 @@ const ProductsTable = <TData, TValue>({
               </Button>
             ) : (
               <Button
-                hidden={!table.getColumn("barcode")?.getFilterValue()}
+                hidden={!barcode}
                 className="btn-del"
                 onClick={() => {
+                  setBarcode("");
                   setScannedCode("");
-                  table.getColumn("barcode")?.setFilterValue("");
                 }}
               >
                 Reset
@@ -118,44 +145,39 @@ const ProductsTable = <TData, TValue>({
           </span>
 
           <Input
-            className="   m-3 mx-0 bg-input text-xl font-semibold"
+            className="m-3 mx-0 bg-input text-xl font-semibold"
             placeholder="Enter Barcode..."
-            value={
-              (table.getColumn("barcode")?.getFilterValue() as string) || ""
-            }
-            onChange={(event) =>
-              table.getColumn("barcode")?.setFilterValue(event.target.value)
-            }
+            value={barcode}
+            onChange={(e) => setBarcode(e.target.value)}
           />
         </div>
       </div>
-      <div className="overflow-hidden    ">
-        <Table className="">
-          <TableHeader className="  bg-primary-opac">
+
+      <div className="overflow-hidden">
+        <Table>
+          <TableHeader className="bg-primary-opac">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody className="bg-neutral-100">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="align-middle justify-items-center "
+                  className="align-middle justify-items-center"
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -179,13 +201,15 @@ const ProductsTable = <TData, TValue>({
             )}
           </TableBody>
         </Table>
-        <div className="flex flex-row justify-between items-center  mt-8 ">
-          <div className="items-center justify-start ">
+
+        <div className="flex flex-row justify-between items-center mt-8">
+          <div className="items-center justify-start">
             <p>
-              {table.getFilteredSelectedRowModel().rows.length} of {""}
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
               {table.getFilteredRowModel().rows.length} row(s) selected
             </p>
           </div>
+
           <div className="space-x-2 flex items-center justify-end">
             <Link
               aria-hidden={!hasPrevPage}
@@ -203,15 +227,10 @@ const ProductsTable = <TData, TValue>({
             </Link>
             <Link
               hidden={!hasNextPage}
-              aria-disabled={hasNextPage}
               href={hrefFor(currentPage + 1)}
               prefetch={false}
             >
-              <Button
-                className="btn-pri"
-                size="sm"
-                disabled={currentPage >= totalPages}
-              >
+              <Button className="btn-pri" size="sm" disabled={!hasNextPage}>
                 Next page
               </Button>
             </Link>
