@@ -1,6 +1,7 @@
 "use client";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { FaCircleMinus } from "react-icons/fa6";
 
 type CartItem = {
   id: string | number;
@@ -23,17 +24,21 @@ type PosCartCtx = {
   onRemove: (id: CartItem["id"]) => void;
   onRemoveAll: () => void;
   onInputQty: (id: CartItem["id"], value: number) => void;
+  finalizeOrder: () => Promise<void>;
 };
 const Ctx = createContext<PosCartCtx | null>(null);
-
+const POS = process.env.pos;
 const PosCartContext = ({ children }: { children: React.ReactNode }) => {
   const [showPos, setShowPos] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [qty, setQty] = useState(1);
+  const isHydratedRef = useRef(false);
+
   let foundProduct;
   let index;
+
   const onAdd: PosCartCtx["onAdd"] = (product, quantity) => {
     setTotalPrice((prevState) => prevState + product.sale_price * quantity);
     setTotalQuantities((prevState) => prevState + quantity);
@@ -51,22 +56,33 @@ const PosCartContext = ({ children }: { children: React.ReactNode }) => {
     } else {
       setCartItems((prev) => [...prev, { ...product, quantity }]);
     }
-    toast.success(`${qty} ${product.name} added.`);
+
+    toast.success(`${qty} ${product.name} added.`, { position: "top-center" });
   };
   const onRemove = (id: string) => {
     foundProduct = cartItems.find((item) => item.id === id);
+    if (!foundProduct) return;
+
     setTotalPrice(
       (prevState) =>
         prevState - foundProduct.sale_price * foundProduct.quantity,
     );
     setTotalQuantities((prevState) => prevState - foundProduct.quantity);
     setCartItems((prevState) => prevState.filter((item) => item.id !== id));
+    toast.success(`${qty} ${foundProduct.name} removed successfully.`, {
+      icon: <FaCircleMinus className="text-success size-6" />,
+      position: "top-center",
+    });
   };
   const onRemoveAll = () => {
     foundProduct = cartItems.map((item) => item.id);
     setTotalPrice(0);
     setTotalQuantities(0);
     setCartItems([]);
+    toast.success(`${totalQuantities} Product removed successfully.`, {
+      icon: <FaCircleMinus className="text-success size-6" />,
+      position: "top-center",
+    });
   };
   const onInputQty: PosCartCtx["onInputQty"] = (id, input) => {
     foundProduct = cartItems.find((i) => i.id === id);
@@ -121,6 +137,70 @@ const PosCartContext = ({ children }: { children: React.ReactNode }) => {
       return prevQty - 1;
     });
   };
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(POS);
+      if (raw) {
+        const parsed = JSON.parse(raw) as { items?: CartItem[] };
+        if (Array.isArray(parsed.items)) {
+          setCartItems(parsed.items);
+          recomputeTotals(parsed.items);
+        }
+      }
+    } catch (e) {
+      console.error("Failed to load cart from localStorage", e);
+    }
+    isHydratedRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!isHydratedRef.current) return;
+    const t = setTimeout(() => {
+      try {
+        localStorage.setItem(POS, JSON.stringify({ items: cartItems }));
+      } catch {}
+    }, 150);
+    return () => clearTimeout(t);
+  }, [cartItems]);
+
+  const recomputeTotals = (items: CartItem[]) => {
+    let tp = 0;
+    let tq = 0;
+    for (const it of items) {
+      const price = Number(it.sale_price) || 0;
+      tp += price * it.quantity;
+      tq += it.quantity;
+    }
+    setTotalPrice(tp);
+    setTotalQuantities(tq);
+  };
+  const finalizeOrder: PosCartCtx["finalizeOrder"] = async () => {
+    if (cartItems.length === 0) return;
+    try {
+      const payload = {
+        items: cartItems.map((i) => ({
+          productId: String(i.id),
+          quantity: i.quantity,
+        })),
+      };
+      const res = await fetch("/api/pos/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => null);
+        throw new Error(j?.message || "Order failed");
+      }
+      await res.json();
+      onRemoveAll();
+      toast.success("Order completed.", { position: "top-center" });
+    } catch (e) {
+      toast.error((e as Error).message || "Failed", { position: "top-center" });
+      console.error(e);
+    }
+  };
   return (
     <Ctx.Provider
       value={{
@@ -137,6 +217,7 @@ const PosCartContext = ({ children }: { children: React.ReactNode }) => {
         onRemoveAll,
         onInputQty,
         toggleCartItemQuantity,
+        finalizeOrder,
       }}
     >
       {children}

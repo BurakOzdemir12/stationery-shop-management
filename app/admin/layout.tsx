@@ -8,6 +8,7 @@ import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import BreadCrumb from "@/components/client/BreadCrumb";
+import GlobalUsbBarcodeListener from "@/components/admin/barcode/GlobalUsbBarcodeListener";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
@@ -22,14 +23,16 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     .then((res) => res[0]?.isAdmin === "ADMIN");
 
   if (!isAdmin) redirect("/");
-
   return (
     <main className="flex flex-row min-h-screen   w-full">
       <SideBar session={session} />
       <div className="admin-container   ">
         <Header session={session} />
         <BreadCrumb />
-        <div className="p-5">{children}</div>
+        <div className="p-5">
+          <GlobalUsbBarcodeListener />
+          {children}
+        </div>
       </div>
     </main>
   );

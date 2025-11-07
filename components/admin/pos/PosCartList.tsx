@@ -8,7 +8,7 @@ import MoneyCell from "@/components/admin/product/cells/MoneyCell";
 import { FaLuggageCart } from "react-icons/fa";
 
 const PosCartList = () => {
-  const { cartItems, totalQuantities, totalPrice, onRemoveAll } =
+  const { cartItems, totalQuantities, totalPrice, onRemoveAll, finalizeOrder } =
     usePosCartContext();
   return (
     <div className="  gap-2 flex flex-col  ">
@@ -27,7 +27,7 @@ const PosCartList = () => {
             <MoneyCell value={Number(totalPrice)} tone="cart" size="xl" />
           </span>
         </div>
-        <Button className=" btn-del w-fit" onClick={() => onRemoveAll([])}>
+        <Button className=" btn-del w-fit" onClick={onRemoveAll}>
           <FaTrashCan className="size-5" />
           Clear Cart
         </Button>
@@ -53,6 +53,11 @@ const PosCartList = () => {
             <MoneyCell value={Number(totalPrice)} tone="cart" size="xl" />
           </span>
         </div>
+      </div>
+      <div className="self-center mt-5">
+        <Button onClick={finalizeOrder} className="btn-suc  w-fit mt-5">
+          Proceed to Payment
+        </Button>
       </div>
     </div>
   );

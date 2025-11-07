@@ -115,15 +115,6 @@ async function buildAdminWhereCondition(params: AdminProductParams) {
   return allConds.length ? and(...allConds) : undefined;
 }
 
-async function buildPosWhereCondition(params: AdminProductParams) {
-  const base = await buildAdminWhereCondition(params);
-
-  const conditions = [];
-
-  if (conditions.length > 0) {
-    return base;
-  }
-}
 export async function getPaginatedProducts({
   currentPage = 1,
   ...rest
@@ -202,6 +193,14 @@ export const getProductById = async (id: string) => {
     .select()
     .from(products)
     .where(eq(products.id, id))
+    .limit(1);
+  return rows[0] ?? null;
+};
+export const getProductByBarcode = async (code: string) => {
+  const rows = await db
+    .select()
+    .from(products)
+    .where(eq(products.barcode, code))
     .limit(1);
   return rows[0] ?? null;
 };

@@ -19,6 +19,9 @@ const config = {
     resend: {
       resendToken: process.env.RESEND_TOKEN!,
     },
+    pos: {
+      cartKey: process.env.NEXT_PUBLIC_POS_CART_KEY!,
+    },
   },
 };
 export default config;

@@ -21,7 +21,7 @@ import { FaImages, FaBarcode, FaCheck } from "react-icons/fa";
 import FileUpload from "@/components/client/FileUpload";
 import { createProduct, updateProduct } from "@/lib/admin/actions/product";
 import { toast } from "react-hot-toast";
-import { TestPartial } from "zod/src/v3/tests/language-server.source";
+import { handleFormKeys } from "@/lib/utils";
 
 type ProductFormValues = z.infer<typeof productSchema>;
 type Props = {
@@ -31,9 +31,9 @@ type Props = {
 
 const ProductForm = ({ type = "create", id, ...initial }: Props) => {
   const router = useRouter();
-
+  // const handleKeyDown = keyDownCanceller();
   const form = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
+    // resolver: zodResolver(productSchema),
     defaultValues: {
       name: type === "edit" && initial.name ? initial.name : "",
       description:
@@ -80,6 +80,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
   return (
     <Form {...form}>
       <form
+        onKeyDown={handleFormKeys}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 mt-5 lg:p-5 "
       >
@@ -282,12 +283,12 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                         min={0}
                       />
                     </FormControl>
-                    <Button
-                      type="button"
-                      className="cursor-pointer text-lg h-max shadow-md shadow-primary "
-                    >
-                      <FaBarcode /> Barcode Scan
-                    </Button>
+                    {/*<Button*/}
+                    {/*  type="button"*/}
+                    {/*  className="cursor-pointer text-lg h-max shadow-md shadow-primary "*/}
+                    {/*>*/}
+                    {/*  <FaBarcode /> Barcode Scan*/}
+                    {/*</Button>*/}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -309,12 +310,12 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                         min={0}
                       />
                     </FormControl>
-                    <Button
-                      type="button"
-                      className="cursor-pointer text-lg h-max shadow-md  shadow-primary  "
-                    >
-                      <FaBarcode /> Code Scan
-                    </Button>
+                    {/*<Button*/}
+                    {/*  type="button"*/}
+                    {/*  className="cursor-pointer text-lg h-max shadow-md  shadow-primary  "*/}
+                    {/*>*/}
+                    {/*  <FaBarcode /> Code Scan*/}
+                    {/*</Button>*/}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -324,7 +325,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
         </div>
 
         <Button className="max-sm:w-full text-xl h-max  btn-pri " type="submit">
-          Create Product <FaCheck />
+          {type === "edit" ? "Save Changes" : "Create Product"} <FaCheck />
         </Button>
       </form>
     </Form>

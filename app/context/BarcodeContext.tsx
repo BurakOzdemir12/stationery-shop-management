@@ -24,7 +24,7 @@ export function BarcodeContext({ children }: { children: React.ReactNode }) {
     </Ctx.Provider>
   );
 }
-export function useBarcode() {
+export function useBarcodeContext() {
   const ctx = useContext(Ctx);
   if (!ctx) {
     throw new Error("useBarcode must be used within a BarcodeContext");

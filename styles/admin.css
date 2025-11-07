@@ -16,11 +16,13 @@
     --color-border: #d4d4d4;
     --color-input: #d6d6d6;
     --color-primary: #00b09f;
+    --color-primary-deep: #017065;
     --color-primary-opac: rgba(0, 176, 159, 0.5);
     --color-secondary: #ccefeb;
     --color-muted-text: #949494;
 
     --color-success: #00c417;
+    --color-success-deep: #028611;
     --color-success-text: #ffffff;
     --color-destructive: #ff0000;
     --color-warning: #ff7308;
@@ -74,6 +76,12 @@
 .btn-incDec{
     @apply text-primary  border-0 bg-form-field   cursor-pointer hover:bg-primary hover:text-secondary;
 }
+.btn-pri {
+    @apply bg-primary cursor-pointer text-white  rounded-xl hover:bg-primary-deep;
+}
+.btn-suc {
+    @apply bg-success cursor-pointer text-white  rounded-xl text-lg font-semibold hover:bg-success-deep;
+}
 /*    BarcodeCell Details*/
 .barcode-details {
     @apply grid grid-cols-4 mt-15 rounded-xl bg-form-field  p-5 max-sm:p-0 gap-5 border-1 border-neutral-300;
@@ -106,8 +114,6 @@
         @apply flex flex-row gap-5  ;
     }
 
-    .btn-pri {
-        @apply bg-primary cursor-pointer text-white  rounded-xl;
-    }
+
 
 }

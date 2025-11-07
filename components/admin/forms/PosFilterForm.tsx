@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod/index";
 import { ProductSearchFilters } from "@/lib/validations";
 import {
   Form,
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { z } from "zod";
 
 const PosFilterForm = () => {
   const searchParams = useSearchParams();

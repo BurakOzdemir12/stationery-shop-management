@@ -1,5 +1,11 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -19,8 +25,9 @@ import { Input } from "@/components/ui/input";
 import "react-barcode-scanner/polyfill";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useBarcode } from "@/app/context/BarcodeContext";
-import GlobalBarcodeScanner from "@/components/admin/barcode/GlobalBarcodeScanner";
+import { useBarcodeContext } from "@/app/context/BarcodeContext";
+import CameraBarcodeScanner from "@/components/admin/barcode/CameraBarcodeScanner";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -50,12 +57,14 @@ const ProductsTable = <TData, TValue>({
   const hasPrevPage = currentPage > 1;
   const hasNextPage = currentPage < totalPages;
 
-  const hrefFor = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", String(page));
-    return `${pathname}?${params.toString()}`;
-  };
-
+  const hrefFor = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", String(page));
+      return `${pathname}?${params.toString()}`;
+    },
+    [pathname, searchParams],
+  );
   const initialName = useMemo(
     () => searchParams.get("query") || "",
     [searchParams],
@@ -86,21 +95,24 @@ const ProductsTable = <TData, TValue>({
       params.delete("page");
 
       prevFiltersRef.current = { name, barcode };
-      router.push(`${pathname}?${params.toString()}`);
+      router.replace(`${pathname}?${params.toString()}`);
+
+      // router.push(`${pathname}?${params.toString()}`);
     }, 300);
     return () => clearTimeout(t);
   }, [name, barcode, pathname, router, searchParams]);
 
-  const { setScannedCode, isScannerActive, setIsScannerActive } = useBarcode();
+  const { setScannedCode, isScannerActive, setIsScannerActive } =
+    useBarcodeContext();
   const [openScan, setOpenScan] = useState(false);
 
   return (
     <div className="flex flex-col w-full">
       <div className="flex lg:justify-start justify-center lg:flex-row flex-col gap-6">
         <div>
-          <h1 className="mt-2">Filter with Product Name</h1>
+          <h1 className="">Filter with Product Name</h1>
           <Input
-            className="m-4 mx-0 bg-input text-xl font-semibold"
+            className="m-3 mx-0 bg-input text-xl font-semibold"
             placeholder="Enter product name..."
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -111,37 +123,38 @@ const ProductsTable = <TData, TValue>({
           <span className="flex flex-row gap-5 items-center">
             <h1>Filter with Barcode</h1>
 
-            <GlobalBarcodeScanner
-              className="btn-pri text-sm"
-              title="Scan"
-              open={openScan}
-              onOpenChange={setOpenScan}
-              onDetected={(code) => {
-                setBarcode(code);
-                setScannedCode(code);
-                setOpenScan(false);
-              }}
-            />
+            {/*<CameraBarcodeScanner*/}
+            {/*  className="btn-pri text-sm"*/}
+            {/*  title="Scan"*/}
+            {/*  open={openScan}*/}
+            {/*  onOpenChange={setOpenScan}*/}
+            {/*  // type="filter"*/}
+            {/*  onDetected={(code) => {*/}
+            {/*    setBarcode(code);*/}
+            {/*    setScannedCode(code);*/}
+            {/*    setOpenScan(false);*/}
+            {/*  }}*/}
+            {/*/>*/}
 
-            {isScannerActive ? (
-              <Button
-                onClick={() => setIsScannerActive(false)}
-                className="btn-del"
-              >
-                Cancel Scan
-              </Button>
-            ) : (
-              <Button
-                hidden={!barcode}
-                className="btn-del"
-                onClick={() => {
-                  setBarcode("");
-                  setScannedCode("");
-                }}
-              >
-                Reset
-              </Button>
-            )}
+            {/*{isScannerActive ? (*/}
+            {/*  <Button*/}
+            {/*    onClick={() => setIsScannerActive(false)}*/}
+            {/*    className="btn-del"*/}
+            {/*  >*/}
+            {/*    Cancel Scan*/}
+            {/*  </Button>*/}
+            {/*) : (*/}
+            {/*  <Button*/}
+            {/*    hidden={!barcode}*/}
+            {/*    className="btn-del"*/}
+            {/*    onClick={() => {*/}
+            {/*      setBarcode("");*/}
+            {/*      setScannedCode("");*/}
+            {/*    }}*/}
+            {/*  >*/}
+            {/*    Reset*/}
+            {/*  </Button>*/}
+            {/*)}*/}
           </span>
 
           <Input
@@ -151,6 +164,17 @@ const ProductsTable = <TData, TValue>({
             onChange={(e) => setBarcode(e.target.value)}
           />
         </div>
+        <Button
+          hidden={!barcode && !name}
+          className="btn-del"
+          onClick={() => {
+            setBarcode("");
+            setScannedCode("");
+            setName("");
+          }}
+        >
+          Reset Filters
+        </Button>
       </div>
 
       <div className="overflow-hidden">

@@ -75,19 +75,19 @@ export const adminSideBarLinks = [
     icon: FaServicestack,
   },
   {
-    text: "Requests",
-    href: "/admin/requests",
-    icon: FaMessage,
-  },
-  {
     text: "Users",
     href: "/admin/users",
     icon: FaUsers,
   },
   {
-    text: "POS Screen",
+    text: "POS",
     href: "/admin/pos",
     icon: FaMobileScreen,
+  },
+  {
+    text: "Requests",
+    href: "/admin/requests",
+    icon: FaMessage,
   },
   {
     text: "Settings",

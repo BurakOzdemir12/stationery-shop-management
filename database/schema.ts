@@ -50,3 +50,51 @@ export const services = pgTable("services", {
   price: numeric("price", { mode: "number" }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+export const ORDER_STATUS_ENUM = pgEnum("order_status", [
+  "CREATED",
+  "PENDING_PAYMENT",
+  "PAID",
+  "REFUNDED",
+  "CANCELED",
+]);
+
+export const PAYMENT_METHOD_ENUM = pgEnum("payment_method", [
+  "CASH",
+  "CARD",
+  "TRANSFER",
+  "OTHER",
+]);
+export const orders = pgTable("orders", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  totalPrice: numeric("total_price", {
+    mode: "number",
+    precision: 12,
+    scale: 2,
+  }).notNull(),
+  totalItems: integer("total_items").notNull(),
+  status: ORDER_STATUS_ENUM("status").notNull().default("CREATED"),
+  paymentMethod: PAYMENT_METHOD_ENUM("payment_method").default("CASH"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
+export const orderItems = pgTable("order_items", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id),
+  productName: varchar("product_name", { length: 255 }).notNull(),
+  unitPrice: numeric("unit_price", {
+    mode: "number",
+    precision: 12,
+    scale: 2,
+  }).notNull(),
+  quantity: integer("quantity").notNull(),
+  subTotal: numeric("sub_total", {
+    mode: "number",
+    precision: 12,
+    scale: 2,
+  }).notNull(),
+  barcodeSnapshot: varchar("barcode_snapshot", { length: 128 }),
+});
