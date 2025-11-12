@@ -16,10 +16,11 @@
     --color-borderColor: #263244;
     --color-text-sun:#EAD6BEFF;
     --color-text-gold: #EED1AC;
+    --color-success: #00c417;
 }
 
 .btn-gold{
-    @apply mb-2 bg-amber-100 text-black font-bold cursor-pointer hover:bg-neutral-500 hover:text-white;
+    @apply  bg-amber-100 text-lg text-black font-bold cursor-pointer hover:bg-text-gold hover:text-[19px];
 }
 /*@layer base {*/
 /*    body {*/

@@ -18,7 +18,25 @@ export const STATUS_ENUM = pgEnum("status", [
   "REJECTED",
 ]);
 export const ROLE_ENUM = pgEnum("role", ["USER", "ADMIN"]);
+export const ORDER_STATUS_ENUM = pgEnum("order_status", [
+  "CREATED",
+  "PENDING_PAYMENT",
+  "PAID",
+  "REFUNDED",
+  "CANCELED",
+]);
 
+export const PAYMENT_METHOD_ENUM = pgEnum("payment_method", [
+  "CASH",
+  "CARD",
+  "TRANSFER",
+  "OTHER",
+]);
+export const REQUEST_STATUS_ENUM = pgEnum("request_status", [
+  "PENDING",
+  "ANSWERED",
+  "RESTOCKED",
+]);
 export const users = pgTable("users", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   fullName: varchar("full_name", { length: 255 }).notNull(),
@@ -50,20 +68,7 @@ export const services = pgTable("services", {
   price: numeric("price", { mode: "number" }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
-export const ORDER_STATUS_ENUM = pgEnum("order_status", [
-  "CREATED",
-  "PENDING_PAYMENT",
-  "PAID",
-  "REFUNDED",
-  "CANCELED",
-]);
 
-export const PAYMENT_METHOD_ENUM = pgEnum("payment_method", [
-  "CASH",
-  "CARD",
-  "TRANSFER",
-  "OTHER",
-]);
 export const orders = pgTable("orders", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   totalPrice: numeric("total_price", {
@@ -81,9 +86,7 @@ export const orderItems = pgTable("order_items", {
   orderId: uuid("order_id")
     .notNull()
     .references(() => orders.id, { onDelete: "cascade" }),
-  productId: uuid("product_id")
-    .notNull()
-    .references(() => products.id),
+  productId: uuid("product_id").references(() => products.id),
   productName: varchar("product_name", { length: 255 }).notNull(),
   unitPrice: numeric("unit_price", {
     mode: "number",
@@ -97,4 +100,13 @@ export const orderItems = pgTable("order_items", {
     scale: 2,
   }).notNull(),
   barcodeSnapshot: varchar("barcode_snapshot", { length: 128 }),
+});
+export const requests = pgTable("requests", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  userId: uuid("user_id").notNull(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id),
+  status: REQUEST_STATUS_ENUM("status").notNull().default("PENDING"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });

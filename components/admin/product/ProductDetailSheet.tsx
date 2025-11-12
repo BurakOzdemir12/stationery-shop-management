@@ -47,11 +47,11 @@ const ProductDetailSheet = ({
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string | undefined) => {
     const ok = confirm("Delete this product?");
     if (!ok) return;
     try {
-      const res = await deleteProduct(id);
+      const res = await deleteProduct(id!);
       if (!res?.success) {
         throw new Error("Failed to delete product");
       }
@@ -85,8 +85,8 @@ const ProductDetailSheet = ({
           </SheetHeader>
           <div className="">
             <IKImage
-              path={product?.image}
-              urlEndpoint={config.env.imagekit.urlEndpoint}
+              path={product?.image || ""}
+              urlEndpoint={config.env.imagekit.urlEndpoint || ""}
               alt="product image"
               className=" object-contain w-full"
             />
@@ -99,15 +99,18 @@ const ProductDetailSheet = ({
               </p>
               <h1 className="font-extralight col-span-1">Purchase Price</h1>
               <p className="font-semibold col-span-1">
-                <MoneyCell tone="muted" value={product?.purchase_price} />
+                <MoneyCell
+                  tone="muted"
+                  value={Number(product?.purchase_price)}
+                />
               </p>
               <h1 className="font-extralight col-span-1">Sale Price</h1>
               <p className="font-semibold col-span-1">
-                <MoneyCell tone="default" value={product?.sale_price} />
+                <MoneyCell tone="default" value={Number(product?.sale_price)} />
               </p>
               <h1 className="font-extralight col-span-1">Stock Price</h1>
               <p className="font-semibold col-span-1">
-                <StockCell value={product?.stock} />
+                <StockCell value={Number(product?.stock)} />
               </p>
             </div>
             <div className="grid gap-3 p-2 border-1 border-border bg-card rounded-xl">

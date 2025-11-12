@@ -1,9 +1,17 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import ProductCarousel from "@/components/client/ProductCarousel";
-import { FaTurkishLiraSign } from "react-icons/fa6";
+import { FaMessage, FaTurkishLiraSign } from "react-icons/fa6";
 import { cn, textUpperCase } from "@/lib/utils";
 import { FaBox, FaBoxOpen } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import { Session } from "next-auth";
+import { toast } from "react-hot-toast";
 
+type ProductDetailProps = ProductClient & {
+  session: Session | null;
+  existingRequest?: boolean;
+};
 const ProductDetail = ({
   id,
   name,
@@ -13,9 +21,44 @@ const ProductDetail = ({
   sale_price,
   image,
   stock,
-  barcode,
-  code,
-}: Product) => {
+  session,
+  existingRequest,
+}: ProductDetailProps) => {
+  const [isPending, setIsPending] = useState(false);
+  const handleProductRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsPending(true);
+    if (!session?.user?.id) {
+      toast.error("You must be logged in to request a product");
+      return;
+    }
+    try {
+      const res = await fetch("/api/requests/product/stock", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId: id }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        const message =
+          data?.error || data?.message || "Failed to request product";
+        toast.error(message);
+        setIsPending(false);
+
+        return;
+      }
+      setIsPending(false);
+
+      toast.success("Product requested successfully");
+    } catch (e) {
+      toast.error("Network error, please try again");
+      setIsPending(false);
+
+      console.error(e);
+    }
+  };
   return (
     <section className=" product-detail  lg:px-10 justify-items-center bg-bgDarker p-10 rounded-2xl  ">
       <div className=" p-10 pt-0 grid grid-cols-2 gap-10 max-md:gap-5   ">
@@ -40,16 +83,27 @@ const ProductDetail = ({
                 </p>
               </div>
             ) : (
-              <div className="flex max-sm:flex-col gap-5 items-center ">
+              <div className="flex max-sm:flex-col gap-5 items-center  ">
                 <div className="p-2 w-fit max-sm:w-full  rounded-2xl bg-red-700   text-xl">
                   <p className="text-white  font-medium flex-row flex gap-2 flex-1 items-center ">
                     <FaBox className="size-7 text-gray-100" />
                     Stock Unavailable: {stock}
                   </p>
                 </div>
-                <button className="bg-text-sun rounded-3xl w-fit h-fit p-2 text-lg font-semibold cursor-pointer ">
-                  Request product
-                </button>
+                <div className="">
+                  <form onSubmit={handleProductRequest}>
+                    <Button
+                      disabled={isPending || existingRequest}
+                      type="submit"
+                      className="h-max  rounded-2xl btn-gold "
+                    >
+                      {existingRequest
+                        ? "Already Requested"
+                        : "Request product"}
+                      <FaMessage className="text-success size-5" />
+                    </Button>
+                  </form>
+                </div>
               </div>
             )}
             <p className="text-white font-serif font-light text-lg opacity-80">
@@ -68,13 +122,13 @@ const ProductDetail = ({
               <div className="flex col-span-4 sm:col-span-2  ">
                 Category:
                 <span className="mx-1 font-semibold flex text-text-gold">
-                  {textUpperCase(category)}
+                  {textUpperCase(category || "")}
                 </span>
               </div>
               <div className="flex col-span-4 sm:col-span-2   ">
                 Brand:
                 <span className="mx-1 font-semibold flex text-text-gold">
-                  {textUpperCase(brand)}
+                  {textUpperCase(brand || "")}
                 </span>
               </div>
             </div>

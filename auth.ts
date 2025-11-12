@@ -4,11 +4,11 @@ import { eq } from "drizzle-orm";
 import { users } from "@/database/schema";
 import { db } from "@/database/drizzle";
 import * as bcrypt from "bcryptjs";
-import { redirect } from "next/navigation";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60 * 24 * 7,
   },
   providers: [
     Credentials({
@@ -33,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user[0].id.toString(),
           email: user[0].email,
           name: user[0].fullName,
+          image: user[0].profileImage || null,
         } as User;
       },
     }),
@@ -45,6 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.name = user.name;
+        token.image = user.image;
       }
       return token;
     },
@@ -52,6 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
+        session.user.image = token.image as string;
       }
       return session;
     },

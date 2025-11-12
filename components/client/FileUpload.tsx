@@ -132,7 +132,7 @@ const FileUpload = ({
 
         {file && <p>{file.filePath}</p>}
       </button>
-      {progress > 0 && (
+      {progress > 0 && progress < 100 && (
         <div
           className={
             variant === "dark" ? "w-full rounded-full bg-green-200" : "hidden"

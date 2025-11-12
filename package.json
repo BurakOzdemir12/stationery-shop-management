@@ -14,6 +14,7 @@
     "upstash:qstash": "npx @upstash/qstash-cli dev"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.2.2",
     "@imagekit/next": "^2.1.3",
     "@neondatabase/serverless": "^1.0.2",

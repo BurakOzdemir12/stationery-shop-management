@@ -36,6 +36,20 @@
       "when": 1762524049325,
       "tag": "0004_pale_joystick",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1762771115498,
+      "tag": "0005_silent_moondragon",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1762868141335,
+      "tag": "0006_boring_ironclad",
+      "breakpoints": true
     }
   ]
 }

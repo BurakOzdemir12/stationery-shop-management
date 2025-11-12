@@ -18,6 +18,16 @@ interface Product {
   image: string;
   createdAt: Date | null;
 }
+interface ProductClient {
+  id: string;
+  name: string;
+  description: string;
+  category: string | null;
+  brand: string | null;
+  sale_price: number;
+  stock: number;
+  image: string;
+}
 interface ProductParams {
   name: string;
   description: string;
@@ -39,4 +49,8 @@ interface Service {
 interface ServiceParams {
   name: string;
   price: number;
+}
+interface RequestParams {
+  productId: string;
+  userId: string;
 }

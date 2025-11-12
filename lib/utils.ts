@@ -12,13 +12,14 @@ export const getInitials = (name: string): string =>
     .toUpperCase()
     .slice(0, 2);
 
-export const textUpperCase = (text: string) =>
+export const textUpperCase = (text: string | null) =>
+  text &&
   text
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-//Form input key canceller
+//Form input key canceler
 export const handleFormKeys: React.KeyboardEventHandler<HTMLFormElement> = (
   e,
 ) => {

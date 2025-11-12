@@ -54,7 +54,7 @@ const ProductOverview = ({
             </div>
           </div>
           <Link href={`/products/${id}`} className="w-fit">
-            <div className="rounded-md  text-black font-medium  p-2 w-fit  bg-text-sun">
+            <div className="rounded-md  text-black font-medium  p-1.5 w-fit  btn-gold">
               View Details
             </div>
           </Link>

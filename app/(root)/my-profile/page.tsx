@@ -18,11 +18,6 @@ const Page = async () => {
       >
         <Button className="btn-gold">Logout</Button>
       </form>
-      <LatestProductList
-        containerClassName="product-list bg-bgDarker"
-        title="Your Requests "
-        products={sampleProducts}
-      />
     </div>
   );
 };

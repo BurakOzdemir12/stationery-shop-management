@@ -10,6 +10,8 @@ import { FaHouse } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import { Session } from "next-auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { IKImage } from "imagekitio-react";
+import config from "@/lib/config";
 
 const SideBar = ({ session }: { session: Session }) => {
   const pathname = usePathname();
@@ -68,10 +70,19 @@ const SideBar = ({ session }: { session: Session }) => {
         )}
       >
         <Link href={session ? "/my-profile" : "/sign-in"}>
-          <Avatar className="w-13 h-13 ">
-            <AvatarFallback className="text-black font-semibold text-3xl bg-text-gold ">
-              {getInitials(session?.user?.name || "NN")}
-            </AvatarFallback>
+          <Avatar className="w-15 h-15 ">
+            {session?.user?.image ? (
+              <IKImage
+                path={session?.user?.image}
+                urlEndpoint={config.env.imagekit.urlEndpoint}
+                alt="product image"
+                className=" object-contain w-full "
+              />
+            ) : (
+              <AvatarFallback className="text-black font-semibold text-3xl bg-text-gold ">
+                {getInitials(session?.user?.name || "NN")}
+              </AvatarFallback>
+            )}
           </Avatar>
         </Link>
         <div className="flex flex-1 items-center justify-center flex-col max-lg:hidden gap-1 ">

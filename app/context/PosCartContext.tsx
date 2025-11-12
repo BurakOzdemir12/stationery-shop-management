@@ -27,7 +27,7 @@ type PosCartCtx = {
   finalizeOrder: () => Promise<void>;
 };
 const Ctx = createContext<PosCartCtx | null>(null);
-const POS = process.env.pos;
+const POS = process.env.NEXT_PUBLIC_POS_CART_KEY;
 const PosCartContext = ({ children }: { children: React.ReactNode }) => {
   const [showPos, setShowPos] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -191,13 +191,18 @@ const PosCartContext = ({ children }: { children: React.ReactNode }) => {
       });
       if (!res.ok) {
         const j = await res.json().catch(() => null);
-        throw new Error(j?.message || "Order failed");
+        const errorMessage = j?.message || j?.error || "Order failed";
+
+        toast.error(errorMessage, { position: "top-center" });
+        return;
       }
       await res.json();
       onRemoveAll();
       toast.success("Order completed.", { position: "top-center" });
     } catch (e) {
-      toast.error((e as Error).message || "Failed", { position: "top-center" });
+      toast.error("Network error, please try again.", {
+        position: "top-center",
+      });
       console.error(e);
     }
   };
