@@ -7,6 +7,8 @@ import { FaBox, FaBoxOpen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Session } from "next-auth";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 type ProductDetailProps = ProductClient & {
   session: Session | null;
@@ -25,6 +27,7 @@ const ProductDetail = ({
   existingRequest,
 }: ProductDetailProps) => {
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
   const handleProductRequest = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsPending(true);
@@ -41,6 +44,9 @@ const ProductDetail = ({
         body: JSON.stringify({ productId: id }),
       });
       const data = await res.json().catch(() => null);
+      if (res.status === 429) {
+        router.push("/too-fast");
+      }
       if (!res.ok) {
         const message =
           data?.error || data?.message || "Failed to request product";
@@ -52,6 +58,7 @@ const ProductDetail = ({
       setIsPending(false);
 
       toast.success("Product requested successfully");
+      router.refresh();
     } catch (e) {
       toast.error("Network error, please try again");
       setIsPending(false);
@@ -97,10 +104,13 @@ const ProductDetail = ({
                       type="submit"
                       className="h-max  rounded-2xl btn-gold "
                     >
+                      {isPending && <Spinner className="size-5 text-black " />}
                       {existingRequest
                         ? "Already Requested"
                         : "Request product"}
-                      <FaMessage className="text-success size-5" />
+                      <FaMessage
+                        className={`${existingRequest ? "text-red-600" : "text-success size-5"}`}
+                      />
                     </Button>
                   </form>
                 </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { db } from "@/database/drizzle";
 import { products } from "@/database/schema";
 import { eq } from "drizzle-orm";
@@ -30,11 +30,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
   }
   return (
     <div>
-      <ProductDetail
-        session={session}
-        {...product}
-        existingRequest={!!existingRequest}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductDetail
+          session={session}
+          {...product}
+          existingRequest={!!existingRequest}
+        />
+      </Suspense>
     </div>
   );
 };

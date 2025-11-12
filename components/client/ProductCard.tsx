@@ -1,10 +1,8 @@
 "use client";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { FaTurkishLiraSign } from "react-icons/fa6";
@@ -12,11 +10,10 @@ import { IKImage } from "imagekitio-react";
 import config from "@/lib/config";
 import React from "react";
 import { textUpperCase } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 type ProductListProps = {
-  products: Product[];
+  products: ProductClient[];
   variant?: "public" | "admin";
 };
 
@@ -31,13 +28,9 @@ export const ProductCard = ({ products }: ProductListProps) => {
             description,
             category,
             brand,
-            purchase_price,
             sale_price,
             stock,
-            barcode,
-            code,
             image,
-            createdAt,
           }) => (
             <Link href={`/products/${id}`} key={id} passHref>
               <Card className="m-0 pt-0  bg-bgDarker border-borderColor border-2 ">

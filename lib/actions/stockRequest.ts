@@ -1,20 +1,26 @@
+"use server";
 import { db } from "@/database/drizzle";
 import { requests } from "@/database/schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import ratelimit from "@/lib/ratelimit";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
-type RequestProps = {
-  productId: string;
-  userId: string;
-};
-
-export async function stockRequest({ productId, userId }: RequestProps) {
+export async function stockRequest({ productId, userId }: RequestParams) {
   if (!productId || !userId) {
     throw new Error("INVALID_REQUEST");
   }
+
+  const key = `stockRequest:${userId}:${productId}`;
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  const { success } = await ratelimit.limit(key || ip);
+  if (!success) {
+    throw new Error("RATE_LIMIT_EXCEEDED");
+  }
+
   if (await isAvailableToRequest({ productId, userId })) {
     throw new Error("EXISTING_REQUEST");
-
-    // return;
   }
 
   try {
@@ -26,6 +32,7 @@ export async function stockRequest({ productId, userId }: RequestProps) {
         status: "PENDING",
       })
       .returning({ id: requests.id });
+
     return newRes;
   } catch (e) {
     console.log(e);
@@ -35,7 +42,7 @@ export async function stockRequest({ productId, userId }: RequestProps) {
 export async function isAvailableToRequest({
   productId,
   userId,
-}: RequestProps) {
+}: RequestParams) {
   if (!productId || !userId) {
     throw new Error("INVALID_REQUEST");
   }
@@ -47,11 +54,11 @@ export async function isAvailableToRequest({
         and(
           eq(requests.userId, userId),
           eq(requests.productId, productId),
-          eq(requests.status, "PENDING"),
+          or(eq(requests.status, "PENDING"), eq(requests.status, "ANSWERED")),
         ),
       )
       .limit(1);
-    return existingRequest;
+    return !!existingRequest;
   } catch (e) {
     console.log(e);
     return false;

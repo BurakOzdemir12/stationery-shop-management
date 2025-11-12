@@ -2,25 +2,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn, getInitials } from "@/lib/utils";
-import { CgProfile } from "react-icons/cg";
-import { auth } from "@/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Session } from "next-auth";
 import { FaBars, FaXmark } from "react-icons/fa6";
 import Image from "next/image";
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from "@headlessui/react";
-import { ChevronDown, ChevronDownIcon } from "lucide-react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import NavLinks from "@/components/client/NavLinks";
 import { Button } from "@/components/ui/button";
 

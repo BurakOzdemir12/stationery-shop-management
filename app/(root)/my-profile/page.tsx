@@ -1,13 +1,16 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "@/auth";
-import LatestProductList from "@/components/client/LatestProductList";
-import { sampleProducts } from "@/constants";
 import { redirect } from "next/navigation";
+import { getAllRequestsByUser } from "@/lib/queries/stockRequests";
+import MyRequestList from "@/components/client/request/MyRequestList";
+import { getProductById } from "@/lib/queries/products";
 
 const Page = async () => {
   const session = await auth();
   if (!session) redirect("/");
+  const userId = session?.user?.id;
+  const requests = await getAllRequestsByUser(userId || "");
   return (
     <div>
       <form
@@ -18,6 +21,25 @@ const Page = async () => {
       >
         <Button className="btn-gold">Logout</Button>
       </form>
+      <div className="">
+        <h1 className=" scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-15 text-text-gold mb-5 ">
+          My Requests
+        </h1>
+        <div className="">
+          {requests.length === 0 ? (
+            <h1> No Request</h1>
+          ) : (
+            <section
+              id="my-requests"
+              className=" grid grid-cols-2 lg:grid-cols-4 gap-7 justify-self-start "
+            >
+              {requests.map((r) => (
+                <MyRequestList request={r} key={r.id} />
+              ))}
+            </section>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

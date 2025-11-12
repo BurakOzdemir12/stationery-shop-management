@@ -2,9 +2,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stockRequest } from "@/lib/actions/stockRequest";
 import { auth } from "@/auth";
+import ratelimit from "@/lib/ratelimit";
+import { redirect } from "next/navigation";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
+  const userId = !session?.user?.id;
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -18,6 +21,7 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+
   try {
     const res = await stockRequest({
       productId,
@@ -26,10 +30,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(res, { status: 201 });
   } catch (e) {
     const message = (e as Error).message;
-
     if (message === "EXISTING_REQUEST") {
       return NextResponse.json({ error: "Already requested" }, { status: 400 });
     }
+    if (message === "RATE_LIMIT_EXCEEDED") {
+      return NextResponse.json(
+        { error: "Too Fast slow down" },
+        { status: 429 },
+      );
+    }
+
     if (message === "INVALID_REQUEST") {
       return NextResponse.json(
         { error: "Invalid request data" },

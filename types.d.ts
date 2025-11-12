@@ -9,7 +9,7 @@ interface Product {
   name: string;
   description: string;
   category: string | null;
-  brand: string | null;
+  brand: string;
   purchase_price: string;
   sale_price: string;
   stock: number;
@@ -53,4 +53,11 @@ interface ServiceParams {
 interface RequestParams {
   productId: string;
   userId: string;
+}
+interface RequestType {
+  id: string;
+  userId: string;
+  status: string;
+  productId: string;
+  createdAt: Date | null;
 }

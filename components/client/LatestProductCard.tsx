@@ -24,7 +24,7 @@ const LatestProductCard = ({
   sale_price,
   image,
   stock,
-}: Product) => (
+}: ProductClient) => (
   <li className="col-span-3 lg:col-span-1  sm:col-span-2 max-sm:col-span-3 ">
     <Link href={`/products/${id}`}>
       <Card className="bg-bgDarker pt-0 border-t-0 h-full  border-borderColor  w-full overflow-hidden ">

@@ -5,7 +5,7 @@ import LatestProductCard from "@/components/client/LatestProductCard";
 
 interface Props {
   title: string;
-  products: Product[];
+  products: ProductClient[];
   containerClassName?: string;
 }
 

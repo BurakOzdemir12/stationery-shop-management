@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ServiceCard from "@/components/admin/service/ServiceCard";
 import { getServices } from "@/lib/queries/service";
 import ServiceList from "@/components/admin/service/ServiceList";
@@ -19,7 +19,9 @@ const Page = async ({
         <TypographyH2 title="Services" />
         <ServiceForm />
       </div>
-      <ServiceList services={services} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ServiceList services={services} />
+      </Suspense>
     </section>
   );
 };

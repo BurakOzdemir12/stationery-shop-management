@@ -1,12 +1,6 @@
 import React from "react";
 import TypographyH2 from "@/components/ui/TypographyH2";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import {
-  getProductById,
-  getProducts,
-  getProductsForPos,
-} from "@/lib/queries/products";
+import { getProductsForPos } from "@/lib/queries/products";
 import PosCardList from "@/components/admin/pos/PosCardList";
 import PosCartList from "@/components/admin/pos/PosCartList";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";

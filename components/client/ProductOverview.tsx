@@ -14,9 +14,7 @@ const ProductOverview = ({
   sale_price,
   image,
   stock,
-  barcode,
-  code,
-}: Product) => {
+}: ProductClient) => {
   return (
     <section id="overview" className="product-overview">
       <div className="flex flex-1 sm:col-span-1  col-span-2 flex-col ">

@@ -29,7 +29,7 @@ const NavLinks = ({
       name: "Home",
       href: "/",
     },
-    { name: "Products", href: "#all-products" },
+    { name: "Products", href: "//#all-products" },
   ];
   return (
     <ul className={cn(className)}>
