@@ -140,7 +140,7 @@ const AuthForm = <T extends FieldValues>({
       </p>
       <p className="text-sm max-sm:text-center flex-1 flex flex-row justify-center text-white  font-light ">
         <span className="mx-1  text-text-gold font-semibold hover:text-neutral-400 ">
-          <Link href="/">Continue as a Visitor</Link>
+          <Link href="/public">Continue as a Visitor</Link>
         </span>
       </p>
     </div>

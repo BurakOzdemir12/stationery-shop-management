@@ -14,7 +14,10 @@ const Page = async ({
 }) => {
   const services = await getServices();
   return (
-    <section className="bg-white p-5 max-sm:p-1 rounded-2xl w-full">
+    <section
+      aria-label="admin-services"
+      className="bg-white p-5 max-sm:p-1 rounded-2xl w-full"
+    >
       <div className="flex flex-wrap items-center justify-between gap-5 mb-5">
         <TypographyH2 title="Services" />
         <ServiceForm />

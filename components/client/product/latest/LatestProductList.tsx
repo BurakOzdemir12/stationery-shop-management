@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import LatestProductCard from "@/components/client/LatestProductCard";
+import LatestProductCard from "@/components/client/product/latest/LatestProductCard";
 
 interface Props {
   title: string;

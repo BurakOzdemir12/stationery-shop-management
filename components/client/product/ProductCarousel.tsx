@@ -18,7 +18,7 @@ interface Props {
 }
 const ProductCarousel = ({ image, containerClassName }: Props) => {
   return (
-    <section className="product-carousel ">
+    <section aria-label="product-carousel" className="product-carousel ">
       <Carousel className="w-full   ">
         <CarouselContent>
           {Array.from({ length: 1 }).map((_, index) => (

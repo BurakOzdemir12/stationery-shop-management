@@ -14,6 +14,8 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { BarcodeContext } from "@/app/context/BarcodeContext";
 import PosCartContext from "@/app/context/PosCartContext";
+import { ConfirmAlertContext } from "@/app/context/ConfirmAlertContext";
+import AlertDialogBox from "@/components/AlertDialogBox";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,9 +54,14 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
     <html lang="en" className="scroll-smooth ">
       <SessionProvider session={session}>
         <body className={`${inter.className} ${inter.variable}   antialiased`}>
-          <BarcodeContext>
-            <PosCartContext>{children}</PosCartContext>
-          </BarcodeContext>
+          <ConfirmAlertContext>
+            <BarcodeContext>
+              <PosCartContext>
+                {children}
+                <AlertDialogBox />
+              </PosCartContext>
+            </BarcodeContext>
+          </ConfirmAlertContext>
           <Toaster position="bottom-right" reverseOrder={false} />
         </body>
       </SessionProvider>

@@ -1,12 +1,12 @@
 import React from "react";
-import ProductOverview from "@/components/client/ProductOverview";
-import LatestProductList from "@/components/client/LatestProductList";
+import ProductOverview from "@/components/client/product/ProductOverview";
+import LatestProductList from "@/components/client/product/latest/LatestProductList";
 import { db } from "@/database/drizzle";
 import { products, services, users } from "@/database/schema";
 import { count, desc } from "drizzle-orm";
 import ServicesCarousel from "@/components/client/service/ServicesCarousel";
-import { ProductCard } from "@/components/client/ProductCard";
-import ProductFilterForm from "@/components/client/ProductFilterForm";
+import { ProductCard } from "@/components/client/product/ProductCard";
+import ProductFilterForm from "@/components/client/product/ProductFilterForm";
 import PaginationView from "@/components/client/PaginationView";
 import { getBrands, getPaginatedProducts } from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";

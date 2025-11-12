@@ -1,6 +1,6 @@
 import { db } from "@/database/drizzle";
 import { requests } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function getAllRequestsByUser(userId: string) {
   if (!userId) {
@@ -8,14 +8,26 @@ export async function getAllRequestsByUser(userId: string) {
   }
 
   try {
-    const allRequests = await db
+    const res = await db
       .select()
       .from(requests)
       .where(eq(requests.userId, userId));
 
-    return allRequests;
+    return res;
   } catch (e) {
     console.error("getAllRequestsByUser error:", e);
+    return [];
+  }
+}
+export async function getAllRequests() {
+  try {
+    const res = await db
+      .select()
+      .from(requests)
+      .orderBy(desc(requests.createdAt));
+    return res;
+  } catch (e) {
+    console.error("getAllRequests error:", e);
     return [];
   }
 }

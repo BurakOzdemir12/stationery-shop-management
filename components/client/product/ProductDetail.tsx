@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import ProductCarousel from "@/components/client/ProductCarousel";
+import ProductCarousel from "@/components/client/product/ProductCarousel";
 import { FaMessage, FaTurkishLiraSign } from "react-icons/fa6";
 import { cn, textUpperCase } from "@/lib/utils";
 import { FaBox, FaBoxOpen } from "react-icons/fa";

@@ -4,7 +4,7 @@ import { products } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 import { IKImage } from "imagekitio-react";
-import ProductDetail from "@/components/client/ProductDetail";
+import ProductDetail from "@/components/client/product/ProductDetail";
 import { auth } from "@/auth";
 import { isAvailableToRequest } from "@/lib/actions/stockRequest";
 

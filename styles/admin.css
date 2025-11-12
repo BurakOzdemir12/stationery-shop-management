@@ -22,6 +22,7 @@
     --color-muted-text: #949494;
 
     --color-success: #00c417;
+    --color-success-opac: rgba(0, 196, 23, 0.78);
     --color-success-deep: #028611;
     --color-success-text: #ffffff;
     --color-destructive: #ff0000;
@@ -67,7 +68,7 @@
 }
 
 .btn-del {
-    @apply bg-red-500 hover:bg-red-700 cursor-pointer text-white;
+    @apply bg-red-500 hover:bg-red-700 cursor-pointer rounded-xl text-white border-0 ;
 }
 
 .btn-edit {

@@ -9,7 +9,7 @@ const Page = () => {
       <Button className="btn-pri" asChild>
         <Link href="/admin/products">Back to Products</Link>
       </Button>
-      <section className="w-full max-2-2xl">
+      <section aria-label="product-form" className="w-full max-2-2xl">
         <ProductForm type="create" />
       </section>
     </div>

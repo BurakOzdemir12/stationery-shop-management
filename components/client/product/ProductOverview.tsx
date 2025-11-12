@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCarousel from "@/components/client/ProductCarousel";
+import ProductCarousel from "@/components/client/product/ProductCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 import Link from "next/link";
