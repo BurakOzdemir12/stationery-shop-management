@@ -58,34 +58,6 @@ async function buildWhereCondition(params: BaseProductParams) {
   return conditions.length > 0 ? and(...conditions) : undefined;
 }
 
-// async function buildAdminWhereCondition(params: AdminProductParams) {
-//   const base = await buildWhereCondition(params);
-//
-//   const conditions = [];
-//
-//   if (params.barcode) {
-//     conditions.push(eq(products.barcode, params.barcode));
-//   }
-//
-//   if (params.code) {
-//     conditions.push(eq(products.code, params.code));
-//   }
-//   if (params.category) {
-//     conditions.push(eq(products.category, params.category));
-//   }
-//   if (
-//     params.purchase_price &&
-//     (params.purchase_price.min != null || params.purchase_price.max != null)
-//   ) {
-//     const min = params.purchase_price.min ?? 1;
-//     const max = params.purchase_price.max ?? Number.MAX_SAFE_INTEGER;
-//     conditions.push(between(products.purchase_price, min, max));
-//   }
-//   if (conditions.length > 0) {
-//     return base;
-//   }
-// }
-
 async function buildAdminWhereCondition(params: AdminProductParams) {
   const base = await buildWhereCondition(params);
 
