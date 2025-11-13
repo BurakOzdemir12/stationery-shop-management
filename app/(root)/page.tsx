@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ProductOverview from "@/components/client/product/ProductOverview";
 import LatestProductList from "@/components/client/product/latest/LatestProductList";
 import { db } from "@/database/drizzle";
@@ -12,6 +12,8 @@ import { getBrands, getPaginatedProducts } from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import ServiceList from "@/components/admin/service/ServiceList";
 import { getServices } from "@/lib/queries/service";
+import RootSkeleton from "@/components/skeletons/RootSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Home = async ({
   searchParams,
@@ -31,43 +33,44 @@ const Home = async ({
     getServices(),
   ]);
   return (
-    <div className="">
-      <div className="grid grid-cols-3 gap-10">
-        <div className="col-span-3 lg:col-span-2">
-          {latestProducts[0] && <ProductOverview {...latestProducts[0]} />}
-
-          {/*<ProductOverview {...latestProducts[0]} />*/}
+    <Suspense fallback={<RootSkeleton />}>
+      <div className="">
+        <div className="grid grid-cols-3 gap-10">
+          <div className="col-span-3 lg:col-span-2">
+            {latestProducts[0] && <ProductOverview {...latestProducts[0]} />}
+            {/*<ProductOverview {...latestProducts[0]} />*/}
+          </div>
+          <div className="col-span-3 lg:col-span-1">
+            <h1 className="text-3xl font-bebas text-white ">Services</h1>
+            <ServicesCarousel services={services} />
+          </div>
         </div>
-        <div className="col-span-3 lg:col-span-1">
-          <h1 className="text-3xl font-bebas text-white ">Services</h1>
-          <ServicesCarousel services={services} />
-        </div>
-      </div>
-      <LatestProductList
-        title="Latest Products"
-        products={latestProducts.slice(1)}
-        // products={latestProducts.slice(1)}
-        containerClassName="product-list bg-bgDarker "
-      />
-      <section
-        id="all-products"
-        className="p-1 products-area mt-5 grid grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3  gap-5"
-      >
-        <div className="xl:col-span-1 lg:col-span-1 md:col-span-1 col-span-2 ">
-          <ProductFilterForm availableBrands={availableBrands} />
-        </div>
-        <div className="xl:col-span-4 lg:col-span-3 md:col-span-2 col-span-2    ">
-          <ProductCard products={pagedProducts} />
-        </div>
-      </section>
-      <div className="mt-15 items-center justify-items-center ">
-        <PaginationView
-          type="products"
-          currentPage={parsed.currentPage}
-          totalPages={totalPages}
+        <LatestProductList
+          title="Latest Products"
+          products={latestProducts.slice(1)}
+          // products={latestProducts.slice(1)}
+          containerClassName="product-list bg-bgDarker "
         />
+        <section
+          id="all-products"
+          className="p-1 products-area mt-5 grid grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3  gap-5"
+        >
+          <div className="xl:col-span-1 lg:col-span-1 md:col-span-1 col-span-2 ">
+            <ProductFilterForm availableBrands={availableBrands} />
+          </div>
+          <div className="xl:col-span-4 lg:col-span-3 md:col-span-2 col-span-2    ">
+            <ProductCard products={pagedProducts} />
+          </div>
+        </section>
+        <div className="mt-15 items-center justify-items-center ">
+          <PaginationView
+            type="products"
+            currentPage={parsed.currentPage}
+            totalPages={totalPages}
+          />
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 export default Home;

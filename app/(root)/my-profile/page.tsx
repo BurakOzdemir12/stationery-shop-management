@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import { getAllRequestsByUser } from "@/lib/queries/stockRequests";
 import MyRequestList from "@/components/client/request/MyRequestList";
-import { getProductById } from "@/lib/queries/products";
+import ProfileSkeleton from "@/components/skeletons/ProfileSkeleton";
 
 const Page = async () => {
   const session = await auth();
@@ -25,21 +25,24 @@ const Page = async () => {
         <h1 className=" scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-15 text-text-gold mb-5 ">
           My Requests
         </h1>
-        <div className="">
-          {requests.length === 0 ? (
-            <h1> No Request</h1>
-          ) : (
-            <section
-              aria-label="my-requests"
-              id="my-requests"
-              className=" grid grid-cols-2 lg:grid-cols-4 gap-7 justify-self-start "
-            >
-              {requests.map((r) => (
-                <MyRequestList request={r} key={r.id} />
-              ))}
-            </section>
-          )}
-        </div>
+
+        <Suspense fallback={<ProfileSkeleton />}>
+          <div className="">
+            {requests.length === 0 ? (
+              <h1> No Request</h1>
+            ) : (
+              <section
+                aria-label="my-requests"
+                id="my-requests"
+                className=" grid grid-cols-2 lg:grid-cols-4 gap-7 justify-self-start "
+              >
+                {requests.map((r) => (
+                  <MyRequestList request={r} key={r.id} />
+                ))}
+              </section>
+            )}
+          </div>
+        </Suspense>
       </div>
     </div>
   );

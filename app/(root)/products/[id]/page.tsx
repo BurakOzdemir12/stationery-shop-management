@@ -7,6 +7,7 @@ import { IKImage } from "imagekitio-react";
 import ProductDetail from "@/components/client/product/ProductDetail";
 import { auth } from "@/auth";
 import { isAvailableToRequest } from "@/lib/actions/stockRequest";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -30,13 +31,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
   }
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ProductDetail
-          session={session}
-          {...product}
-          existingRequest={!!existingRequest}
-        />
-      </Suspense>
+      <ProductDetail
+        session={session}
+        {...product}
+        existingRequest={!!existingRequest}
+      />
     </div>
   );
 };

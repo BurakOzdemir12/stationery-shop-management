@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ServiceForm from "@/components/admin/forms/ServiceForm";
 import TypographyH2 from "@/components/ui/TypographyH2";
+import ServicesSkeleton from "@/components/skeletons/admin/ServicesSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Page = async ({
   searchParams,
@@ -22,7 +24,7 @@ const Page = async ({
         <TypographyH2 title="Services" />
         <ServiceForm />
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<ServicesSkeleton />}>
         <ServiceList services={services} />
       </Suspense>
     </section>
