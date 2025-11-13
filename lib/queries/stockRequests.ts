@@ -1,5 +1,5 @@
 import { db } from "@/database/drizzle";
-import { requests } from "@/database/schema";
+import { products, requests, users } from "@/database/schema";
 import { desc, eq } from "drizzle-orm";
 
 export async function getAllRequestsByUser(userId: string) {
@@ -19,15 +19,22 @@ export async function getAllRequestsByUser(userId: string) {
     return [];
   }
 }
-export async function getAllRequests() {
-  try {
-    const res = await db
-      .select()
-      .from(requests)
-      .orderBy(desc(requests.createdAt));
-    return res;
-  } catch (e) {
-    console.error("getAllRequests error:", e);
-    return [];
-  }
+export async function getAllRequestsWithProductsAndUsers() {
+  const result = await db
+    .select({
+      id: requests.id,
+      userId: users.id,
+      userName: users.fullName,
+      status: requests.status,
+      productId: products.id,
+      productName: products.name,
+      productBrand: products.brand,
+      productStock: products.stock,
+      createdAt: requests.createdAt,
+    })
+    .from(requests)
+    .leftJoin(products, eq(requests.productId, products.id))
+    .leftJoin(users, eq(requests.userId, users.id));
+
+  return result;
 }

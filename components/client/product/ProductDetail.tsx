@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import ProductCarousel from "@/components/client/product/ProductCarousel";
 import { FaMessage, FaTurkishLiraSign } from "react-icons/fa6";
 import { cn, textUpperCase } from "@/lib/utils";
-import { FaBox, FaBoxOpen } from "react-icons/fa";
+import { FaArrowCircleRight, FaBox, FaBoxOpen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Session } from "next-auth";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
+import Link from "next/link";
 
 type ProductDetailProps = ProductClient & {
   session: Session | null;
@@ -52,13 +53,11 @@ const ProductDetail = ({
           data?.error || data?.message || "Failed to request product";
         toast.error(message);
         setIsPending(false);
-
         return;
       }
       setIsPending(false);
-
-      toast.success("Product requested successfully");
       router.refresh();
+      toast.success("Product requested successfully");
     } catch (e) {
       toast.error("Network error, please try again");
       setIsPending(false);
@@ -98,13 +97,17 @@ const ProductDetail = ({
                   </p>
                 </div>
                 <div className="">
-                  <form onSubmit={handleProductRequest}>
+                  <form
+                    onSubmit={handleProductRequest}
+                    className="flex flex-col items-center  "
+                  >
                     <Button
                       disabled={isPending || existingRequest}
                       type="submit"
-                      className="h-max  rounded-2xl btn-gold "
+                      className={`h-max  rounded-2xl btn-gold  `}
                     >
                       {isPending && <Spinner className="size-5 text-black " />}
+
                       {existingRequest
                         ? "Already Requested"
                         : "Request product"}
@@ -112,6 +115,15 @@ const ProductDetail = ({
                         className={`${existingRequest ? "text-red-600" : "text-success size-5"}`}
                       />
                     </Button>
+                    {existingRequest && (
+                      <Link
+                        href="/my-profile"
+                        className="hover:text-blue-300  cursor-pointer gap-2 text-white flex  items-center underline"
+                      >
+                        Check your requests:
+                        <FaArrowCircleRight className="size-5" />
+                      </Link>
+                    )}
                   </form>
                 </div>
               </div>

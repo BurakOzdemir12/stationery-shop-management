@@ -56,8 +56,12 @@ interface RequestParams {
 }
 interface RequestType {
   id: string;
-  userId: string;
+  userId: string | null;
+  userName: string;
   status: string;
   productId: string;
+  productName: string | null;
+  productBrand: string | null;
+  productStock: number | null;
   createdAt: Date | null;
 }

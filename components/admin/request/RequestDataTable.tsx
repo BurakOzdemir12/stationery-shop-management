@@ -77,13 +77,15 @@ const RequestDataTable = ({ requests }: { requests: RequestType[] }) => {
       <TableBody>
         {requests.map((req) => (
           <TableRow key={req.id}>
-            <TableCell className="font-medium">{req.userId}</TableCell>
+            <TableCell className="font-medium ">{req.userName}</TableCell>
             <TableCell
               className={`${isPending && !isDeleting && "text-success-opac"} font-semibold text-lg`}
             >
               {req.status}
             </TableCell>
-            <TableCell>{req.productId}</TableCell>
+            <TableCell>
+              {req.productName}/ {req.productBrand}
+            </TableCell>
             <TableCell className="text-left">
               <DateCell value={req.createdAt} />
             </TableCell>
