@@ -46,6 +46,7 @@ interface Props {
   placeholder: string;
   folder: string;
   value?: string;
+  fileName?: string;
 }
 const FileUpload = ({
   onFileChange,
@@ -55,6 +56,7 @@ const FileUpload = ({
   placeholder,
   folder,
   value,
+  fileName,
 }: Props) => {
   const ikUploadRef = useRef(null);
   const [file, setFile] = useState<{ filePath: string | null }>({
@@ -105,7 +107,7 @@ const FileUpload = ({
         ref={ikUploadRef}
         onSuccess={onSuccess}
         onError={onError}
-        useUniqueFileName={true}
+        useUniqueFileName={false}
         validateFile={onValidate}
         onUploadStart={() => setProgress(0)}
         onUploadProgress={({ loaded, total }) => {
@@ -114,6 +116,7 @@ const FileUpload = ({
         }}
         folder={folder}
         accept={accept}
+        fileName={fileName}
       />
 
       <button

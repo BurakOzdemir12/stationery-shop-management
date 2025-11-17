@@ -253,6 +253,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                           placeholder="Upload Product Image"
                           folder="/products/images"
                           value={field.value}
+                          fileName={form.watch("barcode") || undefined}
                         />
                       </div>
                     </FormControl>

@@ -14,7 +14,7 @@ import { products } from "@/database/schema";
 import { db } from "@/database/drizzle";
 import { ColumnDef } from "@tanstack/table-core";
 
-const PRODUCTS_PER_PAGE = 3;
+const PRODUCTS_PER_PAGE = 20;
 
 interface BaseProductParams {
   currentPage?: number;
@@ -26,7 +26,7 @@ interface BaseProductParams {
     max?: number;
   };
 }
-const PRODUCTS_PER_PAGE_ADMIN = 2;
+const PRODUCTS_PER_PAGE_ADMIN = 30;
 
 export type AdminProductParams = BaseProductParams & {
   barcode?: string;
@@ -177,7 +177,7 @@ export const getProductByBarcode = async (code: string) => {
   return rows[0] ?? null;
 };
 
-const PRODUCTS_PER_PAGE_POS = 2;
+const PRODUCTS_PER_PAGE_POS = 20;
 export async function getProductsForPos({
   currentPage = 1,
   ...rest

@@ -120,13 +120,13 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
             <FormField
               name="brands"
               render={({ field }) => (
-                <FormItem className=" flex flex-col  ">
+                <FormItem className=" max-h-72 h-fit flex flex-col overflow-y-scroll  ">
                   <FormLabel>Brands</FormLabel>
                   <hr className="opacity-35" />
                   {availableBrands.map((b) => (
                     <div
                       key={b}
-                      className="flex flex-row gap-4 items-center flex-wrap"
+                      className=" flex flex-row gap-4 items-center flex-wrap"
                     >
                       <Checkbox
                         className=" filter-checkbox  "

@@ -36,7 +36,7 @@ const PaginationView = ({
   return (
     <div>
       <Pagination
-        className={`${type === "products" ? "text-white" : "text-black"}`}
+        className={`${type === "products" ? "text-black" : "text-black"}`}
       >
         <PaginationContent>
           {hasPrevPage && (

@@ -51,14 +51,14 @@ export const users = pgTable("users", {
 export const products = pgTable("products", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   name: varchar("name", { length: 255 }).notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   category: varchar("category", { length: 155 }),
   brand: varchar("brand", { length: 155 }),
-  purchase_price: numeric("purchase_price", { mode: "number" }).notNull(),
+  purchase_price: numeric("purchase_price", { mode: "number" }),
   sale_price: numeric("sale_price", { mode: "number" }).notNull(),
   stock: integer("stock").notNull(),
   barcode: varchar("barcode", { length: 255 }).notNull(),
-  code: varchar("code", { length: 255 }).notNull(),
+  code: varchar("code", { length: 255 }),
   image: text("image").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });

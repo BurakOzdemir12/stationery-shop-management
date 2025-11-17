@@ -95,27 +95,30 @@ const ProductDetailSheet = ({
             <div className="grid grid-cols-2 gap-5 p-2 border-1 border-border bg-card rounded-xl ">
               <h1 className="font-extralight  col-span-1">Barcode</h1>
               <p className="font-semibold col-span-1">
-                <BarcodeCell value={product?.barcode} tone="default" />
+                <BarcodeCell value={product?.barcode ?? 0} tone="default" />
               </p>
               <h1 className="font-extralight col-span-1">Purchase Price</h1>
               <p className="font-semibold col-span-1">
                 <MoneyCell
                   tone="muted"
-                  value={Number(product?.purchase_price)}
+                  value={Number(product?.purchase_price ?? 0)}
                 />
               </p>
               <h1 className="font-extralight col-span-1">Sale Price</h1>
               <p className="font-semibold col-span-1">
-                <MoneyCell tone="default" value={Number(product?.sale_price)} />
+                <MoneyCell
+                  tone="default"
+                  value={Number(product?.sale_price ?? 0)}
+                />
               </p>
               <h1 className="font-extralight col-span-1">Stock Price</h1>
               <p className="font-semibold col-span-1">
-                <StockCell value={Number(product?.stock)} />
+                <StockCell value={Number(product?.stock ?? 0)} />
               </p>
             </div>
             <div className="grid gap-3 p-2 border-1 border-border bg-card rounded-xl">
               <h1 className="font-extralight">Description</h1>
-              <SheetDescription>{product?.description}</SheetDescription>
+              <SheetDescription>{product?.description ?? 0}</SheetDescription>
             </div>
           </div>
           <SheetFooter>
