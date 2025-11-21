@@ -29,7 +29,9 @@ const Page = async () => {
         <Suspense fallback={<ProfileSkeleton />}>
           <div className="">
             {requests.length === 0 ? (
-              <h1> No Request</h1>
+              <h1 className="text-xl text-center mt-10  text-amber-50">
+                No Requests{" "}
+              </h1>
             ) : (
               <section
                 aria-label="my-requests"

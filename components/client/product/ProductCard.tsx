@@ -20,7 +20,7 @@ type ProductListProps = {
 export const ProductCard = ({ products }: ProductListProps) => {
   return (
     <section id="all-products" className="all-products   ">
-      <div className=" grid grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2  gap-5 max-sm:gap-2  ">
+      <div className="  grid  grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2  gap-5 max-sm:gap-2  ">
         {products.map(
           ({
             id,
@@ -33,15 +33,20 @@ export const ProductCard = ({ products }: ProductListProps) => {
             image,
           }) => (
             <Link href={`/products/${id}`} key={id} passHref>
-              <Card className="m-0 pt-0  bg-bgDarker border-borderColor border-2 ">
-                <IKImage
-                  path={image}
-                  urlEndpoint={config.env.imagekit.urlEndpoint}
-                  alt="Product Image"
-                  className="object-fill  w-full rounded-xs max-md:h-50 h-60  "
-                  loading="lazy"
-                  lqip={{ active: true }}
-                />
+              <Card className="m-0 pt-0  h-full bg-bgDarker border-borderColor border-2 ">
+                {!image ? (
+                  <div className="">No image </div>
+                ) : (
+                  <IKImage
+                    path={image}
+                    urlEndpoint={config.env.imagekit.urlEndpoint}
+                    alt="Product Image"
+                    className="object-fill  w-full rounded-xs max-md:h-50 h-60  "
+                    loading="lazy"
+                    lqip={{ active: true }}
+                  />
+                )}
+
                 <div className="px-2 pb-0 m-0 flex flex-row gap-4 text-text-sun items-center justify-between">
                   <CardTitle className="">{name}</CardTitle>
                   <p className="flex gap-0.5">

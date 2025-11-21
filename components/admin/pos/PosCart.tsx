@@ -38,7 +38,8 @@ const PosCart = ({ id, name, sale_price, quantity }) => {
             type="number"
             inputMode="numeric"
             className=" w-fit text-center no-spinner
-          text-3xl max-w-25 border-0 text-primary font-bold selection:bg-neutral-400"
+
+            max-w-25 border-0 text-black font-extrabold selection:bg-neutral-400"
             onChange={(e) => onInputQty(id, Number(e.target.value))}
             value={quantity}
           />

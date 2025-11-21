@@ -9,7 +9,7 @@ const PosCardList = ({ products }: CartListProps) => {
   return (
     <section
       id="#all-products"
-      className="grid lg:grid-cols-4 grid-cols-2 gap-5 mt-5  "
+      className="grid lg:grid-cols-3 xl:grid-cols-4  grid-cols-2 gap-5 mt-5  "
     >
       {products.map((p) => (
         <PosCard key={p.id} {...p} />

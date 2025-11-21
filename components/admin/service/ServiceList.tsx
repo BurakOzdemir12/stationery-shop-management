@@ -10,7 +10,7 @@ type ServiceListProps = {
 };
 const ServiceList = ({ services }: ServiceListProps) => {
   return (
-    <section className="grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2  ">
+    <section className="grid lg:grid-cols-6 md:grid-cols-2 sm:grid-cols-2  ">
       {services.map((s) => (
         <ServiceCard key={s.id} {...s} />
       ))}

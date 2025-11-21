@@ -27,7 +27,7 @@ const Home = async ({
     availableBrands,
     services,
   ] = await Promise.all([
-    db.select().from(products).limit(8).orderBy(desc(products.createdAt)),
+    db.select().from(products).limit(7).orderBy(desc(products.createdAt)),
     getPaginatedProducts(parsed),
     getBrands(),
     getServices(),

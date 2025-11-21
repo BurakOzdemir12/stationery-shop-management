@@ -36,13 +36,18 @@ const PaginationView = ({
   return (
     <div>
       <Pagination
-        className={`${type === "products" ? "text-black" : "text-black"}`}
+        className={`${type === "products" ? "text-white" : "text-black"}`}
       >
         <PaginationContent>
           {hasPrevPage && (
-            <PaginationItem>
-              <PaginationPrevious href={hrefFor(currentPage - 1)} size={4} />
-            </PaginationItem>
+            <div className="flex gap-2 items-center">
+              <PaginationItem>
+                <PaginationPrevious href={hrefFor(currentPage - 1)} size={4} />
+              </PaginationItem>
+              <PaginationLink href={hrefFor(1)} size={6}>
+                {totalPages - (totalPages - 1)}
+              </PaginationLink>
+            </div>
           )}
           {hasPrevPage && <PaginationEllipsis />}
           <PaginationItem>
@@ -56,7 +61,14 @@ const PaginationView = ({
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
-            {hasNextPage && <PaginationEllipsis />}
+            {hasNextPage && (
+              <div className="flex gap-2 items-center">
+                <PaginationEllipsis />
+                <PaginationLink href={hrefFor(totalPages)} size={6}>
+                  {totalPages}
+                </PaginationLink>
+              </div>
+            )}
           </PaginationItem>
           {hasNextPage && (
             <PaginationItem>

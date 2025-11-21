@@ -23,7 +23,7 @@ const Page = async ({
       <div id="main-field" className="grid grid-cols-3 w-full gap-5  ">
         <div
           id="products-section"
-          className="col-span-2 border-border border rounded-md p-3 bg-card"
+          className="col-span-2 max-sm:col-span-3 border-border border rounded-md p-3 bg-card"
         >
           <PosFilterForm />
 
@@ -38,7 +38,7 @@ const Page = async ({
         </div>
         <div
           id="cart-section"
-          className="col-span-1 border-border border rounded-md p-3 bg-card"
+          className="col-span-1 max-sm:col-span-3 border-border border rounded-md p-3 bg-card"
         >
           <PosCartList />
         </div>

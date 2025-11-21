@@ -120,7 +120,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
             <FormField
               name="brands"
               render={({ field }) => (
-                <FormItem className=" max-h-72 h-fit flex flex-col overflow-y-scroll  ">
+                <FormItem className=" max-h-72 h-fit flex flex-col overflow-y-scroll   ">
                   <FormLabel>Brands</FormLabel>
                   <hr className="opacity-35" />
                   {availableBrands.map((b) => (

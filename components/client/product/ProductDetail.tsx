@@ -72,7 +72,7 @@ const ProductDetail = ({
           <ProductCarousel
             image={image}
             containerClassName={cn(
-              "w-125 object-fill pt-0 mt-0  rounded-lg  min-h-85",
+              "w-145 max-h-145 w-full h-full object-fill pt-0 mt-0  rounded-lg  ",
             )}
           />
         </div>
