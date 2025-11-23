@@ -79,13 +79,13 @@ const SideBar = ({ session }: { session: Session }) => {
                 className=" object-contain w-full "
               />
             ) : (
-              <AvatarFallback className="text-black font-semibold text-3xl bg-text-gold ">
+              <AvatarFallback className="text-black   font-semibold text-3xl bg-text-gold ">
                 {getInitials(session?.user?.name || "NN")}
               </AvatarFallback>
             )}
           </Avatar>
         </Link>
-        <div className="flex flex-1 items-center justify-center flex-col max-lg:hidden gap-1 ">
+        <div className="flex flex-1 items-start justify-start flex-col max-lg:hidden gap-1 ">
           <p className="text-muted">{session?.user?.name}</p>
           <p className="text-xs text-neutral-600 ">{session?.user?.email}</p>
         </div>
