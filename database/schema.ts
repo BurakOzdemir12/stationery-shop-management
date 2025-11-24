@@ -10,6 +10,7 @@ import {
   timestamp,
   decimal,
   numeric,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { number } from "zod";
 
@@ -116,25 +117,58 @@ export const requests = pgTable("requests", {
   status: REQUEST_STATUS_ENUM("status").notNull().default("PENDING"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
-export const monthlyReports = pgTable("monthly_reports", {
-  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  year: integer("year").notNull(),
-  month: integer("month").notNull(),
-  totalRevenue: numeric("total_revenue", {
-    mode: "number",
-    precision: 12,
-    scale: 2,
-  }).notNull(),
-  totalCost: numeric("total_cost", {
-    mode: "number",
-    precision: 12,
-    scale: 2,
+export const monthlyReports = pgTable(
+  "monthly_reports",
+  {
+    id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+    year: integer("year").notNull(),
+    month: integer("month").notNull(),
+    totalRevenue: numeric("total_revenue", {
+      mode: "number",
+      precision: 12,
+      scale: 2,
+    }).notNull(),
+    totalCost: numeric("total_cost", {
+      mode: "number",
+      precision: 12,
+      scale: 2,
+    }),
+    totalProfit: numeric("total_profit", {
+      mode: "number",
+      precision: 12,
+      scale: 2,
+    }),
+    totalSales: integer("total_sales").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    yearMonthUnique: uniqueIndex("monthly_reports_year_month_unique").on(
+      table.year,
+      table.month,
+    ),
   }),
-  totalProfit: numeric("total_profit", {
-    mode: "number",
-    precision: 12,
-    scale: 2,
+);
+export const yearlyReports = pgTable(
+  "yearly_reports",
+  {
+    id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+    year: integer("year").notNull(),
+    totalRevenue: numeric("total_revenue", {
+      mode: "number",
+      precision: 12,
+      scale: 2,
+    }).notNull(),
+    totalCost: numeric("total_cost", {
+      mode: "number",
+      precision: 12,
+    }),
+    totalProfit: numeric("total_profit", {
+      mode: "number",
+    }),
+    totalSales: integer("total_sales").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    yearUnique: uniqueIndex("yearly_reports_year_unique").on(table.year),
   }),
-  totalSales: integer("total_sales").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+);

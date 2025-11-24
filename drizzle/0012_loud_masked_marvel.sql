@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "yearly_reports_year_unique" ON "yearly_reports" USING btree ("year");

@@ -64,6 +64,34 @@
       "when": 1763925519059,
       "tag": "0008_married_robbie_robertson",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1764009987252,
+      "tag": "0009_stiff_rafael_vega",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1764020604803,
+      "tag": "0010_noisy_zaladane",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1764020848830,
+      "tag": "0011_mighty_betty_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1764021203694,
+      "tag": "0012_loud_masked_marvel",
+      "breakpoints": true
     }
   ]
 }

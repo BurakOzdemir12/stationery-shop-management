@@ -1,0 +1,2 @@
+ALTER TABLE "monthly_reports" ADD CONSTRAINT "monthly_reports_year_unique" UNIQUE("year");--> statement-breakpoint
+ALTER TABLE "monthly_reports" ADD CONSTRAINT "monthly_reports_month_unique" UNIQUE("month");

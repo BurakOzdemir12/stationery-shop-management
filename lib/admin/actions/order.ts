@@ -1,6 +1,7 @@
 import { orderItems, orders, products } from "@/database/schema";
 import { and, eq, gte, sql } from "drizzle-orm";
 import { db } from "@/database/drizzle";
+import { applyOrderToRevenueReports } from "@/lib/admin/actions/budgetReport";
 
 type OrderItemIn = {
   productId: string;
@@ -22,6 +23,7 @@ export async function createOrder(items: OrderItemIn[]) {
     quantity: number;
     subTotal: number;
     barcodeSnapshot?: string | null;
+    unitPurchasePrice?: number | null;
   }> = [];
 
   for (const item of items) {
@@ -49,6 +51,7 @@ export async function createOrder(items: OrderItemIn[]) {
       .returning({
         id: products.id,
         sale_price: products.sale_price,
+        purchase_price: products.purchase_price,
         name: products.name,
         barcode: products.barcode,
       });
@@ -70,6 +73,7 @@ export async function createOrder(items: OrderItemIn[]) {
       quantity: item.quantity,
       subTotal,
       barcodeSnapshot: updated[0].barcode ?? null,
+      unitPurchasePrice: updated[0].purchase_price ?? null,
     });
   }
 
@@ -80,7 +84,7 @@ export async function createOrder(items: OrderItemIn[]) {
       totalItems,
       status: "PAID",
     })
-    .returning({ id: orders.id });
+    .returning({ id: orders.id, createdAt: orders.createdAt });
 
   await db.insert(orderItems).values(
     orderLines.map((l) => ({
@@ -88,6 +92,11 @@ export async function createOrder(items: OrderItemIn[]) {
       orderId: newOrder.id,
     })),
   );
+  await applyOrderToRevenueReports({
+    createdAt: newOrder.createdAt,
+    totalPrice: Number(totalPrice.toFixed(2)),
+    orderLines,
+  });
   return {
     id: newOrder.id,
   };
