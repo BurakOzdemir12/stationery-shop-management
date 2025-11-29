@@ -172,3 +172,27 @@ export const yearlyReports = pgTable(
     yearUnique: uniqueIndex("yearly_reports_year_unique").on(table.year),
   }),
 );
+export const dailyReports = pgTable(
+  "daily_reports",
+  {
+    id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+    date: date("date").notNull(),
+    totalRevenue: numeric("total_revenue", {
+      mode: "number",
+      precision: 12,
+      scale: 2,
+    }).notNull(),
+    totalCost: numeric("total_cost", {
+      mode: "number",
+      precision: 12,
+    }),
+    totalProfit: numeric("total_profit", {
+      mode: "number",
+    }),
+    totalSales: integer("total_sales").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    dayUnique: uniqueIndex("daily_reports_day_unique").on(table.date),
+  }),
+);

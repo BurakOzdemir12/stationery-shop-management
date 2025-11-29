@@ -1,8 +1,8 @@
 import { requireAdmin } from "@/lib/guard";
 import { db } from "@/database/drizzle";
-import { orders } from "@/database/schema";
-import { and, between, gte, lt } from "drizzle-orm";
-import { getMonthAndYear } from "@/lib/utils";
+import { dailyReports, orders } from "@/database/schema";
+import { and, between, gte, lt, lte } from "drizzle-orm";
+import { getTrDateNDaysAgoISO } from "@/lib/utils";
 
 type GetOrdersParams = {
   month: number;
@@ -54,3 +54,36 @@ export const getOrdersByYear = async ({ year }: GetOrdersByYearParams) => {
     );
   return res;
 };
+
+type SalesByDayParams = {
+  date: string | Date;
+  total: number;
+};
+export async function getOrdersByDay(n: number): Promise<SalesByDayParams[]> {
+  await requireAdmin();
+
+  const todayStr = getTrDateNDaysAgoISO(0);
+  const startStr = getTrDateNDaysAgoISO(n - 1);
+  const rows = await db
+    .select({
+      date: dailyReports.date,
+      totalSales: dailyReports.totalSales,
+    })
+    .from(dailyReports)
+    .where(
+      and(gte(dailyReports.date, startStr), lte(dailyReports.date, todayStr)),
+    );
+  const mapped = new Map<string, number>();
+  for (const row of rows) {
+    mapped.set(row.date, Number(row.totalSales ?? 0));
+  }
+  const result: SalesByDayParams[] = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const date = getTrDateNDaysAgoISO(i);
+    result.push({
+      date,
+      total: mapped.get(date) ?? 0,
+    });
+  }
+  return result;
+}

@@ -47,3 +47,21 @@ export const handleFormKeys: React.KeyboardEventHandler<HTMLFormElement> = (
     (next as HTMLInputElement).select?.();
   }
 };
+
+export function toTRDateString(date: Date): string {
+  const formatted = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Istanbul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date); //  "2025-11-30"
+
+  return formatted;
+}
+export function getTrDateNDaysAgoISO(daysAgo: number): string {
+  const dateNowTr = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Europe/Istanbul" }),
+  );
+  dateNowTr.setDate(dateNowTr.getDate() - daysAgo);
+  return toTRDateString(dateNowTr);
+}

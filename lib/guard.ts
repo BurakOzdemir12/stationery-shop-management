@@ -18,3 +18,14 @@ export async function requireAdmin() {
   if (!session || !isAdmin) redirect("/");
   return session;
 }
+export async function isAdmin() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/");
+  const admin = await db
+    .select({ isAdmin: users.role })
+    .from(users)
+    .where(eq(users.id, session?.user?.id))
+    .limit(1)
+    .then((res) => res[0]?.isAdmin === "ADMIN");
+  return admin;
+}

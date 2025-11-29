@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createOrder } from "@/lib/admin/actions/order";
+import { requireAdmin } from "@/lib/guard";
 
 export async function POST(req: NextRequest) {
+  await requireAdmin();
+
   const body = await req.json().catch(() => null);
   const items = (body?.items ?? []) as OrderItemIn[];
 

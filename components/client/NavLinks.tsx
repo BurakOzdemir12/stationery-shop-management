@@ -19,7 +19,7 @@ type NavLinksProps = {
   session?: Session | null;
   pathName: string | null;
 };
-const NavLinks = ({
+const NavLinks = async ({
   session,
   pathName,
   className = "flex max-md:hidden justify-between items-center gap-10",

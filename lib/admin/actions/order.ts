@@ -2,6 +2,7 @@ import { orderItems, orders, products } from "@/database/schema";
 import { and, eq, gte, sql } from "drizzle-orm";
 import { db } from "@/database/drizzle";
 import { applyOrderToRevenueReports } from "@/lib/admin/actions/budgetReport";
+import { requireAdmin } from "@/lib/guard";
 
 type OrderItemIn = {
   productId: string;
@@ -9,6 +10,8 @@ type OrderItemIn = {
 };
 
 export async function createOrder(items: OrderItemIn[]) {
+  await requireAdmin();
+
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error("EMPTY_CART");
   }

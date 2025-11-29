@@ -1,7 +1,8 @@
 import { requireAdmin } from "@/lib/guard";
 import { db } from "@/database/drizzle";
-import { monthlyReports, yearlyReports } from "@/database/schema";
+import { dailyReports, monthlyReports, yearlyReports } from "@/database/schema";
 import { sql } from "drizzle-orm";
+import { toTRDateString } from "@/lib/utils";
 type RevenueReportParams = {
   createdAt: Date;
   totalPrice: number;
@@ -18,6 +19,9 @@ export async function applyOrderToRevenueReports({
   await requireAdmin();
   const month = createdAt.getUTCMonth() + 1;
   const year = createdAt.getUTCFullYear();
+  const day = createdAt.getUTCDate();
+  // const date = createdAt.toISOString().slice(0, 10);
+  const trDateString = toTRDateString(createdAt);
   const cost = orderLines.reduce(
     (sum, item) => sum + (item.unitPurchasePrice ?? 0) * item.quantity,
     0,
@@ -26,6 +30,27 @@ export async function applyOrderToRevenueReports({
   const profit = revenue - cost;
   const profitPercentage = profit / cost;
 
+  // Daily
+  await db
+    .insert(dailyReports)
+    .values({
+      date: trDateString,
+      totalRevenue: revenue,
+      totalCost: cost,
+      totalProfit: profit,
+      totalSales: 1,
+    })
+    .onConflictDoUpdate({
+      target: [dailyReports.date],
+      set: {
+        totalRevenue: sql`${dailyReports.totalRevenue} + ${revenue}`,
+        totalCost: sql`${dailyReports.totalCost} + ${cost}`,
+        totalProfit: sql`${dailyReports.totalProfit} + ${profit}`,
+        totalSales: sql`${dailyReports.totalSales} + ${1}`,
+      },
+    });
+
+  //-- Monthly
   await db
     .insert(monthlyReports)
     .values({
@@ -45,7 +70,7 @@ export async function applyOrderToRevenueReports({
         totalSales: sql`${monthlyReports.totalSales} + ${1}`,
       },
     });
-
+  //yearly
   await db
     .insert(yearlyReports)
     .values({
