@@ -21,6 +21,7 @@ interface BaseProductParams {
   searchQuery?: string;
   inStock?: boolean;
   brands?: string[];
+  categories?: string[];
   price?: {
     min?: number;
     max?: number;
@@ -49,6 +50,9 @@ async function buildWhereCondition(params: BaseProductParams) {
   }
   if (params.brands && params.brands.length > 0) {
     conditions.push(inArray(products.brand, params.brands));
+  }
+  if (params.categories && params.categories.length > 0) {
+    conditions.push(inArray(products.category, params.categories));
   }
   if (params.price && (params.price.min != null || params.price.max != null)) {
     const min = params.price.min ?? 1;
@@ -156,9 +160,20 @@ export const getBrands = async () => {
   const rows = (await db
     .selectDistinct({ brand: products.brand })
     .from(products)
+    .groupBy(products.brand)
     .where(isNotNull(products.brand))) as Product[];
 
   return rows.map((r) => r.brand).filter(Boolean);
+};
+//categories for filter Side Bar
+export const getCategories = async () => {
+  const rows = await db
+    .selectDistinct({ category: products.category })
+    .from(products)
+    .groupBy(products.category)
+    .where(isNotNull(products.category));
+
+  return rows.map((row) => row.category).filter((c): c is string => !!c);
 };
 export const getProductById = async (id: string) => {
   const rows = await db

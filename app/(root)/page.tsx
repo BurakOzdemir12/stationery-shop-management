@@ -8,7 +8,11 @@ import ServicesCarousel from "@/components/client/service/ServicesCarousel";
 import { ProductCard } from "@/components/client/product/ProductCard";
 import ProductFilterForm from "@/components/client/product/ProductFilterForm";
 import PaginationView from "@/components/client/PaginationView";
-import { getBrands, getPaginatedProducts } from "@/lib/queries/products";
+import {
+  getBrands,
+  getCategories,
+  getPaginatedProducts,
+} from "@/lib/queries/products";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import ServiceList from "@/components/admin/service/ServiceList";
 import { getServices } from "@/lib/queries/service";
@@ -26,11 +30,13 @@ const Home = async ({
     { pagedProducts, totalPages },
     availableBrands,
     services,
+    categories,
   ] = await Promise.all([
     db.select().from(products).limit(7).orderBy(desc(products.createdAt)),
     getPaginatedProducts(parsed),
     getBrands(),
     getServices(),
+    getCategories(),
   ]);
   return (
     <Suspense fallback={<RootSkeleton />}>
@@ -53,16 +59,19 @@ const Home = async ({
         />
         <section
           id="all-products"
-          className="p-1 products-area mt-5 grid grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3  gap-5"
+          className="p-1  mt-5 grid grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3   gap-5"
         >
-          <div className="xl:col-span-1 lg:col-span-1 md:col-span-1 col-span-2 ">
-            <ProductFilterForm availableBrands={availableBrands} />
+          <div className="xl:col-span-1 lg:col-span-1 md:col-span-1 col-span-2     ">
+            <ProductFilterForm
+              availableBrands={availableBrands}
+              categories={categories}
+            />
           </div>
           <div className="xl:col-span-4 lg:col-span-3 md:col-span-2 col-span-2    ">
             <ProductCard products={pagedProducts} />
           </div>
         </section>
-        <div className="mt-15 items-center justify-items-center ">
+        <div className="mt-5 items-center justify-items-center ">
           <PaginationView
             type="products"
             currentPage={parsed.currentPage}

@@ -69,7 +69,7 @@ const Header = ({ session }: { session: Session | null }) => {
               <FaXmark aria-hidden="true" className="size-6" />
             </Button>
           </div>
-          <div className="mt-10 justify-items-center ">
+          <div className="mt-10 justify-items-start p-5 ">
             <NavLinks
               session={session}
               pathName={pathName}

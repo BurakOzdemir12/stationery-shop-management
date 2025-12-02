@@ -18,10 +18,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 
+const customScrollbarStyle =
+  "overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-500";
 type ProductFilterFormProps = {
   availableBrands: string[];
+  categories: string[];
 };
-const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
+const ProductFilterForm = ({
+  availableBrands,
+  categories,
+}: ProductFilterFormProps) => {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
@@ -33,6 +39,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
       query: searchParams.get("query") || "",
       inStock: searchParams.get("inStock") === "true",
       brands: searchParams.getAll("brand"),
+      categories: searchParams.getAll("category"),
       price: {
         min: searchParams.get("priceMin")
           ? Number(searchParams.get("priceMin"))
@@ -43,6 +50,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
       },
     },
   });
+
   function onSubmit(values: z.input<typeof ProductSearchFilters>) {
     const params = new URLSearchParams();
     if (values.query) {
@@ -54,6 +62,9 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
     if (values.brands && values.brands.length > 0) {
       values.brands.forEach((b) => params.append("brand", b));
     }
+    if (values.categories && values.categories.length > 0) {
+      values.categories.forEach((c) => params.append("category", c));
+    }
     if (values.price?.min != null)
       params.set("priceMin", String(values.price.min));
     else params.delete("priceMin");
@@ -64,6 +75,7 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
     params.delete("page");
     router.push(`${pathName}?${params.toString()}${anchor}`);
   }
+
   const brandCheckHandle = (
     current: string[] | undefined,
     brand: string,
@@ -74,59 +86,78 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
     else set.delete(brand);
     return Array.from(set);
   };
+  const categoryCheckHandle = (
+    current: string[] | undefined,
+    category: string,
+    checked: boolean | "indeterminate",
+  ) => {
+    const set = new Set(current ?? []);
+    if (checked === true) set.add(category);
+    else set.delete(category);
+    return Array.from(set);
+  };
   const [comobox, setOpen] = useState(false);
   return (
-    <section className="side-filter p-4  text-white   sticky h-full  bg-bgDarker  border-borderColor border-1 rounded-2xl ">
-      <div className="filter-form  ">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-5  "
+    <div
+      className={`p-4 h-fit max-h-[100vh] sticky top-4 text-white 
+      bg-bgDarker border-borderColor border-1 rounded-2xl self-start ${customScrollbarStyle}`}
+    >
+      {" "}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-5   "
+        >
+          <FormField
+            name="query"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="   ">
+                <FormLabel>Product name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Search by product name"
+                    onFocus={(e) => e.target.select()}
+                    {...field}
+                    className=" "
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="inStock"
+            render={({ field }) => (
+              <FormItem className=" flex flex-row gap-4  ">
+                <FormControl>
+                  <Checkbox
+                    className="filter-checkbox"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel>Only Shows In Stock</FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div
+            className={`flex flex-col mt-5 max-h-48 ${customScrollbarStyle}`}
           >
-            <FormField
-              name="query"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="   ">
-                  <FormLabel>Product name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Search by product name"
-                      onFocus={(e) => e.target.select()}
-                      {...field}
-                      className=" "
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="inStock"
-              render={({ field }) => (
-                <FormItem className=" flex flex-row gap-4  ">
-                  <FormControl>
-                    <Checkbox
-                      className="filter-checkbox"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>Only Shows In Stock</FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {" "}
+            <h1 className="text-white sticky top-0 bg-bgDarker z-10 pb-2">
+              Brands
+            </h1>{" "}
+            <hr className="opacity-35" />
             <FormField
               name="brands"
               render={({ field }) => (
-                <FormItem className=" max-h-72 h-fit flex flex-col overflow-y-scroll   ">
-                  <FormLabel>Brands</FormLabel>
-                  <hr className="opacity-35" />
+                <FormItem className="mt-2   flex flex-col   ">
                   {availableBrands.map((b) => (
                     <div
                       key={b}
-                      className=" flex flex-row gap-4 items-center flex-wrap"
+                      className="  flex flex-row gap-4 items-center flex-wrap"
                     >
                       <Checkbox
                         className=" filter-checkbox  "
@@ -144,68 +175,110 @@ const ProductFilterForm = ({ availableBrands }: ProductFilterFormProps) => {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-2 gap-3">
-              <FormField
-                name="price.min"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Min Price</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={0}
-                        inputMode="numeric"
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value === ""
-                              ? undefined
-                              : Number(e.target.value),
-                          )
-                        }
-                        placeholder="0"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="price.max"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Price</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={0}
-                        inputMode="numeric"
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value === ""
-                              ? undefined
-                              : Number(e.target.value),
-                          )
-                        }
-                        placeholder="∞"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          </div>
 
-            <Button className=" btn-gold  font-semibold mt-10" type="submit">
-              Filter
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </section>
+          <div
+            className={`flex flex-col mt-5 max-h-48 ${customScrollbarStyle}`}
+          >
+            <h1 className="text-white sticky top-0 bg-bgDarker z-10 pb-2">
+              Category
+            </h1>{" "}
+            <hr className="opacity-35" />
+            <FormField
+              name="categories"
+              render={({ field }) => (
+                <FormItem className="mt-2   flex flex-col">
+                  {categories.map((category) => (
+                    <div
+                      key={category}
+                      className=" flex flex-row gap-4 items-center flex-wrap"
+                    >
+                      <Checkbox
+                        className=" filter-checkbox  "
+                        checked={(field.value ?? []).includes(category)}
+                        onCheckedChange={(checked) =>
+                          field.onChange(
+                            categoryCheckHandle(field.value, category, checked),
+                          )
+                        }
+                      />
+                      <p>{category}</p>
+                    </div>
+                  ))}
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              name="price.min"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Min Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min={0}
+                      inputMode="numeric"
+                      value={field.value ?? ""}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === ""
+                            ? undefined
+                            : Number(e.target.value),
+                        )
+                      }
+                      placeholder="0"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="price.max"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Max Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min={0}
+                      inputMode="numeric"
+                      value={field.value ?? ""}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === ""
+                            ? undefined
+                            : Number(e.target.value),
+                        )
+                      }
+                      placeholder="∞"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button className=" btn-gold  font-semibold mt-10" type="submit">
+            Filter
+          </Button>
+          <Button
+            className=" cursor-pointer hover:bg-neutral-600  font-semibold mt-5"
+            type="reset"
+            onClick={() => router.replace(pathName + "#all-products")}
+          >
+            Reset All Filters
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 };
 export default ProductFilterForm;

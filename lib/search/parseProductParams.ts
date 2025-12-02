@@ -3,6 +3,7 @@ export type ProductSearchParams = {
   searchQuery?: string;
   inStock?: boolean;
   brands?: string[];
+  categories?: string[];
   price?: {
     min?: number;
     max?: number;
@@ -22,7 +23,7 @@ export function parseProductSearchParams(params: {
 
   const inStock = params.inStock === "true";
   const brands = toArray(params.brand);
-
+  const categories = toArray(params.category);
   const priceMin =
     typeof params.priceMin === "string" &&
     Number.isFinite(Number(params.priceMin))
@@ -40,5 +41,5 @@ export function parseProductSearchParams(params: {
       ? { min: priceMin, max: priceMax }
       : undefined;
 
-  return { currentPage, searchQuery, inStock, brands, price };
+  return { currentPage, searchQuery, inStock, brands, categories, price };
 }

@@ -34,7 +34,7 @@
     }
 
     .root-container {
-        @apply flex flex-col flex-1   min-h-screen bg-bgDark   ;
+        @apply flex flex-col flex-1    bg-bgDark   ;
     }
 
     /*auth*/
