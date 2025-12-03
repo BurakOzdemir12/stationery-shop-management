@@ -19,7 +19,7 @@ export default function Error({
       <h1 className="text-2xl font-bold text-text-gold">
         Bir şeyler ters gitti
       </h1>
-      <Link href="/" className="mt-4 underline text-white text-2xl">
+      <Link href="/public" className="mt-4 underline text-white text-2xl">
         Ana sayfaya dön
       </Link>
     </div>

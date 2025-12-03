@@ -7,7 +7,7 @@ export default function NotFound() {
       <p className="text-gray-400">
         Aradığınız sayfayı bulamadık. URL yanlış ya da içerik silinmiş olabilir.
       </p>
-      <Link href="/" className="mt-4 underline text-white text-2xl">
+      <Link href="/public" className="mt-4 underline text-white text-2xl">
         Ana sayfaya dön
       </Link>
     </div>
