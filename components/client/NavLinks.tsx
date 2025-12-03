@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Session } from "next-auth";
 import Link from "next/link";
@@ -10,27 +11,38 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { FaArrowRight } from "react-icons/fa6";
+import { useLocale, useTranslations } from "next-intl";
+import { IoLanguage } from "react-icons/io5";
+import { useRouter } from "@/i18n/navigation";
 type NavLinksProps = {
   className?: string;
   session?: Session | null;
-  pathName: string | null;
+  pathName: string;
 };
 const NavLinks = ({
   session,
   pathName,
   className = "flex max-md:hidden justify-between items-center  gap-10",
 }: NavLinksProps) => {
+  const router = useRouter();
+  const locale = useLocale();
+
+  const t = useTranslations("HeaderClient");
   const Links = [
     {
-      name: "Home",
+      name: t("home"),
       href: "/",
     },
-    { name: "Products", href: "/#all-products" },
+    { name: t("products"), href: "/#all-products" },
   ];
+  const handleLanguageChange = (newLocale: string) => {
+    router.replace(pathName, { locale: newLocale });
+  };
   return (
     <ul className={cn(className)}>
       {Links.map((item, index) => (
@@ -43,6 +55,37 @@ const NavLinks = ({
           </Link>
         </li>
       ))}
+      <li className="navLink ">
+        <DropdownMenu defaultOpen={true} modal={false}>
+          <DropdownMenuTrigger asChild>
+            <IoLanguage className="size-7" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="center"
+            className="  text-center border-0 p-0 m-0   bg-text-sun mt-5 "
+          >
+            <DropdownMenuGroup className="">
+              <DropdownMenuItem
+                className="p-0 m-0 rounded-xl  "
+                onClick={() => handleLanguageChange("en")}
+              >
+                <Button className="p-0 m-0 w-full   text-lg cursor-pointer  hover:bg-text-gold ">
+                  English
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-bgDark" />
+              <DropdownMenuItem
+                className="p-0 m-0 rounded-xl "
+                onClick={() => handleLanguageChange("tr")}
+              >
+                <Button className="p-0 m-0 w-full   text-lg cursor-pointer  hover:bg-text-gold  ">
+                  Türkçe
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </li>
       <li className="navLink ">
         <DropdownMenu defaultOpen={true} modal={false}>
           <DropdownMenuTrigger asChild>
@@ -66,7 +109,7 @@ const NavLinks = ({
               </Link>
             ) : (
               <Button className="cursor-pointer text-xl">
-                Login <FaArrowRight className="size-5 " />
+                {t("login")} <FaArrowRight className="size-5 " />
               </Button>
             )}
           </DropdownMenuTrigger>
@@ -81,12 +124,12 @@ const NavLinks = ({
                 <div>
                   <Link href="/sign-in" className=" ">
                     <DropdownMenuItem className="font-semibold cursor-pointer  hover:bg-text-gold">
-                      Sign In
+                      {t("signIn")}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/sign-up">
                     <DropdownMenuItem className=" font-semibold cursor-pointer hover:bg-text-gold">
-                      Sign Up
+                      {t("signUp")}
                     </DropdownMenuItem>
                   </Link>
                 </div>

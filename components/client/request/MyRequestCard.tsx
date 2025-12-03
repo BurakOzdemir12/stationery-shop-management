@@ -10,12 +10,14 @@ import DateCell from "@/components/admin/product/cells/DateCell";
 import { IKImage } from "imagekitio-react";
 import config from "@/lib/config";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type RequestProps = {
   request: RequestType;
   product: ProductClient;
 };
 const MyRequestCard = ({ request, product }: RequestProps) => {
+  const t = useTranslations("profile");
   return (
     <Link href={`/products/${product.id}`}>
       <Card className="w-fit  items-center bg-bgDarker overflow-hidden border-0 col-span-1 lg:col-span-2 max-sm:col-span-2">
@@ -32,13 +34,13 @@ const MyRequestCard = ({ request, product }: RequestProps) => {
         <CardContent className="text-text-sun gap-2 flex-col flex">
           <CardTitle className="text-xl">
             {request.status === "PENDING"
-              ? "Your request has been sent"
+              ? t("reqSent")
               : request.status === "ANSWERED"
-                ? "Your request has been seen"
-                : "Stock Renewed"}
+                ? t("reqAnswered")
+                : t("stockRenewed")}
           </CardTitle>
           <CardDescription className="text-xl flex flex-row items-center gap-1">
-            Requested on:
+            {t("desc")}
             <DateCell value={request.createdAt} />
           </CardDescription>
         </CardContent>

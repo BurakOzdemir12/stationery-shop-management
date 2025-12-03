@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 
 const customScrollbarStyle =
   "overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-500";
@@ -97,6 +98,7 @@ const ProductFilterForm = ({
     return Array.from(set);
   };
   const [comobox, setOpen] = useState(false);
+  const t = useTranslations("ProductFilter");
   return (
     <div
       className={`p-4 h-fit max-h-[100vh] sticky top-4 text-white 
@@ -106,17 +108,18 @@ const ProductFilterForm = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-5   "
+          className="flex flex-col gap-5 select-none  "
         >
+          <h2>{t("filterBy")}</h2>
           <FormField
             name="query"
             control={form.control}
             render={({ field }) => (
               <FormItem className="   ">
-                <FormLabel>Product name</FormLabel>
+                <FormLabel>{t("filterName")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Search by product name"
+                    placeholder={t("filterNamePlc")}
                     onFocus={(e) => e.target.select()}
                     {...field}
                     className=" "
@@ -129,7 +132,7 @@ const ProductFilterForm = ({
           <FormField
             name="inStock"
             render={({ field }) => (
-              <FormItem className=" flex flex-row gap-4  ">
+              <FormItem className=" flex flex-row gap-1  ">
                 <FormControl>
                   <Checkbox
                     className="filter-checkbox"
@@ -137,7 +140,9 @@ const ProductFilterForm = ({
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel>Only Shows In Stock</FormLabel>
+                <FormLabel className="text-nowrap text-sm">
+                  {t("filterStock")}
+                </FormLabel>
                 <FormMessage />
               </FormItem>
             )}
@@ -146,8 +151,8 @@ const ProductFilterForm = ({
             className={`flex flex-col mt-5 max-h-48 ${customScrollbarStyle}`}
           >
             {" "}
-            <h1 className="text-white sticky top-0 bg-bgDarker z-10 pb-2">
-              Brands
+            <h1 className="text-white sticky top-0  bg-bgDarker z-10 pb-2">
+              {t("brands")}
             </h1>{" "}
             <hr className="opacity-35" />
             <FormField
@@ -180,8 +185,8 @@ const ProductFilterForm = ({
           <div
             className={`flex flex-col mt-5 max-h-48 ${customScrollbarStyle}`}
           >
-            <h1 className="text-white sticky top-0 bg-bgDarker z-10 pb-2">
-              Category
+            <h1 className="text-white sticky top-0  bg-bgDarker z-10 pb-2 ">
+              {t("category")}
             </h1>{" "}
             <hr className="opacity-35" />
             <FormField
@@ -216,7 +221,7 @@ const ProductFilterForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Min Price</FormLabel>
+                  <FormLabel>{t("minPrice")}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -243,7 +248,7 @@ const ProductFilterForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Max Price</FormLabel>
+                  <FormLabel>{t("maxPrice")}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -267,14 +272,14 @@ const ProductFilterForm = ({
           </div>
 
           <Button className=" btn-gold  font-semibold mt-10" type="submit">
-            Filter
+            {t("applyFilters")}
           </Button>
           <Button
             className=" cursor-pointer hover:bg-neutral-600  font-semibold mt-5"
             type="reset"
             onClick={() => router.replace(pathName + "#all-products")}
           >
-            Reset All Filters
+            {t("clearFilters")}
           </Button>
         </form>
       </Form>

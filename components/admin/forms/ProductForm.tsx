@@ -1,13 +1,11 @@
 "use client";
 import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { number, z } from "zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,6 +20,7 @@ import FileUpload from "@/components/client/FileUpload";
 import { createProduct, updateProduct } from "@/lib/admin/actions/product";
 import { toast } from "react-hot-toast";
 import { handleFormKeys } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type ProductFormValues = z.infer<typeof productSchema>;
 type Props = {
@@ -30,6 +29,8 @@ type Props = {
 } & Partial<ProductFormValues>;
 
 const ProductForm = ({ type = "create", id, ...initial }: Props) => {
+  const tActions = useTranslations("ProductActions");
+  const tPage = useTranslations("ProductForm");
   const router = useRouter();
   // const handleKeyDown = keyDownCanceller();
   const form = useForm<ProductFormValues>({
@@ -58,23 +59,23 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
       if (type === "edit" && id) {
         const result = await updateProduct(id, values);
         if (result.success) {
-          toast.success("Product updated successfully");
+          toast.success(tActions("productUpdated"));
           router.push(`/admin/products`);
         } else {
-          toast.error(`An  ${result.success} `);
+          toast.error(tActions("productUpdateFail"));
         }
       } else {
         const result = await createProduct(values);
         if (result.success) {
-          toast.success("Product created successfully");
+          toast.success(tActions("productAdded"));
           // router.push(`/admin/products/${result.data.id}`);
           router.push(`/admin/products`);
         } else {
-          toast.error(`An  ${result.success} `);
+          toast.error(tActions("productAddFail"));
         }
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      toast.error(tActions("anError"));
     }
   };
   return (
@@ -87,8 +88,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
         <div className="form-fields flex w-full flex-col">
           <div className="basic-details  ">
             <h2 className="text-xl xl:col-span-6 col-span-4  font-medium">
-              {" "}
-              Basic Details
+              {tPage("basicH1")}
             </h2>
             <div className="form-field xl:col-span-2   ">
               <FormField
@@ -96,7 +96,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"name"}
                 render={({ field }) => (
                   <FormItem className="product-form-item   ">
-                    <FormLabel>Product name</FormLabel>
+                    <FormLabel>{tPage("name")}</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Pencil"
@@ -116,7 +116,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"category"}
                 render={({ field }) => (
                   <FormItem className="product-form-item ">
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>{tPage("category")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -136,7 +136,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"brand"}
                 render={({ field }) => (
                   <FormItem className="product-form-item ">
-                    <FormLabel>Brand</FormLabel>
+                    <FormLabel>{tPage("brand")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -156,7 +156,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"purchase_price"}
                 render={({ field }) => (
                   <FormItem className="product-form-item">
-                    <FormLabel>Purchase Price</FormLabel>
+                    <FormLabel>{tPage("purchasePrice")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -177,7 +177,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"sale_price"}
                 render={({ field }) => (
                   <FormItem className="product-form-item">
-                    <FormLabel>Sale Price</FormLabel>
+                    <FormLabel>{tPage("salePrice")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -198,7 +198,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"stock"}
                 render={({ field }) => (
                   <FormItem className="product-form-item">
-                    <FormLabel>Stock</FormLabel>
+                    <FormLabel>{tPage("stock")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -219,7 +219,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"description"}
                 render={({ field }) => (
                   <FormItem className="product-form-item ">
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{tPage("description")}</FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
@@ -239,7 +239,8 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 render={({ field }) => (
                   <FormItem className="product-form-item ">
                     <FormLabel>
-                      <FaImages className=" size-5 " /> Media
+                      <FaImages className=" size-5 " />
+                      {tPage("media")}
                     </FormLabel>
                     <FormControl
                       className={`    
@@ -266,7 +267,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
           <div className="barcode-details">
             <h2 className="flex col-span-4 gap-2 text-xl font-medium">
               <FaBarcode className="size-8" />
-              Barcode
+              {tPage("barcode")}
             </h2>
             <div className="form-field ">
               <FormField
@@ -274,11 +275,11 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"barcode"}
                 render={({ field }) => (
                   <FormItem className="product-form-item max-w-md">
-                    <FormLabel>Barcode</FormLabel>
+                    <FormLabel>{tPage("barcode")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="545SDF413"
+                        placeholder="84654531897"
                         {...field}
                         className="prod-input"
                         min={0}
@@ -301,7 +302,7 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
                 name={"code"}
                 render={({ field }) => (
                   <FormItem className="product-form-item max-w-md">
-                    <FormLabel>Code</FormLabel>
+                    <FormLabel>{tPage("code")}</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -326,7 +327,8 @@ const ProductForm = ({ type = "create", id, ...initial }: Props) => {
         </div>
 
         <Button className="max-sm:w-full text-xl h-max  btn-pri " type="submit">
-          {type === "edit" ? "Save Changes" : "Create Product"} <FaCheck />
+          {type === "edit" ? tPage("submitEdit") : tPage("submitAdd")}{" "}
+          <FaCheck />
         </Button>
       </form>
     </Form>

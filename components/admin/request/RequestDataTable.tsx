@@ -19,7 +19,7 @@ import {
 } from "@/lib/admin/actions/stockRequest";
 import { toast } from "react-hot-toast";
 import AlertDialogBox from "@/components/AlertDialogBox";
-import { useConfirmAlertContext } from "@/app/context/ConfirmAlertContext";
+import { useConfirmAlertContext } from "@/app/[locale]/context/ConfirmAlertContext";
 
 const RequestDataTable = ({ requests }: { requests: RequestType[] }) => {
   const [isPending, setPending] = useState(false);
@@ -46,7 +46,7 @@ const RequestDataTable = ({ requests }: { requests: RequestType[] }) => {
   const handleDelete = async (id: string) => {
     setDeleting(true);
 
-    const ok = await confirm("Are you sure you want to change this request?");
+    const ok = await confirm("Are you sure you want to delete this request?");
     if (!ok) {
       setDeleting(false);
       return;

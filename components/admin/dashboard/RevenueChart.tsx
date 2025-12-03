@@ -15,32 +15,44 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+type RevenueByDay = {
+  date: string;
+  total: number;
+};
 
+type SalesByDay = {
+  date: string;
+  total: number;
+};
 type ChartItem = {
   date: string;
   revenue: number;
   sales: number;
 };
 
-const chartConfig = {
+const getChartConfig = (
+  t: ReturnType<typeof useTranslations>,
+): ChartConfig => ({
   views: {
-    label: "Total Revenue",
+    label: t("totalRevenue"),
   },
   revenue: {
-    label: "Total Revenue",
+    label: t("totalRevenue"),
     color: "var(--chart-2)",
   },
   sales: {
-    label: "Total Sales",
+    label: t("totalSales"),
     color: "var(--chart-1)",
   },
-} satisfies ChartConfig;
+});
 
 type ChartProps = {
   revenueData: RevenueByDay[];
   salesData: SalesByDay[];
 };
 const RevenueChart = ({ revenueData, salesData }: ChartProps) => {
+  const t = useTranslations("DashboardPage");
   const chartData: ChartItem[] = React.useMemo(
     () =>
       revenueData.map((rev, index) => ({
@@ -50,8 +62,9 @@ const RevenueChart = ({ revenueData, salesData }: ChartProps) => {
       })),
     [revenueData, salesData],
   );
-  const [activeChart, setActiveChart] =
-    useState<keyof typeof chartConfig>("revenue");
+  const config = React.useMemo(() => getChartConfig(t), [t]);
+
+  const [activeChart, setActiveChart] = useState<keyof ChartConfig>("revenue");
 
   const total = React.useMemo(
     () => ({
@@ -65,14 +78,12 @@ const RevenueChart = ({ revenueData, salesData }: ChartProps) => {
     <Card className="py-0">
       <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3 sm:!py-0">
-          <CardTitle>Revenue & Sales Chart</CardTitle>
-          <CardDescription>
-            Showing total revenue and sales numbers for the last 3 months
-          </CardDescription>
+          <CardTitle>{t("chartH1")}</CardTitle>
+          <CardDescription>{t("chartP")}</CardDescription>
         </div>
         <div className="flex">
-          {["revenue", "sales"].map((key) => {
-            const chart = key as keyof typeof chartConfig;
+          {(["revenue", "sales"] as (keyof ChartConfig)[]).map((key) => {
+            const chart = key;
             return (
               <button
                 key={chart}
@@ -81,7 +92,7 @@ const RevenueChart = ({ revenueData, salesData }: ChartProps) => {
                 onClick={() => setActiveChart(chart)}
               >
                 <span className="text-muted-foreground text-sm font-semibold ">
-                  {chartConfig[chart].label}
+                  {config[chart].label}
                 </span>
                 <span className="text-lg leading-none font-bold sm:text-3xl">
                   {total[key as keyof typeof total].toLocaleString()}
@@ -93,7 +104,7 @@ const RevenueChart = ({ revenueData, salesData }: ChartProps) => {
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
-          config={chartConfig}
+          config={config}
           className="aspect-auto h-[250px] w-full"
         >
           <BarChart

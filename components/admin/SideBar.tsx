@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { adminSideBarLinks } from "@/constants";
+import { adminSidebarLinks } from "@/constants";
 import Link from "next/link";
 import { cn, getInitials } from "@/lib/utils";
 // Fa icons
@@ -12,11 +12,12 @@ import { Session } from "next-auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { IKImage } from "imagekitio-react";
 import config from "@/lib/config";
+import { useTranslations } from "next-intl";
 
 const SideBar = ({ session }: { session: Session }) => {
   const pathname = usePathname();
   const isPosRoute = pathname.startsWith("/admin/pos");
-
+  const t = useTranslations("AdminSideBar");
   return (
     <div className={`admin-sidebar ${isPosRoute && "w-min"}`}>
       <div>
@@ -27,7 +28,9 @@ const SideBar = ({ session }: { session: Session }) => {
           </h1>
         </div>
         <div className="mt-12 flex flex-col gap-7  w-min">
-          {adminSideBarLinks.map(({ text, href: route, icon }) => {
+          {adminSidebarLinks.map(({ text, href: route, icon, keys }) => {
+            const key = keys as keyof typeof adminSidebarLinks;
+            const config = adminSidebarLinks[key];
             const isSelected =
               (route !== "/admin" &&
                 pathname.includes(route) &&
@@ -55,7 +58,7 @@ const SideBar = ({ session }: { session: Session }) => {
                       isSelected && "text-white",
                     )}
                   >
-                    {text}
+                    {t(keys as string)}
                   </p>
                 </div>
               </Link>

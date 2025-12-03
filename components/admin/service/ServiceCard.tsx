@@ -17,28 +17,17 @@ import { z } from "zod";
 import { serviceSchema } from "@/lib/validations";
 import MoneyCell from "@/components/admin/product/cells/MoneyCell";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslations } from "next-intl";
+import { useConfirmAlertContext } from "@/app/[locale]/context/ConfirmAlertContext";
 
-const handleDelete = async (id: string) => {
-  const ok = confirm("Are you sure you want to delete this service?");
-  if (!ok) return;
-  try {
-    const res = await deleteService(id);
-    if (!res?.success) {
-      toast.error("Failed to delete service");
-      throw new Error("Failed to delete service");
-    }
-    toast.success("Service deleted successfully");
-  } catch (e) {
-    console.log(e);
-    toast.error("Failed to delete service");
-  }
-};
 type ServiceFormValues = z.infer<typeof serviceSchema>;
 const ServiceCard = ({ id, name, price, createdAt }: Service) => {
+  const tActions = useTranslations("ServiceActions");
   const [onEdit, setOnEdit] = useState(false);
   const [draftPrice, setDraftPrice] = useState<number | "">(price);
   const [draftName, setDraftName] = useState(name);
   const [isLoading, setIsLoading] = useState(false);
+  const { confirm } = useConfirmAlertContext();
   const onSubmit: SubmitHandler<ServiceFormValues> = async () => {
     try {
       setIsLoading(true);
@@ -48,19 +37,34 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
       });
 
       if (!res?.success) {
-        toast.error("Failed to update service");
+        toast.error(tActions("serviceUpdateFail"));
 
-        throw new Error("Failed to update service");
+        throw new Error(tActions("serviceUpdateFail"));
       }
       setIsLoading(false);
-      toast.success("Service updated successfully");
+      toast.success(tActions("serviceUpdated"));
       setOnEdit(false);
     } catch (e) {
       setIsLoading(false);
-      console.log(e);
-      toast.error("Failed to update service");
+      toast.error(tActions("serviceUpdateFail"));
     }
   };
+  const handleDelete = async (id: string) => {
+    const ok = await confirm(tActions("confirmDelete"));
+    if (!ok) return;
+    try {
+      const res = await deleteService(id);
+      if (!res?.success) {
+        toast.error(tActions("serviceDeleteFail"));
+        throw new Error(tActions("serviceDeleteFail"));
+      }
+      toast.success(tActions("serviceDeleted"));
+    } catch (e) {
+      console.log(e);
+      toast.error(tActions("serviceDeleteFail"));
+    }
+  };
+
   return (
     <div className=" 2xl:col-span-1 lg:col-span-2 sm:grid-cols-2 p-5 max-md:p-1 rounded-2xl gap-5 justify-items-center ">
       <Card
@@ -74,7 +78,7 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
               type="text"
               value={draftName}
               onChange={(e) => setDraftName(e.target.value)}
-              placeholder="Set your new Service Name"
+              placeholder={tActions("onEditPlaceHolder")}
             />
           ) : (
             <h1 className="font-semibold text-wrap    ">
@@ -86,7 +90,7 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
         <CardContent className="w-full flex gap-1 ">
           {!onEdit ? (
             <p className="flex items-center gap-1 font-semibold">
-              <span> Price:</span>
+              <span> {tActions("price")}</span>
               <MoneyCell value={price} tone="muted" />
               {/*<FaTurkishLiraSign />*/}
             </p>
@@ -96,7 +100,7 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
               type="number"
               value={draftPrice}
               onChange={(e) => setDraftPrice(Number(e.target.value))}
-              placeholder="Set your new Price"
+              placeholder={tActions("onEditPricePlaceHolder")}
             />
           )}
         </CardContent>
@@ -104,11 +108,11 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
           {!onEdit && (
             <div className="gap-5 flex">
               <Button className="btn-edit" onClick={() => setOnEdit(true)}>
-                Edit
+                {tActions("edit")}
               </Button>
 
               <Button onClick={() => handleDelete(id)} className="btn-del">
-                Delete
+                {tActions("delete")}
               </Button>
             </div>
           )}
@@ -119,7 +123,7 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
                 onClick={() => onSubmit()}
                 disabled={isLoading}
               >
-                {isLoading ? <Spinner className="size-3" /> : "Save"}
+                {isLoading ? <Spinner className="size-3" /> : tActions("save")}
               </Button>
               <Button
                 className="btn-del"
@@ -129,7 +133,7 @@ const ServiceCard = ({ id, name, price, createdAt }: Service) => {
                   setOnEdit(false);
                 }}
               >
-                Cancel
+                {tActions("cancel")}
               </Button>
             </div>
           )}

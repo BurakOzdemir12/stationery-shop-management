@@ -9,6 +9,7 @@ import Image from "next/image";
 import { UploadIcon } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const {
   env: {
@@ -58,6 +59,7 @@ const FileUpload = ({
   value,
   fileName,
 }: Props) => {
+  const t = useTranslations("AuthForm");
   const ikUploadRef = useRef(null);
   const [file, setFile] = useState<{ filePath: string | null }>({
     filePath: value ?? null,

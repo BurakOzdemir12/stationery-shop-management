@@ -26,9 +26,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 type ServiceFormValues = z.infer<typeof serviceSchema>;
 const ServiceForm = () => {
+  const tActions = useTranslations("ServiceActions");
   const form = useForm<ServiceFormValues>({
     defaultValues: {
       name: "",
@@ -41,14 +43,13 @@ const ServiceForm = () => {
     try {
       const res = await createService(values);
       if (!res?.success) {
-        throw new Error("Failed to create service");
+        throw new Error(tActions("serviceAddFail"));
       }
       form.reset();
       setOpen(false);
-      toast.success("Service created successfully");
+      toast.success(tActions("serviceAdded"));
     } catch (e) {
-      console.log(e);
-      toast.error("Failed to create service");
+      toast.error(tActions("serviceAddFail"));
     }
   };
   const [open, setOpen] = useState(false);
@@ -57,15 +58,13 @@ const ServiceForm = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="text-[19px] text-white cursor-pointer">
-          + New Service
+          {tActions("newServiceBtn")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Your Service</DialogTitle>
-          <DialogDescription>
-            Please provide the service details below. Name and Price
-          </DialogDescription>
+          <DialogTitle>{tActions("addServiceH1")}</DialogTitle>
+          <DialogDescription>{tActions("addServiceP")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -76,9 +75,14 @@ const ServiceForm = () => {
                   name="name"
                   render={({ field, fieldState }) => (
                     <FormItem>
-                      <FormLabel htmlFor="name-1">Service Name</FormLabel>
+                      <FormLabel htmlFor="name-1">
+                        {tActions("serviceNameLabel")}
+                      </FormLabel>
                       <FormControl>
-                        <Input placeholder="Renkli Fotokobi" {...field} />
+                        <Input
+                          placeholder={tActions("inputPlaceHolder")}
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -91,9 +95,15 @@ const ServiceForm = () => {
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="username-1">Price</FormLabel>
+                      <FormLabel htmlFor="username-1">
+                        {tActions("inputPlaceHolder")}
+                      </FormLabel>
                       <FormControl>
-                        <Input type="number" placeholder="25,6" {...field} />
+                        <Input
+                          type="number"
+                          placeholder={tActions("pricePlaceholder")}
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -103,11 +113,11 @@ const ServiceForm = () => {
             <DialogFooter className="mt-4">
               <DialogClose asChild>
                 <Button className="btn-del" variant="outline">
-                  Cancel
+                  {tActions("cancelBtn")}
                 </Button>
               </DialogClose>
               <Button className="btn-pri" type="submit">
-                Create Service
+                {tActions("createServiceBtn")}
               </Button>
             </DialogFooter>
           </form>

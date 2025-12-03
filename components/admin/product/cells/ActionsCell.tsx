@@ -14,34 +14,45 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { deleteProduct } from "@/lib/admin/actions/product";
 import { toast } from "react-hot-toast";
-import ProductDetailSheet from "@/components/admin/product/ProductDetailSheet";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useConfirmAlertContext } from "@/app/[locale]/context/ConfirmAlertContext";
 type ActionsCellProps = {
   id: string;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
-  onViewDetails?: (id: string) => void; // eklendi
+  onViewDetails?: (id: string) => void;
+  t: (key: string) => string;
 };
 export default function ActionsCell({
   id,
   onEdit,
   onDelete,
   onViewDetails,
+  t,
 }: ActionsCellProps) {
+  const { confirm } = useConfirmAlertContext();
+  const [pending, setPending] = React.useState(false);
   const handleDelete = async (id: string) => {
-    const ok = confirm("Delete this row?");
-    if (!ok) return;
+    setPending(true);
+    const ok = await confirm(t("confirmDelete"));
+    if (!ok) {
+      setPending(false);
+      return;
+    }
     try {
       const res = await deleteProduct(id);
 
       if (!res?.success) {
-        throw new Error("Failed to delete product");
+        setPending(false);
+        throw new Error(t("productDeleteFail"));
       }
       onDelete?.(id);
-      toast.success("Product deleted successfully");
+      setPending(false);
+      toast.success(t("productDeleted"));
     } catch (e) {
       console.log(e);
-      toast.error("Failed to delete product");
+      setPending(false);
+      toast.error(t("productDeleteFail"));
     }
   };
   const router = useRouter();
@@ -61,14 +72,14 @@ export default function ActionsCell({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
           className="cursor-pointer hover:bg-neutral-100"
           onClick={() => openDetails(id)}
         >
-          View Details
+          {t("view")}
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -81,14 +92,14 @@ export default function ActionsCell({
             className="w-full h-full"
             href={`/admin/products/edit/${id}`}
           >
-            Edit
+            {t("editProduct")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer hover:bg-neutral-100"
           onClick={() => handleDelete(id)}
         >
-          Delete
+          {t("deleteProduct")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

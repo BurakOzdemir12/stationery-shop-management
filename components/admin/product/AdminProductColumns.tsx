@@ -8,8 +8,12 @@ import StockCell from "@/components/admin/product/cells/StockCell";
 import BarcodeCell from "@/components/admin/product/cells/BarcodeCell";
 import ActionsCell from "@/components/admin/product/cells/ActionsCell";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
-const selectColumn: ColumnDef<AdminProductRow> = {
+const selectColumn = (
+  t: (key: string) => string,
+): ColumnDef<AdminProductRow> => ({
   id: "select",
   header: ({ table }) => (
     <Checkbox
@@ -32,50 +36,54 @@ const selectColumn: ColumnDef<AdminProductRow> = {
   ),
   enableSorting: false,
   enableHiding: false,
-};
-export const adminProductColumns: ColumnDef<AdminProductRow>[] = [
-  selectColumn,
+});
+export const useAdminProductColumns = (): ColumnDef<AdminProductRow>[] => {
+  const t = useTranslations("ProductsTable");
+  const tActions = useTranslations("ProductActions");
+  return [
+    selectColumn(t),
 
-  { header: "Name", accessorKey: "name" },
-  { header: "Category", accessorKey: "category" },
-  { header: "Brand", accessorKey: "brand" },
-  {
-    header: "Stock",
-    accessorKey: "stock",
-    cell: ({ getValue }) => <StockCell value={getValue() as number} />,
-  },
-  {
-    header: "Sale Price",
-    accessorKey: "sale_price",
-    cell: ({ getValue }) => <MoneyCell value={getValue() as number} />,
-  },
-  {
-    header: "Purchase Price",
-    accessorKey: "purchase_price",
-    cell: ({ getValue }) => (
-      <MoneyCell value={getValue() as number} tone="muted" />
-    ),
-  },
-  {
-    header: "Barcode",
-    accessorKey: "barcode",
-    cell: ({ getValue }) => (
-      <BarcodeCell value={getValue() as string | null} tone="muted" />
-    ),
-  },
-  { header: "Code", accessorKey: "code" },
-  {
-    header: "Created At",
-    accessorKey: "createdAt",
-    cell: ({ getValue }) => <DateCell value={getValue() as Date | null} />,
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    enableHiding: false,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <ActionsCell id={(row.original as AdminProductRow).id} />
-    ),
-  },
-];
+    { header: t("name"), accessorKey: "name" },
+    { header: t("category"), accessorKey: "category" },
+    { header: t("brand"), accessorKey: "brand" },
+    {
+      header: t("stock"),
+      accessorKey: "stock",
+      cell: ({ getValue }) => <StockCell value={getValue() as number} />,
+    },
+    {
+      header: t("salePrice"),
+      accessorKey: "sale_price",
+      cell: ({ getValue }) => <MoneyCell value={getValue() as number} />,
+    },
+    {
+      header: t("purchasePrice"),
+      accessorKey: "purchase_price",
+      cell: ({ getValue }) => (
+        <MoneyCell value={getValue() as number} tone="muted" />
+      ),
+    },
+    {
+      header: t("barcode"),
+      accessorKey: "barcode",
+      cell: ({ getValue }) => (
+        <BarcodeCell value={getValue() as string | null} tone="muted" />
+      ),
+    },
+    { header: t("code"), accessorKey: "code" },
+    {
+      header: t("createdAt"),
+      accessorKey: "createdAt",
+      cell: ({ getValue }) => <DateCell value={getValue() as Date | null} />,
+    },
+    {
+      id: "actions",
+      header: t("actions"),
+      enableHiding: false,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <ActionsCell id={(row.original as AdminProductRow).id} t={tActions} />
+      ),
+    },
+  ];
+};

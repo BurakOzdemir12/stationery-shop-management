@@ -4,6 +4,7 @@ import { IoIosPricetag } from "react-icons/io";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 import Link from "next/link";
 import { textUpperCase } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const ProductOverview = ({
   id,
@@ -15,6 +16,8 @@ const ProductOverview = ({
   image,
   stock,
 }: ProductClient) => {
+  const t = useTranslations("ProductOverview");
+
   return (
     <section id="overview" className="product-overview">
       <div className="flex flex-1 sm:col-span-1  col-span-2 flex-col ">
@@ -34,26 +37,26 @@ const ProductOverview = ({
               </div>
             </div>
             <div className="info-block ">
-              Category:
+              {t("category")} :
               <span className="text-amber-100 text-lg ">
                 {" "}
                 {textUpperCase(category)}
               </span>
             </div>
             <div className="info-block">
-              Brand:{" "}
+              {t("brand")}:{" "}
               <span className="text-amber-100 text-lg">
                 {" "}
                 {textUpperCase(brand)}
               </span>{" "}
             </div>{" "}
             <div className="info-block">
-              Stock:<span className="text-amber-100"> {stock} </span>
+              {t("stock")}:<span className="text-amber-100"> {stock} </span>
             </div>
           </div>
           <Link href={`/products/${id}`} className="w-fit">
             <div className="rounded-md  text-black font-medium  p-1.5 w-fit  btn-gold">
-              View Details
+              {t("details")}
             </div>
           </Link>
         </div>

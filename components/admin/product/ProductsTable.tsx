@@ -25,23 +25,28 @@ import { Input } from "@/components/ui/input";
 import "react-barcode-scanner/polyfill";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useBarcodeContext } from "@/app/context/BarcodeContext";
 import CameraBarcodeScanner from "@/components/admin/barcode/CameraBarcodeScanner";
 import { FaDeleteLeft } from "react-icons/fa6";
+import { useBarcodeContext } from "@/app/[locale]/context/BarcodeContext";
+import { useTranslations } from "next-intl";
+import { useAdminProductColumns } from "@/components/admin/product/AdminProductColumns";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  // columns: ColumnDef<TData, TValue>[]; // For translation I disable Props instead use useAdminProductColumns inside component
   data: TData[];
   totalPages: number;
   currentPage: number;
 }
 
 const ProductsTable = <TData, TValue>({
-  columns,
+  // columns,
   data,
   totalPages,
   currentPage,
 }: DataTableProps<TData, TValue>) => {
+  const t = useTranslations("ProductsTable");
+  const columns = useAdminProductColumns() as ColumnDef<TData, unknown>[];
+
   const table = useReactTable({
     data,
     columns,
@@ -110,10 +115,10 @@ const ProductsTable = <TData, TValue>({
     <div className="flex flex-col w-full">
       <div className="flex lg:justify-start justify-center lg:flex-row flex-col gap-6">
         <div>
-          <h1 className="">Filter with Product Name</h1>
+          <h1 className="">{t("filterByName")}</h1>
           <Input
             className="m-3 mx-0 bg-input text-xl font-semibold"
-            placeholder="Enter product name..."
+            placeholder={t("placeholderName")}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -121,7 +126,7 @@ const ProductsTable = <TData, TValue>({
 
         <div>
           <span className="flex flex-row gap-5 items-center">
-            <h1>Filter with Barcode</h1>
+            <h1>{t("filterByBarcode")}</h1>
 
             {/*<CameraBarcodeScanner*/}
             {/*  className="btn-pri text-sm"*/}
@@ -159,7 +164,7 @@ const ProductsTable = <TData, TValue>({
 
           <Input
             className="m-3 mx-0 bg-input text-xl font-semibold"
-            placeholder="Enter Barcode..."
+            placeholder={t("placeholderBarcode")}
             value={barcode}
             onChange={(e) => setBarcode(e.target.value)}
           />
@@ -173,7 +178,7 @@ const ProductsTable = <TData, TValue>({
             setName("");
           }}
         >
-          Reset Filters
+          {t("reset")}
         </Button>
       </div>
 

@@ -1,18 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Session } from "next-auth";
 import { FaBars, FaXmark } from "react-icons/fa6";
 import Image from "next/image";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import NavLinks from "@/components/client/NavLinks";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
 
 const Header = ({ session }: { session: Session | null }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathName = usePathname();
-
+  const t = useTranslations("HeaderClient");
   return (
     <header className=" ">
       <nav className="flex flex-1 justify-between my-10 gap-20 ">
@@ -34,7 +35,7 @@ const Header = ({ session }: { session: Session | null }) => {
             onClick={() => setMobileMenuOpen(true)}
             className="-m-1.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">{t("openMenu")}</span>
             <FaBars aria-hidden="true" className="size-6" />
           </button>
         </div>
@@ -65,7 +66,7 @@ const Header = ({ session }: { session: Session | null }) => {
               onClick={() => setMobileMenuOpen(false)}
               className="-m-2.5 rounded-md p-2.5 text-gray-400"
             >
-              <span className="sr-only">Close menu</span>
+              <span className="sr-only">{t("closeMenu")}</span>
               <FaXmark aria-hidden="true" className="size-6" />
             </Button>
           </div>
