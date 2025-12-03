@@ -1,0 +1,214 @@
+{
+  "ProductOverview": {
+    "category": "Category",
+    "brand": "Brand",
+    "price": "Price",
+    "stock": "Stock",
+    "details": "View Details"
+  },
+  "HomaPage": {
+    "ServicesH1": "Our Services",
+    "LatestProducts": "Latest Products"
+  },
+  "ProductFilter": {
+    "filterBy": "Filter By",
+    "filterName": "Product Name",
+    "filterNamePlc": "Search by product name",
+    "filterStock": "Only show In Stock Products",
+    "brands": "Brand",
+    "category": "Category",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "applyFilters": "Apply Filters",
+    "clearFilters": "Clear Filters"
+  },
+  "ProductDetails": {
+    "requestFailed": "Failed to request product.",
+    "requestError": "You must be logged in to request a product.",
+    "requestNetworkError": "Network error, please try again.",
+    "requestSuccess": "Product requested successfully!!.",
+    "outStock": "Stock Unavailable ",
+    "inStock": "Stock Available ",
+    "request": "Request Product",
+    "alreadyRequested": "Already Requested",
+    "viewRequests": "Check Your Requests",
+    "specifications": "Specifications",
+    "price": "Price",
+    "category": "Category",
+    "brand": "Brand"
+  },
+  "HeaderClient": {
+    "openMenu": "Open main menu",
+    "closeMenu": "Close menu",
+    "products": "Products",
+    "home": "Home",
+    "login": "Login",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "AuthForm": {
+    "signInSuccess": "Signed in successfully",
+    "signUpSuccess": "Signed up successfully",
+    "failedSignIn": "Failed to sign in. Please check your email or password.",
+    "failedSignUp": "Failed to sign up. Please try again later.",
+    "welcomeBack": "Welcome Back!",
+    "subSignInText": "Sign in to continue browsing and request products.",
+    "subSignUpText": "Join us today and start exploring our products!",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "confirmPassword": "Password Confirmation",
+    "profileImage": "Profile Picture (Optional)",
+    "uploadPicture": "Upload Your Profile Picture",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "New to our platform?",
+    "haveAccount": "Already have an account?",
+    "signInBtn": "Sign In",
+    "signUpBtn": "Sign Up",
+    "createAccount": "Create an account",
+    "continue": "Continue as a Visitor"
+  },
+  "AuthValidations": {
+    "required": "This field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "minLengthFullName": "This field must be at least 2 characters  long.",
+    "minLengthPassword": "Password must be at least 8 characters  long.",
+    "maxLengthPassword": "Password must be no more than {max} characters long.",
+    "passwordMismatch": "Passwords do not match.",
+    "uppercaseRegexPassword": "Password must contain at least one uppercase Letter.",
+    "digitRegexPassword": "Password must contain at least one digit.",
+    "specialRegexPassword": "Password must contain at least one special character like !+#,. Etc."
+  },
+  "paginationLinks": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "profile": {
+    "h1": "My Requests",
+    "logout": "Logout",
+    "reqSent": "Your request has been sent",
+    "reqAnswered": "Your request has been seen",
+    "stockRenewed": "Stock Renewed",
+    "desc": "Requested on:"
+  },
+  "AdminSideBar": {
+   "dashboard": "Dashboard",
+    "products": "Products",
+    "services": "Services",
+    "requests": "Requests",
+    "users": "Users",
+    "pos": "POS",
+    "settings": "Settings"
+  },
+  "DashboardPage": {
+    "h1": "Admin Dashboard",
+    "totalRevenue": "Total Revenue",
+    "totalSales": "Total Sales",
+    "totalUsers": "Total Users",
+    "totalRequests": "Total Requests",
+    "chartH1": "Revenue & Sales Chart",
+    "chartP": "Showing total revenue and sales numbers for the last 3 months"
+
+  },
+  "ProductsPage": {
+    "h1": "Products Management",
+    "addProduct": "+ New Product "
+
+  },
+  "ProductsTable": {
+    "filterByName": "Filter with Product Name",
+    "filterByBarcode": "Filter with Barcode",
+    "placeholderName": "Enter product name to filter",
+    "placeholderBarcode": "Enter barcode to filter",
+    "reset": "Reset Filters",
+    "name": "Product Name",
+    "category": "Category",
+    "brand": "Brand",
+    "salePrice": "SAle Price",
+    "purchasePrice": "Purchase Price",
+    "stock": "Stock",
+    "barcode": "Barcode",
+    "code": "Code",
+    "createdAt": "Created At",
+    "actions": "Actions"
+  },
+  "ProductDetailSheet": {
+    "barcode": "Barcode",
+    "purchasePrice": "Purchase Price",
+    "salePrice": "Sale Price",
+    "stock": "Stock",
+    "description": "Description"
+  },
+  "ProductActions": {
+    "actions": "Actions",
+    "view": "View Details",
+    "editProduct": "Edit Product",
+    "edit": "Edit",
+    "deleteProduct": "Delete Product",
+    "delete": "Delete",
+    "productAdded": "Product created successfully.",
+    "productAddFail": "Failed to create product.",
+    "productUpdated": "Product updated successfully.",
+    "productDeleted": "Product deleted successfully.",
+    "productDeleteFail": "Failed to delete product.",
+    "productUpdateFail": "Failed to update product.",
+    "anError": "An error occurred. Please try again.",
+    "confirmDelete": "Are you sure you want to delete this product?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close Details"
+
+  },
+    "ProductForm": {
+      "back": "Back to Products",
+        "basicH1": "Basic Details",
+        "name": "Product Name",
+        "category": "Category",
+        "brand": "Brand",
+        "purchasePrice": "Purchase Price",
+        "salePrice": "Sale Price",
+        "stock": "Stock",
+        "barcode": "Barcode",
+        "code": "Code",
+      "media": "Media",
+        "description": "Description",
+        "submitAdd": "Create Product",
+        "submitEdit": "Save Changes"
+    },
+    "ServicesPage": {
+      "h1": "Services Management"
+    },
+  "ServiceActions": {
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "save": "Save",
+    "cancel": "Cancel",
+    "serviceAdded": "Service created successfully.",
+    "serviceAddFail": "Failed to create service.",
+    "serviceUpdated": "Service updated successfully.",
+    "serviceDeleted": "Service deleted successfully.",
+    "serviceDeleteFail": "Failed to delete service.",
+    "serviceUpdateFail": "Failed to update service.",
+    "anError": "An error occurred. Please try again.",
+    "confirmDelete": "Are you sure you want to delete this service?",
+    "onEditPlaceHolder": "Set your new Service Name",
+    "onEditPricePlaceHolder": "Set your new Price",
+    "price": "Price: ",
+
+    "newServiceBtn": "+ New Service",
+    "addServiceH1": "Add New Service",
+    "addServiceP": "Please provide the service details below. Name and Price",
+    "serviceNameLabel": "Service Name",
+    "inputPlaceHolder": "Fax, copy etc.",
+    "priceLabel": "Price",
+    "pricePlaceholder": "25",
+    "createServiceBtn": "Create Service",
+    "cancelBtn": "Cancel"
+  }
+
+
+
+}

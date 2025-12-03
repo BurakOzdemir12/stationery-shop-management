@@ -1,0 +1,111 @@
+{
+  "ProductOverview": {
+    "category": "Kategori",
+    "brand": "Marka",
+    "price": "Fiyat",
+    "stock": "Stok",
+    "details": "Detayları Gör"
+  },
+  "HomaPage": {
+    "ServicesH1": "Hizmetlerimiz",
+    "LatestProducts": "En Son Ürünler"
+  },
+  "ProductFilter": {
+    "filterBy": "Filtrele",
+    "filterName": "Ürün Adı",
+    "filterNamePlc": "Ürün adına göre ara",
+    "filterStock": "Sadece Stokta Olan Ürünleri Göster",
+    "brands": "Marka",
+    "category": "Kategori",
+    "minPrice": "Minimum Fiyat",
+    "maxPrice": "Maksimum Fiyat",
+    "applyFilters": "Filtreleri Uygula",
+    "clearFilters": "Filtreleri Temizle"
+  },
+  "ProductDetails": {
+    "requestFailed": "Ürün isteği başarısız oldu.",
+    "requestError": "Ürün talep etmek için giriş yapmalısınız.",
+    "requestNetworkError": "Ağ hatası, lütfen tekrar deneyin.",
+    "requestSuccess": "Ürün talebi başarıyla gönderildi!",
+    "outStock": "Stokta Yok",
+    "inStock": "Stokta Var",
+    "request": "Ürün Talep Et",
+    "alreadyRequested": "Zaten Talep Edildi",
+    "viewRequests": "Taleplerini Gör",
+    "specifications": "Özellikler",
+    "price": "Fiyat",
+    "category": "Kategori",
+    "brand": "Marka"
+  },
+  "HeaderClient": {
+    "openMenu": "Ana menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "products": "Ürünler",
+    "home": "Anasayfa",
+    "login": "Giriş Yap",
+    "signIn": "Giriş Yap",
+    "signUp": "Kayıt Ol"
+  },
+  "AuthForm": {
+    "signInSuccess": "Başarıyla giriş yapıldı",
+    "signUpSuccess": "Başarıyla kayıt olundu",
+    "failedSignIn": "Giriş yapılamadı. Lütfen e-posta veya şifrenizi kontrol edin.",
+    "failedSignUp": "Kayıt işlemi başarısız oldu. Lütfen daha sonra tekrar deneyin.",
+    "welcomeBack": "Tekrar Hoş Geldiniz!",
+    "subSignInText": "Devam etmek ve ürün talep etmek için giriş yapın.",
+    "subSignUpText": "Bugün bize katılın ve ürünleri keşfetmeye başlayın!",
+    "fullName": "Ad Soyad",
+    "email": "E-posta Adresi",
+    "password": "Şifre",
+    "confirmPassword": "Şifre Doğrulama",
+    "profileImage": "Profil Fotoğrafı (Opsiyonel)",
+    "uploadPicture": "Profil Fotoğrafı Yükle",
+    "rememberMe": "Beni Hatırla",
+    "forgotPassword": "Şifremi Unuttum",
+    "noAccount": "Platformda yeni misin?",
+    "haveAccount": "Zaten bir hesabın var mı?",
+    "signInBtn": "Giriş Yap",
+    "signUpBtn": "Kayıt Ol",
+    "createAccount": "Hesap Oluştur",
+    "continue": "Ziyaretçi Olarak Devam Et"
+  },
+  "AuthValidations": {
+    "required": "Bu alan zorunludur.",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+    "minLengthFullName": "Bu alan en az 2 karakter olmalıdır.",
+    "minLengthPassword": "Şifre en az 8 karakter olmalıdır.",
+    "maxLengthPassword": "Şifre en fazla {max} karakter olabilir.",
+    "passwordMismatch": "Şifreler uyuşmuyor.",
+    "uppercaseRegexPassword": "Şifrede en az bir büyük harf bulunmalıdır.",
+    "digitRegexPassword": "Şifrede en az bir rakam bulunmalıdır.",
+    "specialRegexPassword": "Şifrede !+#,. gibi özel karakterlerden en az biri bulunmalıdır."
+  },
+  "paginationLinks": {
+    "previous": "Önceki",
+    "next": "Sonraki"
+  },
+  "profile": {
+    "h1": "Taleplerim",
+    "logout": "Çıkış Yap",
+    "reqSent": "Talebiniz gönderildi",
+    "reqAnswered": "Talebiniz görüntülendi",
+    "stockRenewed": "Stok Yenilendi",
+    "desc": "Talep Tarihi:"
+  },
+  "AdminSideBar": {
+    "dashboard": "Ana Menü",
+    "products": "Ürünler",
+    "services": "Hizmetler",
+    "requests": "İstekler",
+    "pos": "Pos Ekranı",
+    "users": "Kulanıcılar",
+    "settings": "Ayarlar"
+  },
+  "DashboardPage": {
+    "h1": "Yönetici Paneli",
+    "totalRevenue": "Toplam Kazanç",
+    "totalSales": "Toplam Satış",
+    "totalUsers": "Toplam kullanıcı",
+    "totalRequests": "Toplam istek"
+  }
+}
