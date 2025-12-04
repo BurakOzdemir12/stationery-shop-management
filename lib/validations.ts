@@ -1,15 +1,35 @@
 import { object, z } from "zod";
 
-export const signUpSchema = z.object({
-  fullName: z.string().min(2),
-  email: z.email(),
-  password: z.string().min(8),
-  profileImage: z.string().optional(),
-});
-export const signInSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
+export const signUpSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      fullName: z.string().min(2, { message: t("minLengthFullName") }),
+      email: z.email(t("invalidEmail")),
+      password: z
+        .string()
+        .regex(/[A-Z]/, { message: t("uppercaseRegexPassword") })
+        .regex(/[0-9]/, { message: t("digitRegexPassword") })
+        .regex(/[!@#$%^&*()_\-+={[}\]|\\:;"'<>,.?/]/, {
+          message: t("specialRegexPassword"),
+        })
+        .min(8, { message: t("minLengthPassword") }),
+      confirmPassword: z.string().min(8, { message: t("minLengthPassword") }),
+      profileImage: z.string().optional(),
+    })
+    .superRefine((val, ctx) => {
+      if (val.password !== val.confirmPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: t("passwordMismatch"),
+          path: ["confirmPassword"],
+        });
+      }
+    });
+export const signInSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string({ message: t("invalidEmail") }).email(),
+    password: z.string().min(8),
+  });
 
 export const productSchema = z.object({
   name: z.string().trim().nonempty().min(1).max(155),
