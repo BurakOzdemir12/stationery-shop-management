@@ -129,9 +129,9 @@ export type AdminProductRow = {
   brand: string | null;
   stock: number;
   sale_price: number;
-  purchase_price: number;
+  purchase_price: number | null;
   barcode: string;
-  code: string;
+  code: string | null;
   createdAt: Date | null;
 };
 export async function getPaginatedAdminProducts({

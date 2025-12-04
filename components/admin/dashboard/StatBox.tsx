@@ -5,6 +5,7 @@ import { textUpperCase } from "@/lib/utils";
 import { FaPercentage } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 type StatBoxProps = {
   type: "revenue" | "sales" | "users" | "requests";
   value: number;
@@ -23,6 +24,7 @@ const StatBox = ({
   higherThan,
   currency,
 }: StatBoxProps) => {
+  const t = useTranslations("DashboardPage");
   const searchParams = useSearchParams();
   const router = useRouter();
   const periodParam = searchParams.get("period");
@@ -42,7 +44,7 @@ const StatBox = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const label = period === "month" ? "Month" : "Year";
+  const label = period === "month" ? t("month") : t("year");
   return (
     <div className="bg-sidebar  col-span-1 p-5 rounded-2xl border-border border-1 ">
       <span className="flex flex-row justify-between items-center  ">
@@ -55,23 +57,23 @@ const StatBox = ({
           </Button>
         )}
 
-        <span className="bg-bgDark  rounded-2xl p-2 border-border border-1  font-extrabold   ">
-          {percentageValue && percentageValue > 0 ? (
-            <span className="flex gap-2 ">
-              <IoIosTrendingUp className="text-primary  text-3xl font-extrabold " />
-              <p className="flex items-center gap-0 text-white">
-                {"+" + percentageValue} <FaPercentage />
-              </p>
-            </span>
-          ) : (
-            <span className="flex gap-2 ">
-              <IoIosTrendingDown className="text-red-500  text-3xl font-extrabold" />
-              <p className="flex items-center gap-0 text-white">
-                {percentageValue} <FaPercentage />
-              </p>
-            </span>
-          )}
-        </span>
+        {/*<span className="bg-bgDark  rounded-2xl p-2 border-border border-1  font-extrabold   ">*/}
+        {/*  {percentageValue && percentageValue > 0 ? (*/}
+        {/*    <span className="flex gap-2 ">*/}
+        {/*      <IoIosTrendingUp className="text-primary  text-3xl font-extrabold " />*/}
+        {/*      <p className="flex items-center gap-0 text-white">*/}
+        {/*        {"+" + percentageValue} <FaPercentage />*/}
+        {/*      </p>*/}
+        {/*    </span>*/}
+        {/*  ) : (*/}
+        {/*    <span className="flex gap-2 ">*/}
+        {/*      <IoIosTrendingDown className="text-red-500  text-3xl font-extrabold" />*/}
+        {/*      <p className="flex items-center gap-0 text-white">*/}
+        {/*        {percentageValue} <FaPercentage />*/}
+        {/*      </p>*/}
+        {/*    </span>*/}
+        {/*  )}*/}
+        {/*</span>*/}
       </span>
       <div className="">
         <h1 className="text-3xl font-extrabold text-neutral-700 mt-2">
@@ -79,20 +81,20 @@ const StatBox = ({
         </h1>
       </div>
       <div className="">
-        <p>
-          {type === "revenue" && higherThan
-            ? `Revenue are ${nf.format(5)}  more than the previous month`
-            : `Revenue are ${nf.format(5)}  less than the previous month`}
-          {/*{type === "users" &&*/}
-          {/*  higherThan &&*/}
-          {/*  `Revenue are ${nf.format(5)}  more than the previous month`}{" "}*/}
-          {/*{type === "sales" &&*/}
-          {/*  higherThan &&*/}
-          {/*  `Revenue are ${nf.format(5)}  more than the previous month`}{" "}*/}
-          {/*{type === "requests" &&*/}
-          {/*  higherThan &&*/}
-          {/*  `Revenue are ${nf.format(5)}  more than the previous month`}*/}
-        </p>
+        {/*<p>*/}
+        {/*  {type === "revenue" && higherThan*/}
+        {/*    ? `Revenue are ${nf.format(5)}  more than the previous month`*/}
+        {/*    : `Revenue are ${nf.format(5)}  less than the previous month`}*/}
+        {/*  /!*{type === "users" &&*!/*/}
+        {/*  /!*  higherThan &&*!/*/}
+        {/*  /!*  `Revenue are ${nf.format(5)}  more than the previous month`}{" "}*!/*/}
+        {/*  /!*{type === "sales" &&*!/*/}
+        {/*  /!*  higherThan &&*!/*/}
+        {/*  /!*  `Revenue are ${nf.format(5)}  more than the previous month`}{" "}*!/*/}
+        {/*  /!*{type === "requests" &&*!/*/}
+        {/*  /!*  higherThan &&*!/*/}
+        {/*  /!*  `Revenue are ${nf.format(5)}  more than the previous month`}*!/*/}
+        {/*</p>*/}
       </div>
     </div>
   );

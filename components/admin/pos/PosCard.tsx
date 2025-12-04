@@ -8,11 +8,12 @@ import MoneyCell from "@/components/admin/product/cells/MoneyCell";
 import StockCell from "@/components/admin/product/cells/StockCell";
 import { Button } from "@/components/ui/button";
 import { FaCircle } from "react-icons/fa6";
-import { usePosCartContext } from "@/app/context/PosCartContext";
+import { usePosCartContext } from "@/app/[locale]/context/PosCartContext";
+import { useTranslations } from "next-intl";
 
 const PosCard = ({ id, name, image, sale_price, stock, brand }: Product) => {
   const { onAdd } = usePosCartContext();
-
+  const t = useTranslations("PosCard");
   return (
     <Card className=" m-0 p-0 border-1 border-border rounded-xl col-span-1 shadow-md bg-sidebar  ">
       <IKImage
@@ -30,7 +31,7 @@ const PosCard = ({ id, name, image, sale_price, stock, brand }: Product) => {
       </CardContent>
       <CardContent className="p-2 pt-0 mx-2 mt-0  flex flex-row gap-5 font-semibold  text-neutral-500">
         <p className=" ">
-          Stock: <StockCell value={stock} />
+          {t("stock")} <StockCell value={stock} />
         </p>
         <p className="flex gap-1 items-center">
           <FaCircle className="size-2" /> {textUpperCase(brand || " ")}
@@ -44,7 +45,7 @@ const PosCard = ({ id, name, image, sale_price, stock, brand }: Product) => {
             onAdd({ id, name, image, sale_price, stock, brand }, 1)
           }
         >
-          + Add
+          {t("addToCart")}
         </Button>
       </CardAction>
     </Card>

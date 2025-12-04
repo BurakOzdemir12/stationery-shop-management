@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 
 const PosFilterForm = () => {
   const searchParams = useSearchParams();
@@ -34,6 +35,8 @@ const PosFilterForm = () => {
     }
     router.push(`${pathName}?${params.toString()}${anchor}`);
   }
+  const t = useTranslations("PosPage");
+
   return (
     <div>
       <Form {...form}>
@@ -43,11 +46,11 @@ const PosFilterForm = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="   ">
-                <FormLabel>Product name</FormLabel>
+                <FormLabel>{t("productNameLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     className="  w-md bg-input-field text-xl "
-                    placeholder="Search Product"
+                    placeholder={t("searchPlaceholder")}
                     onFocus={(e) => e.target.select()}
                     {...field}
                   />

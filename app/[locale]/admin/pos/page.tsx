@@ -6,19 +6,21 @@ import PosCartList from "@/components/admin/pos/PosCartList";
 import { parseProductSearchParams } from "@/lib/search/parseProductParams";
 import PaginationView from "@/components/client/PaginationView";
 import PosFilterForm from "@/components/admin/forms/PosFilterForm";
+import { getTranslations } from "next-intl/server";
 
 const Page = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
+  const t = await getTranslations("PosPage");
   const parsed = parseProductSearchParams(await searchParams);
 
   const [{ res, totalPages }] = await Promise.all([getProductsForPos(parsed)]);
 
   return (
     <div className="bg-white p-5 rounded-2xl w-full ">
-      <TypographyH2 title="Retail Pos " />
+      <TypographyH2 title={t("posH1")} />
 
       <div id="main-field" className="grid grid-cols-3 w-full gap-5  ">
         <div

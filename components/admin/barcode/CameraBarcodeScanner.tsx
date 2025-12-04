@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useBarcodeContext } from "@/app/context/BarcodeContext";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { FaBarcode } from "react-icons/fa";
 import { getProductByBarcode } from "@/lib/queries/products";
+import { useBarcodeContext } from "@/app/[locale]/context/BarcodeContext";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -39,6 +39,7 @@ const CameraBarcodeScanner = ({
   const InnerScanner = dynamic(() => import("react-qr-barcode-scanner"), {
     ssr: false,
   });
+
   const router = useRouter();
 
   const handleUpdate = (_err: unknown, result: ScanResult) => {

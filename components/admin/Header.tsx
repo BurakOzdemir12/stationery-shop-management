@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Session } from "next-auth";
 import CameraBarcodeScanner from "@/components/admin/barcode/CameraBarcodeScanner";
 import { useRouter } from "next/navigation";
-import { useBarcodeContext } from "@/app/context/BarcodeContext";
-import { usePosCartContext } from "@/app/context/PosCartContext";
+import { useBarcodeContext } from "@/app/[locale]/context/BarcodeContext";
+import { usePosCartContext } from "@/app/[locale]/context/PosCartContext";
 
 const Header = ({ session }: { session: Session }) => {
   const [isScanOpen, setOpenScan] = React.useState(false);
@@ -16,12 +16,7 @@ const Header = ({ session }: { session: Session }) => {
   return (
     <header className="admin-header bg-white border-neutral-300 border-r-1 border-b-1 ">
       <div className=" p-3  grid grid-cols-3   gap-5 ">
-        <div className="search-bar col-span-1 align-middle  ">
-          <Input
-            className="bg-neutral-300 rounded-2xl placeholder:font-medium   "
-            placeholder="Ara.."
-          />
-        </div>
+        <div className="search-bar col-span-1 align-middle  "></div>
         <div className="pos-screen col-span-1">
           {/*If you don't have any usb barcode reader/scanner you can use your laptop or usb camera for adding Product to your pos.
           // !You have to scan it with clear light otherwise it won't work. */}

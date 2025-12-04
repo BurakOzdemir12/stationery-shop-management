@@ -37,6 +37,9 @@ const getChartConfig = (
   views: {
     label: t("totalRevenue"),
   },
+  viewsS: {
+    label: t("totalSales"),
+  },
   revenue: {
     label: t("totalRevenue"),
     color: "var(--chart-2)",
@@ -134,7 +137,7 @@ const RevenueChart = ({ revenueData, salesData }: ChartProps) => {
               content={
                 <ChartTooltipContent
                   className="w-[150px]"
-                  nameKey="views"
+                  nameKey={activeChart === "revenue" ? "views" : "viewsS"}
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("tr-TR", {
                       month: "short",

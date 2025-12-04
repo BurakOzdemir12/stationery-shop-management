@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import MoneyCell from "@/components/admin/product/cells/MoneyCell";
-import { usePosCartContext } from "@/app/context/PosCartContext";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { FaWindowClose } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
+import { usePosCartContext } from "@/app/[locale]/context/PosCartContext";
 
 const PosCart = ({ id, name, sale_price, quantity }) => {
   const { toggleCartItemQuantity, onRemove, onInputQty } = usePosCartContext();

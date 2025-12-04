@@ -20,33 +20,35 @@ import {
 import { toast } from "react-hot-toast";
 import AlertDialogBox from "@/components/AlertDialogBox";
 import { useConfirmAlertContext } from "@/app/[locale]/context/ConfirmAlertContext";
+import { useTranslations } from "next-intl";
 
 const RequestDataTable = ({ requests }: { requests: RequestType[] }) => {
+  const t = useTranslations("RequestPage");
   const [isPending, setPending] = useState(false);
   const [isDeleting, setDeleting] = useState(false);
   const { confirm } = useConfirmAlertContext();
 
   const handleStatusChange = async (id: string) => {
     setPending(true);
-    const ok = await confirm("Are you sure you want to change this request?");
+    const ok = await confirm(t("confirmChange"));
     if (!ok) {
       setPending(false);
       return;
     }
     const res = updateRequestStatus(id);
     if (!res) {
-      toast.error("Failed to change status");
+      toast.error(t("failedChange"));
       setPending(false);
       return;
     }
     setPending(false);
 
-    toast.success("Request status updated successfully");
+    toast.success(t("successChange"));
   };
   const handleDelete = async (id: string) => {
     setDeleting(true);
 
-    const ok = await confirm("Are you sure you want to delete this request?");
+    const ok = await confirm(t("confirmDelete"));
     if (!ok) {
       setDeleting(false);
       return;
@@ -55,58 +57,72 @@ const RequestDataTable = ({ requests }: { requests: RequestType[] }) => {
     if (!res) {
       setDeleting(false);
 
-      toast.error("Failed to delete request");
+      toast.error(t("failedDelete"));
       return;
     }
     setDeleting(false);
 
-    toast.success("Request deleted successfully");
+    toast.success(t("successDelete"));
   };
   return (
     <Table className="">
-      <TableCaption>A List of your stock requests</TableCaption>
+      <TableCaption>{t("tableCaption")}</TableCaption>
       <TableHeader className="bg-primary-opac ">
         <TableRow>
-          <TableHead className="w-[100px]">User</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Product</TableHead>
-          <TableHead className="text-left">Request Send Date</TableHead>
-          <TableHead className="text-center">Actions</TableHead>
+          <TableHead className="w-[100px]">{t("user")}</TableHead>
+          <TableHead> {t("status")}</TableHead>
+          <TableHead> {t("product")}</TableHead>
+          <TableHead className="text-left">{t("requestedAt")}</TableHead>
+          <TableHead className="text-center"> {t("actions")}</TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
-        {requests.map((req) => (
-          <TableRow key={req.id}>
-            <TableCell className="font-medium ">{req.userName}</TableCell>
-            <TableCell
-              className={`${isPending && !isDeleting && "text-success-opac"} font-semibold text-lg`}
-            >
-              {req.status}
-            </TableCell>
-            <TableCell>
-              {req.productName}/ {req.productBrand}
-            </TableCell>
-            <TableCell className="text-left">
-              <DateCell value={req.createdAt} />
-            </TableCell>
-            <TableCell className="flex flex-row gap-2  justify-end">
-              <Button
-                disabled={isPending}
-                className="btn-pri"
-                onClick={() => handleStatusChange(req.id)}
+        {requests.length > 0 &&
+          requests.map((req) => (
+            <TableRow key={req.id}>
+              <TableCell className="font-medium ">{req.userName}</TableCell>
+              <TableCell
+                className={`${isPending && !isDeleting && "text-success-opac"} font-semibold text-lg`}
               >
-                Change Status
-              </Button>
-              <Button className="btn-del" onClick={() => handleDelete(req.id)}>
-                Delete
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
+                {req.status === "PENDING"
+                  ? t("pending")
+                  : req.status === "ANSWERED"
+                    ? t("seen")
+                    : req.status === "RESTOCKED"
+                      ? t("stocked")
+                      : ""}
+              </TableCell>
+              <TableCell>
+                {req.productName}/ {req.productBrand}
+              </TableCell>
+              <TableCell className="text-left">
+                <DateCell value={req.createdAt} />
+              </TableCell>
+              <TableCell className="flex flex-row gap-2  justify-end">
+                <Button
+                  disabled={isPending}
+                  className="btn-pri"
+                  onClick={() => handleStatusChange(req.id)}
+                >
+                  {t("changeStatus")}
+                </Button>
+                <Button
+                  className="btn-del"
+                  onClick={() => handleDelete(req.id)}
+                >
+                  {t("deleteRequest")}
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
+
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={0}>Total Request: {requests.length}</TableCell>
+          <TableCell colSpan={0}>
+            {t("totalRequests")} {requests.length}
+          </TableCell>
         </TableRow>
       </TableFooter>
     </Table>

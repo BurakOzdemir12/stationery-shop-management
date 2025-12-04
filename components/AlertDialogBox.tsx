@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useConfirmAlertContext } from "@/app/context/ConfirmAlertContext";
+import { useConfirmAlertContext } from "@/app/[locale]/context/ConfirmAlertContext";
 
 const AlertDialogBox = () => {
   const { open, title, description, close } = useConfirmAlertContext();

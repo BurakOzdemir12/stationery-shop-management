@@ -8,6 +8,9 @@ import {
   FaMobileScreen,
 } from "react-icons/fa6";
 import { FiSettings } from "react-icons/fi";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { ColumnDef } from "@tanstack/table-core";
 export const sampleProducts = [
   {
     id: 1,
@@ -46,53 +49,107 @@ export const sampleProducts = [
     code: 0,
   },
 ];
-export const FIELD_NAMES = {
-  fullName: "Full Name",
-  email: "Email",
-  password: "Password",
-  profileImage: "Profile Picture",
-};
-export const FIELD_TYPES = {
-  fullName: "text",
-  email: "email",
-  password: "password",
-};
+export const AUTH_FIELDS = {
+  fullName: {
+    type: "text",
+    labelKey: "fullName",
+  },
+  email: {
+    type: "email",
+    labelKey: "email",
+  },
+  password: {
+    type: "password",
+    labelKey: "password",
+  },
+  confirmPassword: {
+    type: "password",
+    labelKey: "confirmPassword",
+  },
+  profileImage: {
+    type: "file",
+    labelKey: "profileImage",
+  },
+} as const;
+export const adminProductColumns = (
+  t: (key: string) => string,
+): ColumnDef<Product>[] => [
+  {
+    accessorKey: "name",
+    header: t("name"),
+  },
+  {
+    accessorKey: "category",
+    header: t("category"),
+  },
+  {
+    accessorKey: "brand",
+    header: t("brand"),
+  },
+  {
+    accessorKey: "price",
+    header: t("price"),
+  },
+  {
+    accessorKey: "stock",
+    header: t("stock"),
+  },
+];
+// export const FIELD_NAMES = {
+//   fullName: "Full Name",
+//   email: "Email",
+//   password: "Password",
+//   confirmPassword: "Confirm Password",
+//   profileImage: "Profile Picture",
+// };
+// export const FIELD_TYPES = {
+//   fullName: "text",
+//   email: "email",
+//   password: "password",
+// };
 
-export const adminSideBarLinks = [
+export const adminSidebarLinks = [
   {
     text: "Dashboard",
     href: "/admin",
     icon: FaHouse,
+    keys: "dashboard",
   },
   {
     text: "Products",
     href: "/admin/products",
     icon: FaCubes,
+    keys: "products",
   },
   {
     text: "Services",
     href: "/admin/services",
     icon: FaServicestack,
+    keys: "services",
   },
-  {
-    text: "Users",
-    href: "/admin/users",
-    icon: FaUsers,
-  },
+  // {
+  //   text: "Users",
+  //   href: "/admin/users",
+  //   icon: FaUsers,
+  //   keys: "users",
+  // },
   {
     text: "POS",
     href: "/admin/pos",
     icon: FaMobileScreen,
+    keys: "pos",
   },
   {
     text: "Requests",
     href: "/admin/requests",
     icon: FaMessage,
+    keys: "requests",
   },
-  {
-    text: "Settings",
-    href: "/admin/settings",
-    icon: FiSettings,
-  },
-];
+  // {
+  //   text: "Settings",
+  //   href: "/admin/settings",
+  //   icon: FiSettings,
+  //   keys: "settings",
+  // },
+] as const;
 export const mediaQueries = [];

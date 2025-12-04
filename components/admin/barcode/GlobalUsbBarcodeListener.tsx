@@ -1,11 +1,11 @@
 "use client";
 import React, { useCallback } from "react";
 
-import { usePosCartContext } from "@/app/context/PosCartContext";
-import { useBarcodeContext } from "@/app/context/BarcodeContext";
 import { usePathname, useRouter } from "next/navigation";
 import UsbBarcodeListener from "@/components/admin/barcode/UsbBarcodeListener";
 import { toast } from "react-hot-toast";
+import { usePosCartContext } from "@/app/[locale]/context/PosCartContext";
+import { useBarcodeContext } from "@/app/[locale]/context/BarcodeContext";
 
 export default function GlobalUsbBarcodeListener() {
   const pathname = usePathname();

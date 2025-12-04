@@ -3,11 +3,13 @@ import React from "react";
 import PosCart from "@/components/admin/pos/PosCart";
 import { Button } from "@/components/ui/button";
 import { FaTrashCan } from "react-icons/fa6";
-import { usePosCartContext } from "@/app/context/PosCartContext";
 import MoneyCell from "@/components/admin/product/cells/MoneyCell";
 import { FaLuggageCart } from "react-icons/fa";
+import { usePosCartContext } from "@/app/[locale]/context/PosCartContext";
+import { useTranslations } from "next-intl";
 
 const PosCartList = () => {
+  const t = useTranslations("PosCart");
   const { cartItems, totalQuantities, totalPrice, onRemoveAll, finalizeOrder } =
     usePosCartContext();
   return (
@@ -15,7 +17,7 @@ const PosCartList = () => {
       <div className="flex flex-row justify-between gap-5 mb-2">
         <div className="grid grid-cols-3 items-center ">
           <h2 className="col-span-1 font-bold text-xl text-neutral-500 items-start ">
-            Total Items
+            {t("totalItems")}
           </h2>
           <h2
             className="col-span-1 bg-secondary p-0.5 w-15 text-center
@@ -29,14 +31,14 @@ const PosCartList = () => {
         </div>
         <Button className=" btn-del w-fit" onClick={onRemoveAll}>
           <FaTrashCan className="size-5" />
-          Clear Cart
+          {t("clearCart")}
         </Button>
       </div>
       <div id="cart-products" className="max-h-100 h-screen overflow-y-auto">
         {cartItems.length < 1 && (
           <h1 className="text-center text-xl text-neutral-500 justify-items-center mt-20">
             <FaLuggageCart size={100} className="" />
-            Cart is Empty Scan it
+            {t("emptyCart")}
           </h1>
         )}
         {cartItems.map((item) => (
@@ -46,7 +48,7 @@ const PosCartList = () => {
       <div id="cart-data" className="mt-5 ">
         <div className="grid grid-cols-2 items-center justify-items-center  justify-between mt-10 ">
           <h2 className="col-span-1 font-bold text-xl text-neutral-500  ">
-            Total Price
+            {t("totalPrice")}
           </h2>
 
           <span className=" col-span-1">
@@ -56,7 +58,7 @@ const PosCartList = () => {
       </div>
       <div className="self-center mt-5">
         <Button onClick={finalizeOrder} className="btn-suc  w-fit mt-5">
-          Proceed to Payment
+          {t("proceed")}
         </Button>
       </div>
     </div>

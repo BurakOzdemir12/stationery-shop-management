@@ -235,7 +235,7 @@ const ProductsTable = <TData, TValue>({
           <div className="items-center justify-start">
             <p>
               {table.getFilteredSelectedRowModel().rows.length} of{" "}
-              {table.getFilteredRowModel().rows.length} row(s) selected
+              {table.getFilteredRowModel().rows.length} {t("rowsSelected")}
             </p>
           </div>
 
@@ -251,7 +251,7 @@ const ProductsTable = <TData, TValue>({
                 disabled={!hasPrevPage}
                 hidden={!hasPrevPage}
               >
-                Previous page
+                {t("previousPageBtn")}
               </Button>
             </Link>
             <Link
@@ -260,7 +260,7 @@ const ProductsTable = <TData, TValue>({
               prefetch={false}
             >
               <Button className="btn-pri" size="sm" disabled={!hasNextPage}>
-                Next page
+                {t("nextPageBtn")}
               </Button>
             </Link>
           </div>

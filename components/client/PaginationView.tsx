@@ -11,6 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 type PaginationViewProps = {
   currentPage: number;
   totalPages: number;

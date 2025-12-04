@@ -93,7 +93,7 @@
     "desc": "Requested on:"
   },
   "AdminSideBar": {
-   "dashboard": "Dashboard",
+    "dashboard": "Dashboard",
     "products": "Products",
     "services": "Services",
     "requests": "Requests",
@@ -107,14 +107,15 @@
     "totalSales": "Total Sales",
     "totalUsers": "Total Users",
     "totalRequests": "Total Requests",
+    "month": "Monthly",
+    "year": "Yearly",
+
     "chartH1": "Revenue & Sales Chart",
     "chartP": "Showing total revenue and sales numbers for the last 3 months"
-
   },
   "ProductsPage": {
     "h1": "Products Management",
     "addProduct": "+ New Product "
-
   },
   "ProductsTable": {
     "filterByName": "Filter with Product Name",
@@ -131,7 +132,10 @@
     "barcode": "Barcode",
     "code": "Code",
     "createdAt": "Created At",
-    "actions": "Actions"
+    "actions": "Actions",
+    "rowsSelected": "row(s) selected",
+    "previousPageBtn": "Previous Page",
+    "nextPageBtn": "Next Page"
   },
   "ProductDetailSheet": {
     "barcode": "Barcode",
@@ -158,27 +162,26 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "close": "Close Details"
-
   },
-    "ProductForm": {
-      "back": "Back to Products",
-        "basicH1": "Basic Details",
-        "name": "Product Name",
-        "category": "Category",
-        "brand": "Brand",
-        "purchasePrice": "Purchase Price",
-        "salePrice": "Sale Price",
-        "stock": "Stock",
-        "barcode": "Barcode",
-        "code": "Code",
-      "media": "Media",
-        "description": "Description",
-        "submitAdd": "Create Product",
-        "submitEdit": "Save Changes"
-    },
-    "ServicesPage": {
-      "h1": "Services Management"
-    },
+  "ProductForm": {
+    "back": "Back to Products",
+    "basicH1": "Basic Details",
+    "name": "Product Name",
+    "category": "Category",
+    "brand": "Brand",
+    "purchasePrice": "Purchase Price",
+    "salePrice": "Sale Price",
+    "stock": "Stock",
+    "barcode": "Barcode",
+    "code": "Code",
+    "media": "Media",
+    "description": "Description",
+    "submitAdd": "Create Product",
+    "submitEdit": "Save Changes"
+  },
+  "ServicesPage": {
+    "h1": "Services Management"
+  },
   "ServiceActions": {
     "actions": "Actions",
     "edit": "Edit",
@@ -197,7 +200,6 @@
     "onEditPlaceHolder": "Set your new Service Name",
     "onEditPricePlaceHolder": "Set your new Price",
     "price": "Price: ",
-
     "newServiceBtn": "+ New Service",
     "addServiceH1": "Add New Service",
     "addServiceP": "Please provide the service details below. Name and Price",
@@ -207,8 +209,44 @@
     "pricePlaceholder": "25",
     "createServiceBtn": "Create Service",
     "cancelBtn": "Cancel"
+  },
+  "PosPage": {
+    "posH1": "Point of Sale (POS)",
+    "productNameLabel": "Product Name",
+    "searchPlaceholder": "Search products by name"
+  },
+  "PosCard": {
+    "stock": "Stock: ",
+    "addToCart": "Add to cart"
+  },
+  "PosCart": {
+    "totalItems": "Total Items",
+    "clearCart": "Clear Cart",
+    "emptyCart": "Your cart is empty scan product.",
+    "totalPrice": "Total Price",
+    "proceed": "Proceed to Payment"
+  },
+  "RequestPage": {
+    "reqH1": "Product Requests",
+    "tableCaption": "A List of your stock requests",
+    "confirmChange": "Are you sure you want to change this request?",
+    "failedChange": "Failed to change request status. Please try again.",
+    "successChange": "Request status changed successfully.",
+    "confirmDelete": "Are you sure you want to delete this request?",
+    "failedDelete": "Failed to delete request. Please try again.",
+    "successDelete": "Request deleted successfully.",
+    "user": "User",
+    "status": "Status",
+    "product": "Product",
+    "requestedAt": "Requested At",
+    "actions": "Actions",
+    "viewRequests": "View Requests",
+    "noRequests": "No requests found.",
+    "changeStatus": "Change Status",
+    "deleteRequest": "Delete Request",
+    "pending": "Waiting Answer",
+    "seen": "Seen",
+    "stocked": "Stock Renewed",
+    "totalRequests": "Total Requests: "
   }
-
-
-
 }
