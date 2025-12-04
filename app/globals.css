@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -22,11 +20,7 @@
 .btn-gold{
     @apply  bg-amber-100 text-lg text-black font-bold cursor-pointer hover:bg-text-gold hover:text-[19px];
 }
-/*@layer base {*/
-/*    body {*/
-/*        @apply bg-bgDark ;*/
-/*    }*/
-/*}*/
+
 
 @layer utilities {
     .gradient-yellow {
@@ -34,7 +28,7 @@
     }
 
     .root-container {
-        @apply flex flex-col flex-1    bg-bgDark   ;
+        @apply flex flex-col flex-1 min-h-screen    bg-bgDark   ;
     }
 
     /*auth*/
