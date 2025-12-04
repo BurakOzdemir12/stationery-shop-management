@@ -21,12 +21,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { AUTH_FIELDS } from "@/constants";
 import FileUpload from "@/components/client/FileUpload";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
