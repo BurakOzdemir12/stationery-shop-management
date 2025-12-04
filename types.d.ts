@@ -7,13 +7,13 @@ interface AuthCredentials {
 interface Product {
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   category: string | null;
-  brand: string;
+  brand: string | null;
   purchase_price: string;
   sale_price: string;
   stock: number;
-  barcode: string;
+  barcode: string | null;
   code: string;
   image: string;
   createdAt: Date | null;
